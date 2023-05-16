@@ -1,0 +1,38 @@
+* = 0 or more
++ = 1 or more
+? = Optional
+| = Or
+<...> = Comment
+
+Program: List of CodeLines
+CodeLine: (line Header CodeBlock*)
+Header: (def String<Name>)
+      | (process String<Name>)
+      | (player-event String<Type>)
+      | (entity-event String<Type>)
+CodeBlock: (player-action String<Type> Identifier<Selector> List<Arguments>)
+         | (entity-action String<Type> Identifier<Selector> List<Arguments>)
+         | (game-action String<Type> List<Arguments>)
+         | (set-var String<Type> List<Arguments>)
+         | (control String<Type> List<Arguments>)
+         | (select-object String<Type> String<Subtype> Identifier<Inverse> List<Arguments>)
+         | (call String<Name> List<Arguments>)
+         | (start String<Name> List<Arguments>)
+         | (if-player String<Type> Identifier<Selector> Identifier<Inverse> List<Arguments>)
+         | (if-entity String<Type> Identifier<Selector> Identifier<Inverse> List<Arguments>)
+         | (if-game String<Type> Identifier<Inverse> List<Arguments>)
+         | (if-variable String<Type> Identifier<Inverse> List<Arguments>)
+         | (else)
+         | (end-if)
+         | (end-repeat)
+         | (repeat String<Type> String<Subtype> Identifier<Inverse> List<Arguments>)
+
+
+(if-player     String<Type> Identifier<Selector> Identifier<Inverse> List<Arguments>)
+(if-entity     String<Type> Identifier<Selector> Identifier<Inverse> List<Arguments>)
+(player-action String<Type> Identifier<Selector> List<Arguments>)
+(entity-action String<Type> Identifier<Selector> List<Arguments>)
+(if-game       String<Type> Identifier<Inverse> List<Arguments>)
+(if-variable   String<Type> Identifier<Inverse> List<Arguments>)
+(select-object String<Type> String<Subtype> Identifier<Inverse> List<Arguments>)
+(repeat        String<Type> String<Subtype> Identifier<Inverse> List<Arguments>)
