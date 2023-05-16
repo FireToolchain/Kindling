@@ -1,10 +1,29 @@
-data class Value(val type: ValueType, val line: Int, val column: Int)
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
+
+data class Value(val type: ValueType, val line: Int, val column: Int) {
+    override fun toString() = this.type.toString()
+}
 
 sealed interface ValueType {
-    data class VList(val inner: List<Value>) : ValueType
-    data class Ident(val str: String) : ValueType
-    data class Str(val str: String) : ValueType
-    data class Num(val num: Float) : ValueType
+    val name: String
+    data class VList(val inner: List<Value>) : ValueType {
+        override val name = "List"
+        override fun toString() = "(${ this.inner.joinToString(" ") { it.toString() } })"
+
+    }
+    data class Ident(val str: String) : ValueType {
+        override val name = "Identifier"
+        override fun toString() = this.str
+    }
+    data class Str(val str: String) : ValueType {
+        override val name = "String"
+        override fun toString() = "'${this.str}'"
+    }
+    data class Num(val num: Float) : ValueType {
+        override val name = "Number"
+        override fun toString() = num.toString()
+    }
 }
 
 fun parse(tokens: Tokens): List<Value> {

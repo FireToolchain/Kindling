@@ -1,4 +1,4 @@
-data class Tokens(private val list: List<Token>): Iterator<Token> {
+data class Tokens(val list: List<Token>): Iterator<Token> {
     var line = 1
         private set
     var column = 0
@@ -33,7 +33,7 @@ fun tokenize(str: String): Tokens {
     var line = 1
     while (i < str.length) {
         val char = str[i];
-        if (i < str.length && char == ';') { // Two slashes together
+        if (char == ';') {
             while (i < str.length && str[i] != '\n') i++
         }
         else if (char == '(') out.add(Token(TokenType.OpenParen, column, line, 1))
@@ -102,7 +102,7 @@ fun tokenize(str: String): Tokens {
         } else if (char.isLetter() || char == '-') {
             val colPos = column
             var s = ""
-            while (i < str.length && (str[i].isLetter() || char == '-')) {
+            while (i < str.length && (str[i].isLetter() || str[i] == '-')) {
                 s += str[i]
                 i++; column++
             }

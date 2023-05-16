@@ -3,7 +3,7 @@ class SyntaxException(msg: String, row: Int, col: Int) : Exception("$msg\n At: l
 class UnexpectedToken(msg: String, token: Token) : Exception("Unexpected token. $msg\n At: line ${token.line}, column ${token.col}")
 class MissingToken(msg: String, tokens: Tokens) : Exception("Missing token. $msg\n At: line ${tokens.line}, column ${tokens.column}")
 
-class UnexpectedValue(type: String, struct: String, value: Value) : Exception("Unexpected value. Expected $type for $struct, got ${valueName(value)}.\n At line ${value.line}, column ${value.column}.")
+class UnexpectedValue(type: String, value: Value) : Exception("Unexpected value. Expected $type, got ${valueName(value)}.\n At line ${value.line}, column ${value.column}.")
 class MalformedList(struct: String, expected: String, violated: Value) : Exception("Malformed $struct. Expected format $expected, ${
     if (violated.type is ValueType.VList) {
         "(${violated.type.inner.joinToString(", ") { valueName(it) }})"

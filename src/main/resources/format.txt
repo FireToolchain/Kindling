@@ -28,11 +28,5 @@ CodeBlock: (player-action String<Type> Identifier<Selector> List<Arguments>)
          | (repeat String<Type> String<Subtype> Identifier<Inverse> List<Arguments>)
 
 
-(if-player     String<Type> Identifier<Selector> Identifier<Inverse> List<Arguments>)
-(if-entity     String<Type> Identifier<Selector> Identifier<Inverse> List<Arguments>)
-(player-action String<Type> Identifier<Selector> List<Arguments>)
-(entity-action String<Type> Identifier<Selector> List<Arguments>)
-(if-game       String<Type> Identifier<Inverse> List<Arguments>)
-(if-variable   String<Type> Identifier<Inverse> List<Arguments>)
 (select-object String<Type> String<Subtype> Identifier<Inverse> List<Arguments>)
 (repeat        String<Type> String<Subtype> Identifier<Inverse> List<Arguments>)
