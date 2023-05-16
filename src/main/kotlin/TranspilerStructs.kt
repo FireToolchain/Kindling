@@ -3,8 +3,8 @@ data class DFLine(val header: DFHeader, val code: List<DFBlock>) // A line has a
 sealed interface DFHeader { // A function, process, or event
     data class PlayerEvent(val type: String) : DFHeader
     data class EntityEvent(val type: String) : DFHeader
-    data class Function(val name: String, val params: Int) : DFHeader
-    data class Process(val name: String, val params: Int) : DFHeader
+    data class Function(val name: String) : DFHeader
+    data class Process(val name: String) : DFHeader
 }
 
 sealed interface DFBlock { // A regular DF block
