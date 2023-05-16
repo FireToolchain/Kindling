@@ -19,16 +19,21 @@ data class DFLine(val header: DFHeader, val code: List<DFBlock>) {
     }
 } // A line has a header and a list of statements
 sealed interface DFHeader { // A function, process, or event
+    fun technicalName(): String
     data class PlayerEvent(val type: String) : DFHeader {
+        override fun technicalName() = type
         override fun toString() = "PlayerEvent[$type]"
     }
     data class EntityEvent(val type: String) : DFHeader {
+        override fun technicalName() = type
         override fun toString() = "PlayerEvent[$type]"
     }
     data class Function(val name: String) : DFHeader {
+        override fun technicalName() = name
         override fun toString() = "PlayerEvent[$name]"
     }
     data class Process(val name: String) : DFHeader {
+        override fun technicalName() = name
         override fun toString() = "PlayerEvent[$name]"
     }
 }
@@ -52,8 +57,8 @@ sealed interface DFBlock { // A regular DF block
     data class SelectObject(val type: String, val subtype: String, val inverse: Boolean, val params: List<DFValue>) : DFBlock {
         override fun toString() = "SelectObject.$type.$subtype(${ params.joinToString( ", ") { it.toString() } })"
     }
-    data class CallFunction(val name: String, val params: List<DFValue>) : DFBlock {
-        override fun toString() = "CallFunc $name(${ params.joinToString( ", ") { it.toString() } })"
+    data class CallFunction(val name: String) : DFBlock {
+        override fun toString() = "CallFunc $name"
     }
     data class StartProcess(val name: String, val params: List<DFValue>) : DFBlock {
         override fun toString() = "StartProc $name(${ params.joinToString( ", ") { it.toString() } })"

@@ -2,15 +2,19 @@ fun main(args: Array<String>) {
     // Try adding program arguments via Run/Debug configuration.
     // Learn more about running applications: https://www.jetbrains.com/help/idea/running-applications.html.
     val str = """
-        ((def 'myFunc') 
-          (player-action 'GiveItems' default ((raw-item '{id:"minecraft:stone"}')))
-          (player-action 'Teleport' default ((loc 25 55 25 0 0)))
-          (if-player 'HasPermission' default norm ((tag 'Permissions' 'Developer')))
-            (player-action 'SendMessage' all-players ((text '&l%default joined!')))
-          (else)
-            (player-action 'SendMessage' all-players ((text '%default joined!')))
-          (end-if)
-        )
+((def "factorial")  
+  (if-var "<" norm ((param 0) (num 2))) 
+    (yield (num 1)) 
+  (else)   
+    (set-var "-" (var "dif") (param 0) (num 1)) 
+    (call "factorial" (var "dif"))
+    (set-var "=" (var "first") (ret)) 
+    (set-var "-" (var "dif") (param 0) (num 2)) 
+    (call "factorial" (var "dif"))
+    (set-var "=" (var "second") (ret)) 
+    (set-var "+" (var "sum") (var "first") (var "second"))
+    (yield (var "sum"))
+  (end-if)) 
     """
     println(str)
     val tokens = tokenize(str)
