@@ -74,6 +74,36 @@ fun parseBlock(input: Value, header: DFHeader): List<DFBlock> {
             if (params.size != 0) throw MalformedList("Code Block", "(end-repeat)", input)
             return listOf<DFBlock>(DFBlock.EndRepeat)
         }
+        "return" -> {
+            val out = mutableListOf<DFBlock>()
+            val headerName = when (header) {
+                is DFHeader.Function -> header.name
+                is DFHeader.Process -> header.name
+                else -> null
+            }
+            if (headerName != null)
+                out.add(DFBlock.SetVar("-=", listOf(DFValue.Variable("^depth $headerName", VariableScope.LOCAL))))
+            if (params.size == 1) {
+                if (headerName != null)
+                    out.add(DFBlock.SetVar("=", listOf(DFValue.Variable("^ret", VariableScope.LOCAL), parseVal(params[0], header))))
+                else throw UnexpectedValue("none (Cannot return value from event)", params[0])
+            } else throw MalformedList("Code Block", "(return Value?)", input)
+
+            out.add(DFBlock.Control("Return", listOf()))
+            return out
+        }
+        "yield" -> {
+            if (params.size != 1) throw MalformedList("Code Block", "(yield Value)", input)
+            return when (header) {
+                is DFHeader.Function ->
+                    listOf(DFBlock.SetVar("=", listOf(DFValue.Variable("^ret", VariableScope.LOCAL), parseVal(params[0], header))))
+
+                is DFHeader.Process ->
+                    listOf(DFBlock.SetVar("=", listOf(DFValue.Variable("^ret", VariableScope.LOCAL), parseVal(params[0], header))))
+
+                else -> throw UnexpectedValue("none (Cannot yield value from event)", params[0])
+            }
+        }
         else -> {
             if (params.size == 0) throw MalformedList("Code Block", "(Identifier String ...)", input)
             val second = params.removeAt(0)
@@ -102,7 +132,7 @@ fun parseBlock(input: Value, header: DFHeader): List<DFBlock> {
                             p
                         )))
                     }
-                    out.add(DFBlock.StartProcess(blockType))
+                    out.add(DFBlock.StartProcess(blockType, listOf(DFValue.Tag("Local Variables", "Copy"))))
                     return out
                 }
                 "set-var" -> {
@@ -149,7 +179,7 @@ fun parseBlock(input: Value, header: DFHeader): List<DFBlock> {
                     val b = parseParams(params.removeAt(0), header)
                     listOf<DFBlock>(DFBlock.IfGame(blockType, a, b))
                 }
-                "if-variable" -> {
+                "if-var" -> {
                     if (params.size != 2) throw MalformedList("Code Block", "(if-variable String<Type> Identifier<Inverse> List<Arguments>)", input)
                     val a = parseBool(params.removeAt(0))
                     val b = parseParams(params.removeAt(0), header)
@@ -168,36 +198,6 @@ fun parseBlock(input: Value, header: DFHeader): List<DFBlock> {
                     val b = parseBool(params.removeAt(0))
                     val c = parseParams(params.removeAt(0), header)
                     listOf<DFBlock>(DFBlock.Repeat(blockType, a, b, c))
-                }
-                "return" -> {
-                    val out = mutableListOf<DFBlock>()
-                    val headerName = when (header) {
-                        is DFHeader.Function -> header.name
-                        is DFHeader.Process -> header.name
-                        else -> null
-                    }
-                    if (headerName != null)
-                        out.add(DFBlock.SetVar("-=", listOf(DFValue.Variable("^depth $headerName", VariableScope.LOCAL))))
-                    if (params.size == 1) {
-                        if (headerName != null)
-                            out.add(DFBlock.SetVar("=", listOf(DFValue.Variable("^ret", VariableScope.LOCAL), parseVal(params[0], header))))
-                        else throw UnexpectedValue("none (Cannot return value from event)", params[0])
-                    } else throw MalformedList("Code Block", "(return Value?)", input)
-
-                    out.add(DFBlock.Control("Return", listOf()))
-                    out
-                }
-                "yield" -> {
-                    if (params.size != 1) throw MalformedList("Code Block", "(yield Value)", input)
-                    when (header) {
-                        is DFHeader.Function ->
-                            listOf(DFBlock.SetVar("=", listOf(DFValue.Variable("^ret", VariableScope.LOCAL), parseVal(params[0], header))))
-
-                        is DFHeader.Process ->
-                            listOf(DFBlock.SetVar("=", listOf(DFValue.Variable("^ret", VariableScope.LOCAL), parseVal(params[0], header))))
-
-                        else -> throw UnexpectedValue("none (Cannot yield value from event)", params[0])
-                    }
                 }
                 else -> throw UnexpectedValue("a valid block type", second)
             }
