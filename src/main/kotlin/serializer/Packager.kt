@@ -1,16 +1,19 @@
 package serializer
 
-import transpiler.DFLine
 import transpiler.DFProgram
 import transpiler.DFValue
+import utils.encode
 
 interface DFSerializable {
     fun serialize(): String
 }
 
 fun serializeString(s: String): String {
-    return '"' + s.replace("'", "\\'")
-            .replace(Regex("""\\([^']|$)"""), "\\\\$1") + '"'
+    return '"' + toInner(s) + '"'
+}
+
+fun toInner(s: String): String {
+    return s.replace("\\", "\\\\").replace("\"", "\\\"")
 }
 
 fun serializeArgs(args: List<DFValue>): String {
@@ -32,10 +35,21 @@ fun serializeArgs(args: List<DFValue>): String {
     return """{"items":[${out.joinToString(",")}]}"""
 }
 
-fun sendPackage(prog: DFProgram) {
-    val templates = prog.lines.map(DFLine::serialize)
-    for (s in templates) {
-        println(s)
+fun sendPackage(program: DFProgram) {
+    val author = "myname"
+    for (line in program.lines) {
+        val compressed = encode(line.serialize())
+        val templateName = "Name" // Name with color codes
+        val templateData = """{"author":"${toInner(author)}","name":"${toInner(templateName)}","version":1,"code":"${toInner(compressed)}"}"""
+        val itemName = "hello" // JSON tellraw name
+        val itemTag = """{display:{Name:"${toInner(itemName)}"},PublicBukkitValues:{"hypercube:codetemplatedata":"${toInner(templateData)}"}}"""
+        val itemData = """{"id":"minecraft:ender_chest","Count":1,"tag":$itemTag}"""
+
+        // Recode
+        println("""{"source":"Kindling","type":"nbt","data":"${toInner(itemData)}"}""")
+
+        // Minecraft
+        println("""/give @s minecraft:ender_chest 1 $itemTag""")
     }
 }
 

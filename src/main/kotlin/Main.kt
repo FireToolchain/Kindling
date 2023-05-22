@@ -1,4 +1,5 @@
 import serializer.sendPackage
+import serializer.toInner
 import transpiler.transpile
 
 fun main(args: Array<String>) {
