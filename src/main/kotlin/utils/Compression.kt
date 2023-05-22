@@ -12,7 +12,7 @@ import java.util.zip.GZIPOutputStream
 fun encode(content: String): String {
     val bos = ByteArrayOutputStream()
     GZIPOutputStream(bos).bufferedWriter(UTF_8).use { it.write(content) }
-    return Base64.getEncoder().encodeToString((bos.toByteArray()))
+    return Base64.getEncoder().encodeToString(bos.toByteArray())
 }
 
 /**

@@ -1,31 +1,37 @@
 import serializer.sendPackage
 import serializer.toInner
 import transpiler.transpile
+import java.io.File
+import java.io.IOException
 
 fun main(args: Array<String>) {
-    // Try adding program arguments via Run/Debug configuration.
-    // Learn more about running applications: https://www.jetbrains.com/help/idea/running-applications.html.
-    val str = """
-((def "factorial")  
-  (if-var "<" norm ((param 0) (num 2))) 
-    (return (num 1)) 
-  (else)   
-    (set-var "-" ((var "dif") (param 0) (num 1))) 
-    (call "factorial" ((var "dif")))
-    (set-var "=" ((var "first") (ret))) 
-    (set-var "-" ((var "dif") (param 0) (num 2))) 
-    (call "factorial" ((var "dif")))
-    (set-var "=" ((var "second") (ret))) 
-    (set-var "+" ((var "sum") (var "first") (var "second")))
-    (return (var "sum"))
-  (end-if)) 
-    """
-    println(str)
-    val tokens = tokenize(str)
+    if (args.isEmpty()) {
+        println("Input kindling expression or file path.")
+        return
+    }
+    val code = getInput(args[0])
+    println(code)
+    val tokens = tokenize(code)
     //println(tokens.list.joinToString(" ") { it.token.toString() })
     val parsed = parse(tokens)
     //println(parsed.joinToString("\n") { it.toString() })
     val transpiled = transpile(parsed)
     println(transpiled.toString())
     sendPackage(transpiled)
+}
+
+/**
+ * If input is a file location, read from it.
+ * Otherwise, return input string.
+ * May throw IOException.
+ */
+fun getInput(s: String): String {
+    val file = File(s)
+    return if (file.exists()) {
+        if (!file.isFile) throw IOException("Specified path does not point to file.")
+        if (!file.canRead()) throw IOException("Specified file is unable to be read.")
+        file.readText()
+    } else {
+        s
+    }
 }
