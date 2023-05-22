@@ -4,9 +4,9 @@ class UnexpectedToken(msg: String, token: Token) : Exception("Unexpected token. 
 class MissingToken(msg: String, tokens: Tokens) : Exception("Missing token. $msg\n At: line ${tokens.line}, column ${tokens.column}")
 
 class UnexpectedValue(type: String, value: Value) : Exception("Unexpected value. Expected $type, got ${valueName(value)}.\n At line ${value.line}, column ${value.column}.")
-class MalformedList(struct: String, expected: String, violated: Value) : Exception("Malformed $struct. Expected format $expected, ${
+class MalformedList(struct: String, expected: String, violated: Value) : Exception("Malformed $struct. Expected format $expected, got ${
     if (violated.type is ValueType.VList) {
-        "(${violated.type.inner.joinToString(", ") { valueName(it) }})"
+        "(${violated.type.inner.joinToString(" ") { valueName(it) }})"
     } else "received ${valueName(violated)} instead."
 }.\n At line ${violated.line}, column ${violated.column}")
 

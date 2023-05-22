@@ -138,9 +138,9 @@ fun parseBlock(input: Value, header: DFHeader): List<DFBlock> {
 
             return when (typeVal.type.str) {
                 "call" -> {
-                    if (params.size != 2) throw MalformedList("Code Block", "(call String<Name> List<Params>)", input)
+                    if (params.size != 1) throw MalformedList("Code Block", "(call String<Name> List<Params>)", input)
                     val out = mutableListOf<DFBlock>()
-                    for ((paramNum, p) in parseParams(params[1], header).withIndex()) {
+                    for ((paramNum, p) in parseParams(params[0], header).withIndex()) {
                         out.add(
                             DFBlock.SetVar(
                                 "=", listOf(
@@ -154,9 +154,9 @@ fun parseBlock(input: Value, header: DFHeader): List<DFBlock> {
                     return out
                 }
                 "start" -> {
-                    if (params.size != 2) throw MalformedList("Code Block", "(start String<Name> List<Params>)", input)
+                    if (params.size != 1) throw MalformedList("Code Block", "(start String<Name> List<Params>)", input)
                     val out = mutableListOf<DFBlock>()
-                    for ((paramNum, p) in parseParams(params[1], header).withIndex()) {
+                    for ((paramNum, p) in parseParams(params[0], header).withIndex()) {
                         out.add(
                             DFBlock.SetVar(
                                 "=", listOf(
