@@ -1,5 +1,4 @@
-import serializer.sendPackage
-import serializer.toInner
+import serializer.sendPackageVanilla
 import transpiler.transpile
 import java.io.File
 import java.io.IOException
@@ -10,14 +9,17 @@ fun main(args: Array<String>) {
         return
     }
     val code = getInput(args[0])
+    println("Input kindling code:")
     println(code)
     val tokens = tokenize(code)
-    //println(tokens.list.joinToString(" ") { it.token.toString() })
     val parsed = parse(tokens)
-    //println(parsed.joinToString("\n") { it.toString() })
     val transpiled = transpile(parsed)
+    println()
+    println("Pretty code:")
     println(transpiled.toString())
-    sendPackage(transpiled)
+    println()
+    println("Output:")
+    sendPackageVanilla(transpiled)
 }
 
 /**

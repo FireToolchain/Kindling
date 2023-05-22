@@ -35,7 +35,7 @@ fun serializeArgs(args: List<DFValue>): String {
     return """{"items":[${out.joinToString(",")}]}"""
 }
 
-fun sendPackage(program: DFProgram) {
+fun sendPackageRecode(program: DFProgram) {
     val author = "myname"
     for (line in program.lines) {
         val compressed = encode(line.serialize())
@@ -45,12 +45,23 @@ fun sendPackage(program: DFProgram) {
         val itemTag = """{display:{Name:"${toInner(itemName)}"},PublicBukkitValues:{"hypercube:codetemplatedata":"${toInner(templateData)}"}}"""
         val itemData = """{"id":"minecraft:ender_chest","Count":1,"tag":$itemTag}"""
 
-        // Recode
         println("""{"source":"Kindling","type":"nbt","data":"${toInner(itemData)}"}""")
-
-        // Minecraft
-        println("""/give @s minecraft:ender_chest 1 $itemTag""")
+        println()
     }
 }
 
+fun sendPackageVanilla(program: DFProgram) {
+    val author = "myname"
+    for (line in program.lines) {
+        val compressed = encode(line.serialize())
+        val templateName = "Name" // Name with color codes
+        val templateData = """{"author":"${toInner(author)}","name":"${toInner(templateName)}","version":1,"code":"${toInner(compressed)}"}"""
+        val itemName = "hello" // JSON tellraw name
+        val itemTag = """{display:{Name:"${toInner(itemName)}"},PublicBukkitValues:{"hypercube:codetemplatedata":"${toInner(templateData)}"}}"""
+
+        // Minecraft
+        println("""/give @s minecraft:ender_chest 1 $itemTag""")
+        println()
+    }
+}
 
