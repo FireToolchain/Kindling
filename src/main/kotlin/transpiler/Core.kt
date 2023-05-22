@@ -3,9 +3,16 @@ package transpiler
 import serializer.DFSerializable
 import serializer.serializeString
 
+/**
+ * Represents a DF Program, which is a list of DFLines.
+ */
 data class DFProgram(val lines: List<DFLine>) {
     override fun toString() = lines.joinToString("\n") { it.toString() }
 }
+
+/**
+ * Represents a DFLine, which is a header and a list of codeblocks.
+ */
 data class DFLine(val header: DFHeader, val code: List<DFBlock>) : DFSerializable {
     override fun serialize() = """{"blocks":[${header.serialize()},${code.joinToString(",") { it.serialize() }}]}"""
 
@@ -27,7 +34,10 @@ data class DFLine(val header: DFHeader, val code: List<DFBlock>) : DFSerializabl
     }
 }
 
-sealed interface DFHeader : DFSerializable { // A function, process, or event
+/**
+ * Represents a DF Header, which is an Event, Process, or Function.
+ */
+sealed interface DFHeader : DFSerializable {
     fun technicalName(): String
     data class PlayerEvent(val type: String) : DFHeader {
         override fun serialize() = "{" +

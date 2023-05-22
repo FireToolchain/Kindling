@@ -1,25 +1,44 @@
-import kotlin.contracts.ExperimentalContracts
-import kotlin.contracts.contract
-
+/**
+ * Represents a Kindling parsed value, with its position in the source code.
+ */
 data class Value(val type: ValueType, val line: Int, val column: Int) {
     override fun toString() = this.type.toString()
 }
 
+/**
+ * Represents a type of Kindling parser value.
+ */
 sealed interface ValueType {
     val name: String
+
+    /**
+     * Represents a list value.
+     */
     data class VList(val inner: List<Value>) : ValueType {
         override val name = "List"
         override fun toString() = "(${ this.inner.joinToString(" ") { it.toString() } })"
 
     }
+
+    /**
+     * Represents an identifier value (no quotes around it)
+     */
     data class Ident(val str: String) : ValueType {
         override val name = "Identifier"
         override fun toString() = this.str
     }
+
+    /**
+     * Represents a string value.
+     */
     data class Str(val str: String) : ValueType {
         override val name = "String"
         override fun toString() = "'${this.str}'"
     }
+
+    /**
+     * Represents a number value.
+     */
     data class Num(val num: Float) : ValueType {
         override val name = "Number"
         override fun toString() = num.toString()

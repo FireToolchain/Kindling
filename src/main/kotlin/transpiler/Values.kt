@@ -3,6 +3,9 @@ package transpiler
 import serializer.DFSerializable
 import serializer.serializeString
 
+/**
+ * Represents a value in DF, such as Text, Variables, or Items.
+ */
 sealed interface DFValue : DFSerializable { // A DF value such as a block tag, number, sound, item, etc
     data class Text(val text: String) : DFValue {
         override fun serialize() = """{}""" // TODO

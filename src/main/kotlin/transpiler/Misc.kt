@@ -2,6 +2,9 @@ package transpiler
 
 import serializer.DFSerializable
 
+/**
+ * Represents a Variable's scope
+ */
 enum class VariableScope : DFSerializable {
     SAVE {
         override fun serialize() = """saved"""
@@ -13,6 +16,10 @@ enum class VariableScope : DFSerializable {
         override fun serialize() = """local"""
     }
 }
+
+/**
+ * Represents a DF Selector.
+ */
 enum class Selector : DFSerializable {
     DEFAULT { override fun serialize() = "Default" },
     DAMAGER { override fun serialize() = "Damager" },

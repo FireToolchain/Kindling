@@ -5,12 +5,19 @@ import UnexpectedValue
 import Value
 import ValueType
 
+/**
+ * Transpiles a list of parsed values into a DF Program.
+ */
 fun transpile(input: List<Value>): DFProgram {
     val lines = mutableListOf<DFLine>()
     for (v in input)
         lines.add(parseLine(v))
     return DFProgram(lines)
 }
+
+/**
+ * Takes a parsed value and attempts to transpile it into a DFLine
+ */
 fun parseLine(input: Value): DFLine {
     // Validate
     if (input.type !is ValueType.VList) throw UnexpectedValue("List", input)
@@ -42,6 +49,10 @@ fun parseLine(input: Value): DFLine {
 
 
 }
+
+/**
+ * Takes a parsed value and attempts to transpile it into a DFHeader
+ */
 fun parseHeader(input: Value): DFHeader {
     // Validate
     if (input.type !is ValueType.VList) throw UnexpectedValue("List", input)
@@ -62,6 +73,10 @@ fun parseHeader(input: Value): DFHeader {
         else -> throw UnexpectedValue("a valid header type", first)
     }
 }
+
+/**
+ * Takes a parsed value and attempted to transpile it into a DFBlock.
+ */
 fun parseBlock(input: Value, header: DFHeader): List<DFBlock> {
     // Validate & Setup
     if (input.type !is ValueType.VList) throw UnexpectedValue("List", input)
@@ -282,6 +297,10 @@ fun parseBlock(input: Value, header: DFHeader): List<DFBlock> {
         }
     }
 }
+
+/**
+ * Takes a parsed value and ensures it's a boolean
+ */
 fun parseBool(input: Value): Boolean {
     if (input.type !is ValueType.Ident) throw UnexpectedValue("Identifier", input)
     return when (input.type.str) {
@@ -290,26 +309,50 @@ fun parseBool(input: Value): Boolean {
         else -> throw UnexpectedValue("Inverse", input)
     }
 }
+
+/**
+ * Takes a parsed value and ensures it's a string
+ */
 fun parseStr(v: Value): String {
     if (v.type !is ValueType.Str) throw UnexpectedValue("String", v)
     return v.type.str
 }
+
+/**
+ * Takes a parsed value and ensures it's an identifier
+ */
 fun parseIdent(v: Value): String {
     if (v.type !is ValueType.Ident) throw UnexpectedValue("Identifier", v)
     return v.type.str
 }
+
+/**
+ * Takes a parsed value and ensures it's a number
+ */
 fun parseNum(v: Value): Float {
     if (v.type !is ValueType.Num) throw UnexpectedValue("Number", v)
     return v.type.num
 }
+
+/**
+ * Takes a parsed value and ensures it's an integer
+ */
 fun parseInt(v: Value): Int {
     if (v.type !is ValueType.Num) throw UnexpectedValue("Number", v)
     return v.type.num.toInt()
 }
+
+/**
+ * Takes a parsed value and ensures it's a list
+ */
 fun parseList(v: Value): List<Value> {
     if (v.type !is ValueType.VList) throw UnexpectedValue("List", v)
     return v.type.inner
 }
+
+/**
+ * Takes a parsed value and ensures it's a selector
+ */
 fun parseSelector(input: Value): Selector {
     if (input.type !is ValueType.Ident) throw UnexpectedValue("Identifier", input)
     return when (input.type.str) {
@@ -327,6 +370,10 @@ fun parseSelector(input: Value): Selector {
         else -> throw UnexpectedValue("Selector", input)
     }
 }
+
+/**
+ * Takes a parsed value and transpiles it into a list of DFValues as parameters.
+ */
 fun parseParams(input: Value, header: DFHeader): List<DFValue> {
     val out = mutableListOf<DFValue>()
     for (e in parseList(input)) {
@@ -334,6 +381,10 @@ fun parseParams(input: Value, header: DFHeader): List<DFValue> {
     }
     return out
 }
+
+/**
+ * Takes a parsed value and transpiles it into a DFValues.
+ */
 fun parseVal(input: Value, header: DFHeader): DFValue {
     val inner = parseList(input).toMutableList()
     if (inner.isEmpty()) throw MalformedList("Value", "(Type <data>...)", input)

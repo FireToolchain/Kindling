@@ -4,6 +4,9 @@ import serializer.DFSerializable
 import serializer.serializeArgs
 import serializer.serializeString
 
+/**
+ * Represents a DF Block, such as a Player Action, Set Variable, or If Game.
+ */
 sealed interface DFBlock : DFSerializable { // A regular DF block
     data class PlayerAction(val type: String, val selector: Selector, val params: List<DFValue>) : DFBlock {
         override fun serialize() = "{" +

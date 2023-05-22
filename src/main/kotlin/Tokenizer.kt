@@ -1,3 +1,6 @@
+/**
+ * An iterator over tokens.
+ */
 data class Tokens(val list: List<Token>): Iterator<Token> {
     var line = 1
         private set
@@ -16,8 +19,14 @@ data class Tokens(val list: List<Token>): Iterator<Token> {
     fun length() = list.size - index
 }
 
-// Token Data + Position
+/**
+ * Stores token data with its position in the source code.
+ */
 data class Token(val token: TokenType, val col: Int, val line: Int, val width: Int)
+
+/**
+ * Represents a type of source code token, and its associated data.
+ */
 sealed interface TokenType {
     data object OpenParen : TokenType
     data object CloseParen : TokenType
@@ -26,6 +35,9 @@ sealed interface TokenType {
     data class Num(val num: Float) : TokenType
 }
 
+/**
+ * Takes a string and compiles it into a Tokens object according to Kindling token rules.
+ */
 fun tokenize(str: String): Tokens {
     val out = ArrayList<Token>()
     var i = 0
