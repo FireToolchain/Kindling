@@ -1,3 +1,4 @@
+import serializer.sendPackage
 import transpiler.transpile
 
 fun main(args: Array<String>) {
@@ -6,7 +7,7 @@ fun main(args: Array<String>) {
     val str = """
 ((def "factorial")  
   (if-var "<" norm ((param 0) (num 2))) 
-    (yield (num 1)) 
+    (return (num 1)) 
   (else)   
     (set-var "-" ((var "dif") (param 0) (num 1))) 
     (call "factorial" ((var "dif")))
@@ -15,7 +16,7 @@ fun main(args: Array<String>) {
     (call "factorial" ((var "dif")))
     (set-var "=" ((var "second") (ret))) 
     (set-var "+" ((var "sum") (var "first") (var "second")))
-    (yield (var "sum"))
+    (return (var "sum"))
   (end-if)) 
     """
     println(str)

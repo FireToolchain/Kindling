@@ -1,7 +1,7 @@
 package transpiler
 
-import DFSerializable
-import serializeString
+import serializer.DFSerializable
+import serializer.serializeString
 
 data class DFProgram(val lines: List<DFLine>) {
     override fun toString() = lines.joinToString("\n") { it.toString() }

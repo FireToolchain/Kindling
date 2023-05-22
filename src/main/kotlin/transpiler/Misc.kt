@@ -1,16 +1,16 @@
 package transpiler
 
-import DFSerializable
+import serializer.DFSerializable
 
 enum class VariableScope : DFSerializable {
     SAVE {
-        override fun serialize() = "saved"
+        override fun serialize() = """saved"""
     },
     GLOBAL {
-        override fun serialize() = "game"
+        override fun serialize() = """game"""
     },
     LOCAL {
-        override fun serialize() = "local"
+        override fun serialize() = """local"""
     }
 }
 enum class Selector : DFSerializable {

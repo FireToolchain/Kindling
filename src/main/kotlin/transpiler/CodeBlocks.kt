@@ -1,8 +1,8 @@
 package transpiler
 
-import DFSerializable
-import serializeArgs
-import serializeString
+import serializer.DFSerializable
+import serializer.serializeArgs
+import serializer.serializeString
 
 sealed interface DFBlock : DFSerializable { // A regular DF block
     data class PlayerAction(val type: String, val selector: Selector, val params: List<DFValue>) : DFBlock {

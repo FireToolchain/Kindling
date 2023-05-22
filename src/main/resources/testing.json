@@ -1,146 +1,78 @@
-{
-  "blocks": [
-    {
-      "id": "block",
-      "block": "func",
-      "args": {},
-      "data": "factorial"
-    },
-    {
-      "id": "block",
-      "block": "set_var",
-      "args": {
-        "TODO": "params"
+[
+  {
+    "blocks": [
+      {
+        "id": "block",
+        "block": "player_action",
+        "args": {
+          "items": [
+            {
+              "item": {
+                "id": "bl_tag",
+                "data": {
+                  "option": "False",
+                  "tag": "Keep Velocity",
+                  "action": "Teleport",
+                  "block": "player_action"
+                }
+              },
+              "slot": 25
+            },
+            {
+              "item": {
+                "id": "bl_tag",
+                "data": {
+                  "option": "False",
+                  "tag": "Keep Current Rotation",
+                  "action": "Teleport",
+                  "block": "player_action"
+                }
+              },
+              "slot": 26
+            }
+          ]
+        },
+        "action": "Teleport"
       },
-      "action": "+="
-    },
-    {
-      "id": "block",
-      "block": "if_var",
-      "args": {
-        "TODO": "params"
-      },
-      "action": "<"
-    },
-    {
-      "id": "bracket",
-      "direct": "open",
-      "type": "norm"
-    },
-    {
-      "id": "block",
-      "block": "set_var",
-      "args": {
-        "TODO": "params"
-      },
-      "action": "="
-    },
-    {
-      "id": "bracket",
-      "direct": "open",
-      "type": "norm"
-    },
-    {
-      "id": "block",
-      "block": "else"
-    },
-    {
-      "id": "bracket",
-      "direct": "close",
-      "type": "norm"
-    },
-    {
-      "id": "block",
-      "block": "set_var",
-      "args": {
-        "TODO": "params"
-      },
-      "action": "-"
-    },
-    {
-      "id": "block",
-      "block": "set_var",
-      "args": {
-        "TODO": "params"
-      },
-      "action": "="
-    },
-    {
-      "id": "block",
-      "block": "call_func",
-      "args": {
-        "items": []
-      },
-      "data": "factorial"
-    },
-    {
-      "id": "block",
-      "block": "set_var",
-      "args": {
-        "TODO": "params"
-      },
-      "action": "="
-    },
-    {
-      "id": "block",
-      "block": "set_var",
-      "args": {
-        "TODO": "params"
-      },
-      "action": "-"
-    },
-    {
-      "id": "block",
-      "block": "set_var",
-      "args": {
-        "TODO": "params"
-      },
-      "action": "="
-    },
-    {
-      "id": "block",
-      "block": "call_func",
-      "args": {
-        "items": []
-      },
-      "data": "factorial"
-    },
-    {
-      "id": "block",
-      "block": "set_var",
-      "args": {
-        "TODO": "params"
-      },
-      "action": "="
-    },
-    {
-      "id": "block",
-      "block": "set_var",
-      "args": {
-        "TODO": "params"
-      },
-      "action": "+"
-    },
-    {
-      "id": "block",
-      "block": "set_var",
-      "args": {
-        "TODO": "params"
-      },
-      "action": "="
-    },
-    {
-      "id": "bracket",
-      "direct": "close",
-      "type": "norm"
-    },
-    {
-      "id": "block",
-      "block": "set_var",
-      "args": {
-        "TODO": "params"
-      },
-      "action": "-="
-    }
-  ]
-}
+      {
+        "id": "block",
+        "block": "set_var",
+        "args": {
+          "items": [
+            {
+              "item": {
+                "id": "var",
+                "data": {
+                  "name": "c",
+                  "scope": "saved"
+                }
+              },
+              "slot": 0
+            },
+            {
+              "item": {
+                "id": "part",
+                "data": {
+                  "particle": "Fishing",
+                  "cluster": {
+                    "amount": 5,
+                    "horizontal": 1.0,
+                    "vertical": 1.0
+                  },
+                  "data": {
+                    "x": 5.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "motionVariation": 100
+                  }
+                }
+              },
+              "slot": 3
+            }
+          ]
+        },
+        "action": "="
+      }
+    ]
+  }
+]
