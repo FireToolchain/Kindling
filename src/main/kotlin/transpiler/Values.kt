@@ -2,13 +2,14 @@ package transpiler
 
 import serializer.DFSerializable
 import serializer.serializeString
+import serializer.toInner
 
 /**
  * Represents a value in DF, such as Text, Variables, or Items.
  */
-sealed interface DFValue : DFSerializable { // A DF value such as a block tag, number, sound, item, etc
+sealed interface DFValue : DFSerializable {
     data class Text(val text: String) : DFValue {
-        override fun serialize() = """{}""" // TODO
+        override fun serialize() = """{"id":"txt","data":{"name":"${toInner(text)}"}}"""
         override fun toString() = "\"$text\""
     }
     data class Number(val num: Float): DFValue {

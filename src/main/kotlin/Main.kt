@@ -1,3 +1,4 @@
+import serializer.sendPackageRecode
 import serializer.sendPackageVanilla
 import transpiler.transpile
 import java.io.File
@@ -18,8 +19,7 @@ fun main(args: Array<String>) {
     println("Pretty code:")
     println(transpiled.toString())
     println()
-    println("Output:")
-    sendPackageVanilla(transpiled)
+    sendPackageRecode(transpiled)
 }
 
 /**

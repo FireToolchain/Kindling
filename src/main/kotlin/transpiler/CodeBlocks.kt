@@ -13,7 +13,7 @@ sealed interface DFBlock : DFSerializable { // A regular DF block
                 """"id":"block",""" +
                 """"block":"player_action",""" +
                 """"args":${serializeArgs(params)},""" +
-                """"target":"${selector.serialize()}""" +
+                """"target":"${selector.serialize()}",""" +
                 """"action":${serializeString(type)}""" +
                 "}"
         override fun toString() = "PlayerAction.$type<$selector>(${ params.joinToString( ", ") { it.toString() } })"
@@ -23,7 +23,7 @@ sealed interface DFBlock : DFSerializable { // A regular DF block
                 """"id":"block",""" +
                 """"block":"entity_action",""" +
                 """"args":${serializeArgs(params)},""" +
-                """"target":"${selector.serialize()}""" +
+                """"target":"${selector.serialize()}",""" +
                 """"action":${serializeString(type)}""" +
                 "}"
         override fun toString() = "EntityAction.$type<$selector>(${ params.joinToString( ", ") { it.toString() } })"
@@ -93,7 +93,7 @@ sealed interface DFBlock : DFSerializable { // A regular DF block
                 """"args":${serializeArgs(params)},""" +
                 """"action":${serializeString(type)},""" +
                 if (inverse) { """"inverted":"NOT",""" } else { "" } +
-                """"target":"${selector.serialize()}""" +
+                """"target":"${selector.serialize()}",""" +
                 """},{"id":"bracket","direct":"open","type":"norm"}"""
         override fun toString() = "IfPlayer.$type<$selector>(${ params.joinToString( ", ") { it.toString() } }) {"
     }
@@ -115,7 +115,7 @@ sealed interface DFBlock : DFSerializable { // A regular DF block
                 """"args":${serializeArgs(params)},""" +
                 """"action":${serializeString(type)},""" +
                 if (inverse) { """"inverted":"NOT",""" } else { "" } +
-                """"target":"${selector.serialize()}""" +
+                """"target":"${selector.serialize()}",""" +
                 """},{"id":"bracket","direct":"open","type":"norm"}"""
         override fun toString() = "IfEntity.$type<$selector>(${ params.joinToString( ", ") { it.toString() } }) {"
     }
