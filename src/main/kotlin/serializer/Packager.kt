@@ -1,21 +1,14 @@
 package serializer
 
 import io.ktor.client.*
-import io.ktor.client.engine.okhttp.*
+import io.ktor.client.engine.java.*
 import io.ktor.client.plugins.websocket.*
 import io.ktor.http.*
 import io.ktor.websocket.*
-import kotlinx.coroutines.async
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.runBlocking
-import okhttp3.OkHttpClient
-import okhttp3.internal.wait
 import transpiler.DFProgram
 import transpiler.DFValue
 import utils.encode
-import java.time.Duration
-import java.util.concurrent.TimeUnit
-import kotlin.concurrent.thread
 
 
 interface DFSerializable {
@@ -50,26 +43,16 @@ fun serializeArgs(args: List<DFValue>): String {
 }
 
 fun sendPackageRecode(program: DFProgram) {
-    val client = HttpClient(OkHttp) {
-        install(WebSockets) {
-            Duration.ofSeconds(2)
-        }
-        engine {
-            preconfigured = OkHttpClient.Builder()
-                .pingInterval(20, TimeUnit.SECONDS)
-                .connectTimeout(Duration.ofSeconds(2))
-                .build()
-        }
+    val client = HttpClient(Java) {
+        install(WebSockets)
     }
     runBlocking {
-        client.webSocket(
-            method = HttpMethod.Get,
-            host = "localhost",
-            port = 31371,
-            path = "/codeutilities/item"
-        ) {
+        client.webSocket(HttpMethod.Get,"localhost",31371,"/codeutilities/item") {
             val author = "myname"
+            val totalLines = program.lines.size
+            var currentLine = 0
             for (line in program.lines) {
+                currentLine++
                 val uncompressed = line.serialize();
                 val compressed = encode(uncompressed)
                 val templateName = "Name" // Name with color codes; change later
@@ -86,12 +69,12 @@ fun sendPackageRecode(program: DFProgram) {
                 val packet = """{"source":"Kindling","type":"nbt","data":"${toInner(itemData)}"}"""
 
                 send(Frame.Text(packet))
+                println("Sent $currentLine of $totalLines")
             }
-            println("Sent successfully.")
+            println("Finished.")
         }
     }
     client.close()
-    println("we're done here.")
 }
 
 fun sendPackageVanilla(program: DFProgram) {
