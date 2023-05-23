@@ -1,3 +1,4 @@
+import kotlinx.coroutines.runBlocking
 import serializer.sendPackageRecode
 import serializer.sendPackageVanilla
 import transpiler.transpile

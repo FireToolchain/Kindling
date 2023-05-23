@@ -5,13 +5,17 @@ import io.ktor.client.engine.okhttp.*
 import io.ktor.client.plugins.websocket.*
 import io.ktor.http.*
 import io.ktor.websocket.*
+import kotlinx.coroutines.async
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
-import okhttp3.internal.ignoreIoExceptions
+import okhttp3.internal.wait
 import transpiler.DFProgram
 import transpiler.DFValue
 import utils.encode
+import java.time.Duration
 import java.util.concurrent.TimeUnit
+import kotlin.concurrent.thread
 
 
 interface DFSerializable {
@@ -47,22 +51,37 @@ fun serializeArgs(args: List<DFValue>): String {
 
 fun sendPackageRecode(program: DFProgram) {
     val client = HttpClient(OkHttp) {
-        install(WebSockets)
+        install(WebSockets) {
+            Duration.ofSeconds(2)
+        }
         engine {
             preconfigured = OkHttpClient.Builder()
                 .pingInterval(20, TimeUnit.SECONDS)
+                .connectTimeout(Duration.ofSeconds(2))
                 .build()
         }
     }
     runBlocking {
-        client.webSocket(method = HttpMethod.Get, host = "localhost", port = 31371, path = "/codeutilities/item") {
+        client.webSocket(
+            method = HttpMethod.Get,
+            host = "localhost",
+            port = 31371,
+            path = "/codeutilities/item"
+        ) {
             val author = "myname"
             for (line in program.lines) {
-                val compressed = encode(line.serialize())
+                val uncompressed = line.serialize();
+                val compressed = encode(uncompressed)
                 val templateName = "Name" // Name with color codes; change later
-                val templateData = """{"author":"${toInner(author)}","name":"${toInner(templateName)}","version":1,"code":"${toInner(compressed)}"}"""
+                val templateData =
+                    """{"author":"${toInner(author)}","name":"${toInner(templateName)}","version":1,"code":"${
+                        toInner(compressed)
+                    }"}"""
                 val itemName = "hello" // JSON tellraw name; changelater
-                val itemTag = """{display:{Name:"${toInner(itemName)}"},PublicBukkitValues:{"hypercube:codetemplatedata":"${toInner(templateData)}"}}"""
+                val itemTag =
+                    """{display:{Name:"${toInner(itemName)}"},PublicBukkitValues:{"hypercube:codetemplatedata":"${
+                        toInner(templateData)
+                    }"}}"""
                 val itemData = """{"id":"minecraft:ender_chest","Count":1,"tag":$itemTag}"""
                 val packet = """{"source":"Kindling","type":"nbt","data":"${toInner(itemData)}"}"""
 
@@ -72,8 +91,7 @@ fun sendPackageRecode(program: DFProgram) {
         }
     }
     client.close()
-
-
+    println("we're done here.")
 }
 
 fun sendPackageVanilla(program: DFProgram) {
