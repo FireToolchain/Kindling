@@ -1,13 +1,13 @@
 <component name="ArtifactManager">
-  <artifact type="jar" build-on-make="true" name="Kindling:jar">
+  <artifact type="jar" name="Kindling:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/Kindling_jar</output-path>
-    <root id="archive" name="KindlingKotlin.jar">
-      <element id="module-output" name="KindlingKotlin" />
-      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.8.20/kotlin-stdlib-jdk7-1.8.20.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib-common/1.8.20/kotlin-stdlib-common-1.8.20.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.8.20/kotlin-stdlib-jdk8-1.8.20.jar" path-in-jar="/" />
+    <root id="archive" name="Kindling.jar">
+      <element id="module-output" name="Kindling" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib-common/1.8.10/kotlin-stdlib-common-1.8.10.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.8.10/kotlin-stdlib-jdk7-1.8.10.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib/1.8.20/kotlin-stdlib-1.8.20.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jetbrains/annotations/13.0/annotations-13.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.8.20/kotlin-stdlib-jdk8-1.8.20.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>
