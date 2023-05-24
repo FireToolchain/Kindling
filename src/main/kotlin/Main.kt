@@ -19,6 +19,7 @@ fun main(inputs: Array<String>) {
     val help = flags.contains("-h") || flags.contains("-help")
     val recode = flags.contains("-r") || flags.contains("-recode")
     val verbose = flags.contains("-v") || flags.contains("-verbose")
+    val debug = flags.contains("-d") || flags.contains("-debug")
 
     // Handle code
     if (help) {
@@ -46,7 +47,11 @@ fun main(inputs: Array<String>) {
                 sendPackageVanilla(transpiled)
             }
         } catch (e: Exception) {
-            println(e.message)
+            if (debug) {
+                e.printStackTrace()
+            } else {
+                println(e.message)
+            }
         }
     } else {
         println("Unexpected input. Run with the -help flag for help.")
