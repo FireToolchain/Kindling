@@ -131,9 +131,9 @@ sealed interface DFBlock : DFSerializable { // A regular DF block
     }
     object Else : DFBlock {
         override fun serialize() =
-                """{"id":"bracket","direct":"open","type":"norm"},""" +
+                """{"id":"bracket","direct":"close","type":"norm"},""" +
                 """{"id":"block","block":"else"},""" +
-                """{"id":"bracket","direct":"close","type":"norm"}"""
+                """{"id":"bracket","direct":"open","type":"norm"}"""
         override fun toString() = "} else {"
     }
     object EndIf : DFBlock {

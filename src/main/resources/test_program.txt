@@ -11,3 +11,4 @@
     (set-var "+" ((var "sum") (var "first") (var "second")))
     (return (var "sum"))
   (end-if))
+((player-event "Join") (call "factorial" ((num 3))) (player-action "SendMessage" default ((ret))))

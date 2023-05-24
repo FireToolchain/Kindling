@@ -55,12 +55,15 @@ fun sendPackageRecode(program: DFProgram) {
                 currentLine++
                 val uncompressed = line.serialize();
                 val compressed = encode(uncompressed)
-                val templateName = "Name" // Name with color codes; change later
+                val templateName = """§6🔥 §e$currentLine"""
                 val templateData =
                     """{"author":"${toInner(author)}","name":"${toInner(templateName)}","version":1,"code":"${
                         toInner(compressed)
                     }"}"""
-                val itemName = "hello" // JSON tellraw name; changelater
+                val itemName = """'{"extra":[
+                    |{"bold":true,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gold","text":"🔥 "},
+                    |{"bold":false,"italic":false,"color":"yellow","text":"$currentLine"}
+                    |],"text":""}'""".trimMargin()
                 val itemTag =
                     """{display:{Name:"${toInner(itemName)}"},PublicBukkitValues:{"hypercube:codetemplatedata":"${
                         toInner(templateData)
@@ -70,6 +73,7 @@ fun sendPackageRecode(program: DFProgram) {
 
                 send(Frame.Text(packet))
                 println("Sent $currentLine of $totalLines")
+                println(uncompressed)
             }
             println("Finished.")
         }

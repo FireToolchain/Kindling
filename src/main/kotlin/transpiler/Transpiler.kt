@@ -107,8 +107,6 @@ fun parseBlock(input: Value, header: DFHeader): List<DFBlock> {
                 is DFHeader.Process -> header.name
                 else -> null
             }
-            if (headerName != null)
-                out.add(DFBlock.SetVar("-=", listOf(DFValue.Variable("^depth $headerName", VariableScope.LOCAL))))
             if (params.size == 1) {
                 if (headerName != null)
                     out.add(
@@ -118,7 +116,9 @@ fun parseBlock(input: Value, header: DFHeader): List<DFBlock> {
                         )
                     )
                 else throw UnexpectedValue("none (Cannot return value from event)", params[0])
-            } else throw MalformedList("Code Block", "(return Value?)", input)
+            } else if (headerName != null) throw MalformedList("Code Block", "(return Value?)", input)
+            if (headerName != null)
+                out.add(DFBlock.SetVar("-=", listOf(DFValue.Variable("^depth $headerName", VariableScope.LOCAL))))
 
             out.add(DFBlock.Control("Return", listOf()))
             return out
@@ -158,8 +158,17 @@ fun parseBlock(input: Value, header: DFHeader): List<DFBlock> {
                     for ((paramNum, p) in parseParams(params[0], header).withIndex()) {
                         out.add(
                             DFBlock.SetVar(
+                                "+", listOf(
+                                    DFValue.Variable("^depthCalc", VariableScope.LOCAL),
+                                    DFValue.Variable("^depth $blockType", VariableScope.LOCAL),
+                                    DFValue.Number(1f)
+                                )
+                            )
+                        )
+                        out.add(
+                            DFBlock.SetVar(
                                 "=", listOf(
-                                    DFValue.Variable("^param $blockType $paramNum", VariableScope.LOCAL),
+                                    DFValue.Variable("^param $blockType $paramNum %var(^depthCalc)", VariableScope.LOCAL),
                                     p
                                 )
                             )
@@ -174,8 +183,17 @@ fun parseBlock(input: Value, header: DFHeader): List<DFBlock> {
                     for ((paramNum, p) in parseParams(params[0], header).withIndex()) {
                         out.add(
                             DFBlock.SetVar(
+                                "+", listOf(
+                                    DFValue.Variable("^depthCalc", VariableScope.LOCAL),
+                                    DFValue.Variable("^depth $blockType", VariableScope.LOCAL),
+                                    DFValue.Number(1f)
+                                )
+                            )
+                        )
+                        out.add(
+                            DFBlock.SetVar(
                                 "=", listOf(
-                                    DFValue.Variable("^param $blockType $paramNum", VariableScope.LOCAL),
+                                    DFValue.Variable("^param $blockType $paramNum %var(^depthCalc)", VariableScope.LOCAL),
                                     p
                                 )
                             )
