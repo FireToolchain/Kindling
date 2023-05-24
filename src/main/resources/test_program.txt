@@ -15,5 +15,6 @@
 ((player-event "Join")
   (repeat "Multiple" "" norm ((var "i") (num 10)))
   (call "fibonacci" ((var "i")))
-  (player-action "SendMessage" default ((ret)))
+  (set-var "SetItemName" ((var "item") (item '{id:"minecraft:stone",Count:1}') (text "%var(^ret)")))
+  (player-action "GiveItems" default ((var "item")))
   (end-repeat))

@@ -1,43 +1,34 @@
-{
-  "blocks": [
-    {
-      "id": "block",
-      "block": "event",
-      "args": {
-        "items": []
-      },
-      "action": "Join"
-    },
-    {
-      "id": "block",
-      "block": "player_action",
-      "args": {
-        "items": [
-          {
-            "item": {
-              "id": "txt",
-              "data": {
-                "name": "Hello, there!"
-              }
-            },
-            "slot": 0
-          },
-          {
-            "item": {
-              "id": "bl_tag",
-              "data": {
-                "option": "Alignment Mode",
-                "tag": "Centered",
-                "action": "SendMessage",
-                "block": "player_action"
-              }
-            },
-            "slot": 26
+
+      {
+        "item": {
+          "id": "item",
+          "data": {
+            "item": "{Count:1b,DF_NBT:3337,id:\"minecraft:red_sand\"}"
           }
-        ]
+        },
+        "slot": 0
       },
-      "target": "Default",
-      "action": "SendMessage"
-    }
-  ]
-}
+      {
+        "item": {
+          "id": "bl_tag",
+          "data": {
+            "option": "Add spaces",
+            "tag": "Text Value Merging",
+            "action": "SendMessage",
+            "block": "player_action"
+          }
+        },
+        "slot": 25
+      },
+      {
+        "item": {
+          "id": "bl_tag",
+          "data": {
+            "option": "Regular",
+            "tag": "Alignment Mode",
+            "action": "SendMessage",
+            "block": "player_action"
+          }
+        },
+        "slot": 26
+      }
