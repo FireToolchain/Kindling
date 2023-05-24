@@ -6,8 +6,9 @@ import io.ktor.client.plugins.websocket.*
 import io.ktor.http.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.runBlocking
-import transpiler.DFProgram
-import transpiler.DFValue
+import DFProgram
+import transpiler.values.DFValue
+import transpiler.values.Tag
 import utils.encode
 
 
@@ -31,7 +32,7 @@ fun serializeArgs(args: List<DFValue>): String {
         if (endIndex <= mainIndex) {
             throw SerializationError("Total chest parameters exceed 27.", arg)
         }
-        if (arg is DFValue.Tag) {
+        if (arg is Tag) {
             out.add("""{"item":${arg.serialize()},"slot":$endIndex}""")
             endIndex--
         } else {
