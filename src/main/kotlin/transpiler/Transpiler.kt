@@ -464,8 +464,8 @@ fun parseVal(input: Value, header: DFHeader): DFValue {
             val par = DFValue.Particle(type)
             for (s in inner) {
                 val setting = parseList(s)
-                if (setting.size != 2) throw MalformedList("Sound Setting", "(String<Name> <Value>)", s)
-                when (parseStr(setting[0])) {
+                if (setting.size != 2) throw MalformedList("Particle Setting", "(Identifier<Name> <Value>)", s)
+                when (parseIdent(setting[0])) {
                     "amount" -> par.amount = parseInt(setting[1])
                     "spread-x" -> par.spreadX = parseNum(setting[1])
                     "spread-y" -> par.spreadY = parseNum(setting[1])
@@ -474,7 +474,7 @@ fun parseVal(input: Value, header: DFHeader): DFValue {
                     "motion-z" -> par.motionZ = parseNum(setting[1])
                     "roll" -> par.roll = parseNum(setting[1])
                     "size" -> par.size = parseNum(setting[1])
-                    "color" -> par.color = parseStr(setting[1])
+                    "color" -> par.color = parseInt(setting[1])
                     "material" -> par.material = parseStr(setting[1])
                     "variation-color" -> par.variationColor = parseInt(setting[1])
                     "variation-motion" -> par.variationMotion = parseInt(setting[1])

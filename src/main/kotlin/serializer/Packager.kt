@@ -15,12 +15,12 @@ interface DFSerializable {
     fun serialize(): String
 }
 
-fun serializeString(s: String): String {
+fun serializeString(s: String?): String {
     return '"' + toInner(s) + '"'
 }
 
-fun toInner(s: String): String {
-    return s.replace("\\", "\\\\").replace("\"", "\\\"")
+fun toInner(s: String?): String {
+    return s?.replace("\\", "\\\\")?.replace("\"", "\\\"") ?: "null"
 }
 
 fun serializeArgs(args: List<DFValue>): String {
@@ -60,10 +60,10 @@ fun sendPackageRecode(program: DFProgram) {
                     """{"author":"${toInner(author)}","name":"${toInner(templateName)}","version":1,"code":"${
                         toInner(compressed)
                     }"}"""
-                val itemName = """'{"extra":[
-                    |{"bold":true,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gold","text":"🔥 "},
-                    |{"bold":false,"italic":false,"color":"yellow","text":"$currentLine"}
-                    |],"text":""}'""".trimMargin()
+                val itemName = """'{"extra":[""" +
+                        """{"bold":true,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gold","text":"🔥 "},""" +
+                        """{"bold":false,"italic":false,"color":"yellow","text":"$currentLine"}""" +
+                        """],"text":""}'"""
                 val itemTag =
                     """{display:{Name:"${toInner(itemName)}"},PublicBukkitValues:{"hypercube:codetemplatedata":"${
                         toInner(templateData)
