@@ -112,7 +112,7 @@ fun parseBlock(input: Value, header: DFHeader): List<DFBlock> {
                     out.add(
                         DFBlock.SetVar(
                             "=",
-                            listOf(DFValue.Variable("^ret", VariableScope.LOCAL), parseVal(params[0], header))
+                            listOf(DFValue.Variable("^ret", VariableScope.LOCAL), parseVal(params[0], header, "set_var", "="))
                         )
                     )
                 else throw UnexpectedValue("none (Cannot return value from event)", params[0])
@@ -130,7 +130,7 @@ fun parseBlock(input: Value, header: DFHeader): List<DFBlock> {
                     listOf(
                         DFBlock.SetVar(
                             "=",
-                            listOf(DFValue.Variable("^ret", VariableScope.LOCAL), parseVal(params[0], header))
+                            listOf(DFValue.Variable("^ret", VariableScope.LOCAL), parseVal(params[0], header, "set_var", "="))
                         )
                     )
 
@@ -138,7 +138,7 @@ fun parseBlock(input: Value, header: DFHeader): List<DFBlock> {
                     listOf(
                         DFBlock.SetVar(
                             "=",
-                            listOf(DFValue.Variable("^ret", VariableScope.LOCAL), parseVal(params[0], header))
+                            listOf(DFValue.Variable("^ret", VariableScope.LOCAL), parseVal(params[0], header, "set_var", "="))
                         )
                     )
 
@@ -155,7 +155,7 @@ fun parseBlock(input: Value, header: DFHeader): List<DFBlock> {
                 "call" -> {
                     if (params.size != 1) throw MalformedList("Code Block", "(call String<Name> List<Params>)", input)
                     val out = mutableListOf<DFBlock>()
-                    for ((paramNum, p) in parseParams(params[0], header).withIndex()) {
+                    for ((paramNum, p) in parseParams(params[0], header, "call_function", "dynamic").withIndex()) {
                         out.add(
                             DFBlock.SetVar(
                                 "+", listOf(
@@ -180,7 +180,7 @@ fun parseBlock(input: Value, header: DFHeader): List<DFBlock> {
                 "start" -> {
                     if (params.size != 1) throw MalformedList("Code Block", "(start String<Name> List<Params>)", input)
                     val out = mutableListOf<DFBlock>()
-                    for ((paramNum, p) in parseParams(params[0], header).withIndex()) {
+                    for ((paramNum, p) in parseParams(params[0], header, "start_process", "dynamic").withIndex()) {
                         out.add(
                             DFBlock.SetVar(
                                 "+", listOf(
@@ -199,7 +199,7 @@ fun parseBlock(input: Value, header: DFHeader): List<DFBlock> {
                             )
                         )
                     }
-                    out.add(DFBlock.StartProcess(blockType, listOf(DFValue.Tag("Local Variables", "Copy"))))
+                    out.add(DFBlock.StartProcess(blockType, listOf(DFValue.Tag("Local Variables", "Copy", "start_process", "dynamic"))))
                     return out
                 }
                 "set-var" -> {
@@ -208,7 +208,7 @@ fun parseBlock(input: Value, header: DFHeader): List<DFBlock> {
                         "(set-var String<Type> List<Params>)",
                         input
                     )
-                    listOf<DFBlock>(DFBlock.SetVar(blockType, parseParams(params.removeAt(0), header)))
+                    listOf<DFBlock>(DFBlock.SetVar(blockType, parseParams(params.removeAt(0), header, "set_var", blockType)))
                 }
                 "control" -> {
                     if (params.size != 1) throw MalformedList(
@@ -216,7 +216,7 @@ fun parseBlock(input: Value, header: DFHeader): List<DFBlock> {
                         "(control String<Type> List<Params>)",
                         input
                     )
-                    listOf<DFBlock>(DFBlock.Control(blockType, parseParams(params.removeAt(0), header)))
+                    listOf<DFBlock>(DFBlock.Control(blockType, parseParams(params.removeAt(0), header, "control", blockType)))
                 }
                 "game-action" -> {
                     if (params.size != 1) throw MalformedList(
@@ -224,7 +224,7 @@ fun parseBlock(input: Value, header: DFHeader): List<DFBlock> {
                         "(game-action String<Type> List<Params>)",
                         input
                     )
-                    listOf<DFBlock>(DFBlock.GameAction(blockType, parseParams(params.removeAt(0), header)))
+                    listOf<DFBlock>(DFBlock.GameAction(blockType, parseParams(params.removeAt(0), header, "game_action", blockType)))
                 }
                 "if-player" -> {
                     if (params.size != 3) throw MalformedList(
@@ -234,7 +234,7 @@ fun parseBlock(input: Value, header: DFHeader): List<DFBlock> {
                     )
                     val a = parseSelector(params.removeAt(0))
                     val b = parseBool(params.removeAt(0))
-                    val c = parseParams(params.removeAt(0), header)
+                    val c = parseParams(params.removeAt(0), header, "if_player", blockType)
                     listOf<DFBlock>(DFBlock.IfPlayer(blockType, a, b, c))
                 }
                 "if-entity" -> {
@@ -245,7 +245,7 @@ fun parseBlock(input: Value, header: DFHeader): List<DFBlock> {
                     )
                     val a = parseSelector(params.removeAt(0))
                     val b = parseBool(params.removeAt(0))
-                    val c = parseParams(params.removeAt(0), header)
+                    val c = parseParams(params.removeAt(0), header, "if_entity", blockType)
                     listOf<DFBlock>(DFBlock.IfEntity(blockType, a, b, c))
                 }
                 "player-action" -> {
@@ -255,7 +255,7 @@ fun parseBlock(input: Value, header: DFHeader): List<DFBlock> {
                         input
                     )
                     val a = parseSelector(params.removeAt(0))
-                    val b = parseParams(params.removeAt(0), header)
+                    val b = parseParams(params.removeAt(0), header, "player_action", blockType)
                     listOf<DFBlock>(DFBlock.PlayerAction(blockType, a, b))
                 }
                 "entity-action" -> {
@@ -265,7 +265,7 @@ fun parseBlock(input: Value, header: DFHeader): List<DFBlock> {
                         input
                     )
                     val a = parseSelector(params.removeAt(0))
-                    val b = parseParams(params.removeAt(0), header)
+                    val b = parseParams(params.removeAt(0), header, "entity_action", blockType)
                     listOf<DFBlock>(DFBlock.EntityAction(blockType, a, b))
                 }
                 "if-game" -> {
@@ -275,7 +275,7 @@ fun parseBlock(input: Value, header: DFHeader): List<DFBlock> {
                         input
                     )
                     val a = parseBool(params.removeAt(0))
-                    val b = parseParams(params.removeAt(0), header)
+                    val b = parseParams(params.removeAt(0), header, "if_game", blockType)
                     listOf<DFBlock>(DFBlock.IfGame(blockType, a, b))
                 }
                 "if-var" -> {
@@ -285,7 +285,7 @@ fun parseBlock(input: Value, header: DFHeader): List<DFBlock> {
                         input
                     )
                     val a = parseBool(params.removeAt(0))
-                    val b = parseParams(params.removeAt(0), header)
+                    val b = parseParams(params.removeAt(0), header, "if_var", blockType)
                     listOf<DFBlock>(DFBlock.IfVariable(blockType, a, b))
                 }
                 "select-object" -> {
@@ -296,7 +296,7 @@ fun parseBlock(input: Value, header: DFHeader): List<DFBlock> {
                     )
                     val a = parseStr(params.removeAt(0))
                     val b = parseBool(params.removeAt(0))
-                    val c = parseParams(params.removeAt(0), header)
+                    val c = parseParams(params.removeAt(0), header, "select_obj", blockType)
                     listOf<DFBlock>(DFBlock.SelectObject(blockType, a, b, c))
                 }
                 "repeat" -> {
@@ -307,7 +307,7 @@ fun parseBlock(input: Value, header: DFHeader): List<DFBlock> {
                     )
                     val a = parseStr(params.removeAt(0))
                     val b = parseBool(params.removeAt(0))
-                    val c = parseParams(params.removeAt(0), header)
+                    val c = parseParams(params.removeAt(0), header, "repeat", blockType)
                     listOf<DFBlock>(DFBlock.Repeat(blockType, a, b, c))
                 }
                 else -> throw UnexpectedValue("a valid block type", second)
@@ -392,10 +392,10 @@ fun parseSelector(input: Value): Selector {
 /**
  * Takes a parsed value and transpiles it into a list of DFValues as parameters.
  */
-fun parseParams(input: Value, header: DFHeader): List<DFValue> {
+fun parseParams(input: Value, header: DFHeader, blockType: String, blockAction: String): List<DFValue> {
     val out = mutableListOf<DFValue>()
     for (e in parseList(input)) {
-        out.add(parseVal(e, header))
+        out.add(parseVal(e, header, blockType, blockAction))
     }
     return out
 }
@@ -403,7 +403,7 @@ fun parseParams(input: Value, header: DFHeader): List<DFValue> {
 /**
  * Takes a parsed value and transpiles it into a DFValues.
  */
-fun parseVal(input: Value, header: DFHeader): DFValue {
+fun parseVal(input: Value, header: DFHeader, blockType: String, blockAction: String): DFValue {
     val inner = parseList(input).toMutableList()
     if (inner.isEmpty()) throw MalformedList("Value", "(Type <data>...)", input)
     val v = inner.removeAt(0)
@@ -520,8 +520,8 @@ fun parseVal(input: Value, header: DFHeader): DFValue {
         "tag" -> {
             if (inner.size != 2) throw MalformedList("Value", "(tag String<Name> String<Value>)", input)
             val tag = parseStr(inner[0])
-            val value = parseStr(inner[1])
-            return DFValue.Tag(tag, value)
+            val type = parseStr(inner[1])
+            return DFValue.Tag(type, tag, blockType, blockAction)
         }
         "raw-item" -> {
             if (inner.size != 1) throw MalformedList("Value", "(raw-item String<Itemdata>)", input)

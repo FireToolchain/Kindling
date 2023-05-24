@@ -6,94 +6,38 @@
       "args": {
         "items": []
       },
-      "action": ""
+      "action": "Join"
     },
     {
       "id": "block",
-      "block": "set_var",
+      "block": "player_action",
       "args": {
         "items": [
           {
             "item": {
-              "id": "part",
+              "id": "txt",
               "data": {
-                "particle": "Block",
-                "cluster": {
-                  "amount": 2,
-                  "horizontal": 0.0,
-                  "vertical": 0.0
-                },
-                "data": {
-                  "material": "OAK_LOG"
-                }
+                "name": "Hello, there!"
               }
             },
             "slot": 0
           },
           {
             "item": {
-              "id": "part",
+              "id": "bl_tag",
               "data": {
-                "particle": "Sculk Charge",
-                "cluster": {
-                  "amount": 1,
-                  "horizontal": 0.0,
-                  "vertical": 0.0
-                },
-                "data": {
-                  "x": 1.0,
-                  "y": 0.0,
-                  "z": 0.0,
-                  "roll": 0.0,
-                  "motionVariation": 100
-                }
+                "option": "Alignment Mode",
+                "tag": "Centered",
+                "action": "SendMessage",
+                "block": "player_action"
               }
             },
-            "slot": 1
-          },
-          {
-            "item": {
-              "id": "part",
-              "data": {
-                "particle": "Dust",
-                "cluster": {
-                  "amount": 1,
-                  "horizontal": 0.0,
-                  "vertical": 0.0
-                },
-                "data": {
-                  "rgb": 16711680,
-                  "colorVariation": 0,
-                  "size": 1.0,
-                  "sizeVariation": 0
-                }
-              }
-            },
-            "slot": 2
-          },
-          {
-            "item": {
-              "id": "part",
-              "data": {
-                "particle": "Spit",
-                "cluster": {
-                  "amount": 1,
-                  "horizontal": 0.0,
-                  "vertical": 0.0
-                },
-                "data": {
-                  "x": 1.0,
-                  "y": 0.0,
-                  "z": 0.0,
-                  "motionVariation": 100
-                }
-              }
-            },
-            "slot": 3
+            "slot": 26
           }
         ]
       },
-      "action": "="
+      "target": "Default",
+      "action": "SendMessage"
     }
   ]
 }

@@ -8,7 +8,10 @@ import serializer.serializeString
  * Represents a DF Block, such as a Player Action, Set Variable, or If Game.
  */
 sealed interface DFBlock : DFSerializable { // A regular DF block
+    val technicalName: String
     data class PlayerAction(val type: String, val selector: Selector, val params: List<DFValue>) : DFBlock {
+        override val technicalName: String
+            get() = "player_action"
         override fun serialize() = "{" +
                 """"id":"block",""" +
                 """"block":"player_action",""" +
@@ -19,6 +22,8 @@ sealed interface DFBlock : DFSerializable { // A regular DF block
         override fun toString() = "PlayerAction.$type<$selector>(${ params.joinToString( ", ") { it.toString() } })"
     }
     data class EntityAction(val type: String, val selector: Selector, val params: List<DFValue>) : DFBlock {
+        override val technicalName: String
+            get() = "entity_action"
         override fun serialize() = "{" +
                 """"id":"block",""" +
                 """"block":"entity_action",""" +
@@ -29,6 +34,8 @@ sealed interface DFBlock : DFSerializable { // A regular DF block
         override fun toString() = "EntityAction.$type<$selector>(${ params.joinToString( ", ") { it.toString() } })"
     }
     data class GameAction(val type: String, val params: List<DFValue>) : DFBlock {
+        override val technicalName: String
+            get() = "game_action"
         override fun serialize() =  "{" +
                 """"id":"block",""" +
                 """"block":"game_action",""" +
@@ -38,6 +45,8 @@ sealed interface DFBlock : DFSerializable { // A regular DF block
         override fun toString() = "GameAction.$type(${ params.joinToString( ", ") { it.toString() } })"
     }
     data class SetVar(val type: String, val params: List<DFValue>) : DFBlock {
+        override val technicalName: String
+            get() = "set_var"
         override fun serialize() = "{" +
                 """"id":"block",""" +
                 """"block":"set_var",""" +
@@ -47,6 +56,8 @@ sealed interface DFBlock : DFSerializable { // A regular DF block
         override fun toString() = "SetVar.$type(${ params.joinToString( ", ") { it.toString() } })"
     }
     data class Control(val type: String, val params: List<DFValue>) : DFBlock {
+        override val technicalName: String
+            get() = "control"
         override fun serialize() = "{" +
                 """"id":"block",""" +
                 """"block":"control",""" +
@@ -57,6 +68,8 @@ sealed interface DFBlock : DFSerializable { // A regular DF block
     }
     data class SelectObject(val type: String, val subtype: String, val inverse: Boolean, val params: List<DFValue>) :
         DFBlock {
+        override val technicalName: String
+            get() = "select_obj"
         override fun serialize() = "{" +
                 """"id":"block",""" +
                 """"block":"select_obj",""" +
@@ -68,6 +81,8 @@ sealed interface DFBlock : DFSerializable { // A regular DF block
         override fun toString() = "SelectObject.$type.$subtype(${ params.joinToString( ", ") { it.toString() } })"
     }
     data class CallFunction(val name: String) : DFBlock {
+        override val technicalName: String
+            get() = "call_func"
         override fun serialize() =  "{" +
                 """"id":"block",""" +
                 """"block":"call_func",""" +
@@ -77,6 +92,8 @@ sealed interface DFBlock : DFSerializable { // A regular DF block
         override fun toString() = "CallFunc $name"
     }
     data class StartProcess(val name: String, val params: List<DFValue>) : DFBlock {
+        override val technicalName: String
+            get() = "start_process"
         override fun serialize() = "{" +
                 """"id":"block",""" +
                 """"block":"start_process",""" +
@@ -87,6 +104,8 @@ sealed interface DFBlock : DFSerializable { // A regular DF block
     }
     data class IfPlayer(val type: String, val selector: Selector, val inverse: Boolean, val params: List<DFValue>) :
         DFBlock {
+        override val technicalName: String
+            get() = "if_player"
         override fun serialize() = "{" +
                 """"id":"block",""" +
                 """"block":"if_player",""" +
@@ -98,6 +117,8 @@ sealed interface DFBlock : DFSerializable { // A regular DF block
         override fun toString() = "IfPlayer.$type<$selector>(${ params.joinToString( ", ") { it.toString() } }) {"
     }
     data class IfVariable(val type: String, val inverse: Boolean, val params: List<DFValue>) : DFBlock {
+        override val technicalName: String
+            get() = "if_var"
         override fun serialize() = "{" +
                 """"id":"block",""" +
                 """"block":"if_var",""" +
@@ -109,6 +130,8 @@ sealed interface DFBlock : DFSerializable { // A regular DF block
     }
     data class IfEntity(val type: String, val selector: Selector, val inverse: Boolean, val params: List<DFValue>) :
         DFBlock {
+        override val technicalName: String
+            get() = "if_entity"
         override fun serialize() = "{" +
                 """"id":"block",""" +
                 """"block":"if_entity",""" +
@@ -120,6 +143,8 @@ sealed interface DFBlock : DFSerializable { // A regular DF block
         override fun toString() = "IfEntity.$type<$selector>(${ params.joinToString( ", ") { it.toString() } }) {"
     }
     data class IfGame(val type: String, val inverse: Boolean, val params: List<DFValue>) : DFBlock {
+        override val technicalName: String
+            get() = "if_game"
         override fun serialize() = "{" +
                 """"id":"block",""" +
                 """"block":"if_game",""" +
@@ -130,6 +155,8 @@ sealed interface DFBlock : DFSerializable { // A regular DF block
         override fun toString() = "IfGame.$type(${ params.joinToString( ", ") { it.toString() } }) {"
     }
     object Else : DFBlock {
+        override val technicalName: String
+            get() = "else"
         override fun serialize() =
                 """{"id":"bracket","direct":"close","type":"norm"},""" +
                 """{"id":"block","block":"else"},""" +
@@ -137,15 +164,21 @@ sealed interface DFBlock : DFSerializable { // A regular DF block
         override fun toString() = "} else {"
     }
     object EndIf : DFBlock {
+        override val technicalName: String
+            get() = "close"
         override fun serialize() = """{"id":"bracket","direct":"close","type":"norm"}"""
         override fun toString() = "}"
     }
     object EndRepeat : DFBlock {
+        override val technicalName: String
+            get() = "close"
         override fun serialize() = """{"id":"bracket","direct":"close","type":"repeat"}"""
         override fun toString() = "}~"
     }
     data class Repeat(val type: String, val subtype: String, val inverse: Boolean, val params: List<DFValue>) :
         DFBlock {
+        override val technicalName: String
+            get() = "repeat"
         override fun serialize() = "{" +
                 """"id":"block",""" +
                 """"block":"repeat",""" +

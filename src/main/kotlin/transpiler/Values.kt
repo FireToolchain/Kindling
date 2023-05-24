@@ -107,9 +107,9 @@ sealed interface DFValue : DFSerializable {
         }
     }
 
-    data class Tag(val name: String, val value: String) : DFValue {
-        override fun serialize() = "{}" // TODO
-        override fun toString() = "{$name = $value}"
+    data class Tag(val option: String, val tag: String, val block: String, val action: String) : DFValue {
+        override fun serialize() = """{"id":"bl_tag","data":{"option":${serializeString(option)},"tag":${serializeString(tag)},"action":${serializeString(action)},"block":${serializeString(block)}}}"""
+        override fun toString() = "{$tag = $option}"
     }
     data class Item(val data: String) : DFValue {
         override fun serialize() = "{}" // TODO

@@ -1,11 +1,2 @@
 ((player-event "Join")
-  (player-action "Particle" default (
-    (par 'Cloud'
-        (amount 10)
-        (spread-x 5)
-        (spread-y 5)
-        (motion-x 0)
-        (motion-y 5)
-        (motion-z 0)
-        (variation-motion 0))
-  )))
+  (player-action "SendMessage" default ((text "Hello, there!")(tag "Alignment Mode" "Centered"))))
