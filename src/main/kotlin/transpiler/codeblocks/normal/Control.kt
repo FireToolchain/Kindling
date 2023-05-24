@@ -1,7 +1,7 @@
 package transpiler.codeblocks.normal
 
+import serializer.serialize
 import serializer.serializeArgs
-import serializer.serializeString
 import transpiler.values.DFValue
 
 data class Control(val type: String, val params: List<DFValue>) : DFBlock {
@@ -11,7 +11,7 @@ data class Control(val type: String, val params: List<DFValue>) : DFBlock {
             """"id":"block",""" +
             """"block":"control",""" +
             """"args":${serializeArgs(params)},""" +
-            """"action":${serializeString(type)}""" +
+            """"action":${type.serialize()}""" +
             "}"
     override fun toString() = "Control.$type(${ params.joinToString( ", ") { it.toString() } })"
 }

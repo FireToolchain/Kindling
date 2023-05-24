@@ -2,7 +2,7 @@ package transpiler.values
 
 import MalformedList
 import Value
-import serializer.serializeString
+import serializer.serialize
 import transpiler.CheckContext
 import transpiler.checkList
 import transpiler.checkNum
@@ -17,7 +17,7 @@ data class Sound(val type: String, val pitch: Float, val volume: Float) : DFValu
         }
     }
     override fun serialize() = """{"id":"snd","data":{""" +
-            """"sound":${serializeString(type)},""" +
+            """"sound":${type.serialize()},""" +
             """"pitch":$pitch,""" +
             """"vol":$volume}}"""
     override fun toString() = "Snd[$type, $pitch, $volume]"

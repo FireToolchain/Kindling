@@ -1,7 +1,7 @@
 package transpiler.codeblocks.normal
 
+import serializer.serialize
 import serializer.serializeArgs
-import serializer.serializeString
 import transpiler.values.DFValue
 
 data class StartProcess(val name: String, val params: List<DFValue>) : DFBlock {
@@ -11,7 +11,7 @@ data class StartProcess(val name: String, val params: List<DFValue>) : DFBlock {
             """"id":"block",""" +
             """"block":"start_process",""" +
             """"args":${serializeArgs(params)},""" +
-            """"data":${serializeString(name)}""" +
+            """"data":${name.serialize()}""" +
             "}"
     override fun toString() = "StartProc $name(${ params.joinToString( ", ") { it.toString() } })"
 }

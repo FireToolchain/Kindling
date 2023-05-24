@@ -1,7 +1,7 @@
 package transpiler.codeblocks.normal
 
+import serializer.serialize
 import serializer.serializeArgs
-import serializer.serializeString
 import transpiler.values.DFValue
 
 data class Repeat(val type: String, val subtype: String, val inverse: Boolean, val params: List<DFValue>) :
@@ -12,9 +12,9 @@ data class Repeat(val type: String, val subtype: String, val inverse: Boolean, v
             """"id":"block",""" +
             """"block":"repeat",""" +
             """"args":${serializeArgs(params)},""" +
-            if (subtype.isEmpty()) { "" } else { """"subAction":${serializeString(type)},""" } +
+            if (subtype.isEmpty()) { "" } else { """"subAction":${type.serialize()},""" } +
             if (inverse) { """"inverted":"NOT",""" } else { "" } +
-            """"action":${serializeString(type)}""" +
+            """"action":${type.serialize()}""" +
             """},{"id":"bracket","direct":"open","type":"repeat"}"""
     override fun toString() = "Repeat.$type.$subtype(${ params.joinToString( ", ") { it.toString() } }) ~{"
 }

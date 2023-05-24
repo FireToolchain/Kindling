@@ -1,7 +1,7 @@
 package transpiler.codeblocks.normal
 
+import serializer.serialize
 import serializer.serializeArgs
-import serializer.serializeString
 import transpiler.values.DFValue
 
 data class IfGame(val type: String, val inverse: Boolean, val params: List<DFValue>) : DFBlock {
@@ -12,7 +12,7 @@ data class IfGame(val type: String, val inverse: Boolean, val params: List<DFVal
             """"block":"if_game",""" +
             """"args":${serializeArgs(params)},""" +
             if (inverse) { """"inverted":"NOT",""" } else { "" } +
-            """"action":${serializeString(type)}""" +
+            """"action":${type.serialize()}""" +
             """},{"id":"bracket","direct":"open","type":"norm"}"""
     override fun toString() = "IfGame.$type(${ params.joinToString( ", ") { it.toString() } }) {"
 }

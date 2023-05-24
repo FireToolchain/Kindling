@@ -1,7 +1,7 @@
 package transpiler.codeblocks.normal
 
+import serializer.serialize
 import serializer.serializeArgs
-import serializer.serializeString
 import transpiler.values.DFValue
 
 data class SelectObject(val type: String, val subtype: String, val inverse: Boolean, val params: List<DFValue>) :
@@ -12,9 +12,9 @@ data class SelectObject(val type: String, val subtype: String, val inverse: Bool
             """"id":"block",""" +
             """"block":"select_obj",""" +
             """"args"":${serializeArgs(params)},""" +
-            if (subtype.isEmpty()) { "" } else { """"subAction":${serializeString(type)},""" } +
+            if (subtype.isEmpty()) { "" } else { """"subAction":${type.serialize()},""" } +
             if (inverse) { """"inverted":"NOT",""" } else { "" } +
-            """"action":${serializeString(type)}""" +
+            """"action":${type.serialize()}""" +
             """},{"id":"bracket","direct":"open","type":"norm"}"""
     override fun toString() = "SelectObject.$type.$subtype(${ params.joinToString( ", ") { it.toString() } })"
 }

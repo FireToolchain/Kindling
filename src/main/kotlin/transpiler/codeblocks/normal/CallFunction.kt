@@ -1,6 +1,6 @@
 package transpiler.codeblocks.normal
 
-import serializer.serializeString
+import serializer.serialize
 
 data class CallFunction(val name: String) : DFBlock {
     override val technicalName: String
@@ -9,7 +9,7 @@ data class CallFunction(val name: String) : DFBlock {
             """"id":"block",""" +
             """"block":"call_func",""" +
             """"args":{"items":[]},""" +
-            """"data":${serializeString(name)}""" +
+            """"data":${name.serialize()}""" +
             "}"
     override fun toString() = "CallFunc $name"
 }

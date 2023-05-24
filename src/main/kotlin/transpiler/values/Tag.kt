@@ -2,7 +2,7 @@ package transpiler.values
 
 import MalformedList
 import Value
-import serializer.serializeString
+import serializer.serialize
 import transpiler.CheckContext
 import transpiler.checkList
 import transpiler.checkNum
@@ -16,10 +16,8 @@ data class Tag(val option: String, val tag: String, val block: String, val actio
             return Tag(checkStr(inpList[2]), checkStr(inpList[1]), context.blockType, context.blockAction)
         }
     }
-    override fun serialize() = """{"id":"bl_tag","data":{"option":${serializeString(option)},"tag":${serializeString(tag)},"action":${
-        serializeString(
-            action
-        )
-    },"block":${serializeString(block)}}}"""
+    override fun serialize() = """{"id":"bl_tag","data":{"option":${option.serialize()},"tag":${tag.serialize()},"action":${
+        action.serialize()
+    },"block":${block.serialize()}}}"""
     override fun toString() = "{$tag = $option}"
 }

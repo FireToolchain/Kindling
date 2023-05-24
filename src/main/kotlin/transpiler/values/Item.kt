@@ -2,7 +2,7 @@ package transpiler.values
 
 import MalformedList
 import Value
-import serializer.serializeString
+import serializer.serialize
 import transpiler.CheckContext
 import transpiler.checkList
 import transpiler.checkStr
@@ -15,6 +15,6 @@ data class Item(val nbt: String) : DFValue {
             return Item(checkStr(inpList[1]))
         }
     }
-    override fun serialize() = """{"id":"item","data":{"item":${serializeString(nbt)}}}"""
+    override fun serialize() = """{"id":"item","data":{"item":${nbt.serialize()}}}"""
     override fun toString() = "SOME_ITEM"
 }

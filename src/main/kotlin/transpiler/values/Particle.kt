@@ -3,7 +3,7 @@ package transpiler.values
 import MalformedList
 import UnexpectedValue
 import Value
-import serializer.serializeString
+import serializer.serialize
 import transpiler.*
 
 data class Particle(val type: String) : DFValue {
@@ -59,10 +59,10 @@ data class Particle(val type: String) : DFValue {
         if (variationSize != null) settings.add(""""sizeVariation":$variationMotion""")
         if (variationColor != null) settings.add(""""colorVariation":$variationMotion""")
         if (variationMotion != null) settings.add(""""motionVariation":$variationMotion""")
-        if (material != null) settings.add(""""material":${serializeString(material)}""")
+        if (material != null) settings.add(""""material":${material!!.serialize()}""")
         if (color != null) settings.add(""""rgb":$color""")
         return """{"id":"part","data":{""" +
-                    """"particle":${serializeString(type)},""" +
+                    """"particle":${type.serialize()},""" +
                     """"cluster":{""" +
                         """"amount":$amount,""" +
                         """"horizontal":$spreadX,""" +

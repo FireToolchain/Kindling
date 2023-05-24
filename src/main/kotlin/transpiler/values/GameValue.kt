@@ -2,7 +2,7 @@ package transpiler.values
 
 import MalformedList
 import Value
-import serializer.serializeString
+import serializer.serialize
 import transpiler.*
 
 data class GameValue(val type: String, val selector: Selector) : DFValue {
@@ -15,7 +15,7 @@ data class GameValue(val type: String, val selector: Selector) : DFValue {
     }
 
     override fun serialize() = """{"id":"g_val","data":{""" +
-            """"type":${serializeString(type)},""" +
+            """"type":${type.serialize()},""" +
             """"target":"${selector.serialize()}"}}"""
     override fun toString() = "Val[$type, $selector]"
 }

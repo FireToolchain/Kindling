@@ -2,7 +2,7 @@ package transpiler.values
 
 import MalformedList
 import Value
-import serializer.serializeString
+import serializer.serialize
 import transpiler.*
 
 data class PotionEffect(val type: String, val duration: Int, val level: Int) : DFValue {
@@ -14,7 +14,7 @@ data class PotionEffect(val type: String, val duration: Int, val level: Int) : D
         }
     }
     override fun serialize() = """{"id":"pot","data":{""" +
-            """"pot":${serializeString(type)},""" +
+            """"pot":${type.serialize()},""" +
             """"dur":$duration,""" +
             """"amp":$level}}"""
     override fun toString() = "Pot[$type, $duration, $level]"

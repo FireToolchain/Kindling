@@ -1,7 +1,7 @@
 package transpiler.codeblocks.normal
 
+import serializer.serialize
 import serializer.serializeArgs
-import serializer.serializeString
 import transpiler.Selector
 import transpiler.values.DFValue
 
@@ -13,7 +13,7 @@ data class IfEntity(val type: String, val selector: Selector, val inverse: Boole
             """"id":"block",""" +
             """"block":"if_entity",""" +
             """"args":${serializeArgs(params)},""" +
-            """"action":${serializeString(type)},""" +
+            """"action":${type.serialize()},""" +
             if (inverse) { """"inverted":"NOT",""" } else { "" } +
             """"target":"${selector.serialize()}",""" +
             """},{"id":"bracket","direct":"open","type":"norm"}"""

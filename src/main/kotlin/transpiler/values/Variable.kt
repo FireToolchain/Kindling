@@ -3,7 +3,7 @@ package transpiler.values
 import MalformedList
 import UnexpectedValue
 import Value
-import serializer.serializeString
+import serializer.serialize
 import transpiler.*
 
 data class Variable(val name: String, val scope: VariableScope) : DFValue {
@@ -26,7 +26,7 @@ data class Variable(val name: String, val scope: VariableScope) : DFValue {
         }
     }
     override fun serialize() = """{"id":"var","data":{""" +
-            """"name":${serializeString(name)},""" +
+            """"name":${name.serialize()},""" +
             """"scope":"${scope.serialize()}"}}"""
     override fun toString() = "$scope[$name]"
 }

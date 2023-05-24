@@ -1,7 +1,7 @@
 package transpiler.codeblocks.normal
 
+import serializer.serialize
 import serializer.serializeArgs
-import serializer.serializeString
 import transpiler.Selector
 import transpiler.values.DFValue
 
@@ -13,7 +13,7 @@ data class EntityAction(val type: String, val selector: Selector, val params: Li
             """"block":"entity_action",""" +
             """"args":${serializeArgs(params)},""" +
             """"target":"${selector.serialize()}",""" +
-            """"action":${serializeString(type)}""" +
+            """"action":${type.serialize()}""" +
             "}"
     override fun toString() = "EntityAction.$type<$selector>(${ params.joinToString( ", ") { it.toString() } })"
 }
