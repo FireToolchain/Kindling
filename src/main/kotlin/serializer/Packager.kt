@@ -43,7 +43,7 @@ fun serializeArgs(args: List<DFValue>): String {
     return """{"items":[${out.joinToString(",")}]}"""
 }
 
-fun sendPackageRecode(program: DFProgram) {
+fun sendPackageRecode(program: DFProgram, verbose: Boolean) {
     val client = HttpClient(Java) {
         install(WebSockets)
     }
@@ -73,8 +73,8 @@ fun sendPackageRecode(program: DFProgram) {
                 val packet = """{"source":"Kindling","type":"nbt","data":"${toInner(itemData)}"}"""
 
                 send(Frame.Text(packet))
-                println("Sent $currentLine of $totalLines")
-                println(uncompressed)
+                println("Sending $currentLine of $totalLines...")
+                if (verbose) println(uncompressed)
             }
             println("Finished.")
         }

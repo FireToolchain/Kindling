@@ -18,6 +18,7 @@ fun main(inputs: Array<String>) {
     // Read flags
     val help = flags.contains("-h") || flags.contains("-help")
     val recode = flags.contains("-r") || flags.contains("-recode")
+    val verbose = flags.contains("-v") || flags.contains("-verbose")
 
     // Handle code
     if (help) {
@@ -26,11 +27,21 @@ fun main(inputs: Array<String>) {
     } else if (args.size == 1) {
         try {
             val code = getInput(args[0])
+            if (verbose) {
+                println("Input Code:")
+                println(code)
+                println()
+            }
             val tokens = tokenize(code)
             val parsed = parse(tokens)
             val transpiled = transpile(parsed)
+            if (verbose) {
+                println("Formatted Blockcode:")
+                println(transpiled.toString())
+                println()
+            }
             if (recode) {
-                sendPackageRecode(transpiled)
+                sendPackageRecode(transpiled, verbose)
             } else {
                 sendPackageVanilla(transpiled)
             }
