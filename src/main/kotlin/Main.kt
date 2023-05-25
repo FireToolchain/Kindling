@@ -20,6 +20,14 @@ fun main(inputs: Array<String>) {
     val recode = flags.contains("-r") || flags.contains("-recode")
     val verbose = flags.contains("-v") || flags.contains("-verbose")
     val debug = flags.contains("-d") || flags.contains("-debug")
+    val small = flags.contains("-sm") || flags.contains("-small")
+    val large = flags.contains("-la") || flags.contains("-large")
+    val massive = flags.contains("-ma") || flags.contains("-massive")
+    if ((small && large) || (small && massive) || (large && massive)) {
+        println("Only one of -small, -large, and -massive may be chosen")
+        return
+    }
+    val plotSize = if (massive) 300 else if (large) 100 else 50
 
     // Handle code
     if (help) {
@@ -35,7 +43,9 @@ fun main(inputs: Array<String>) {
             }
             val tokens = tokenize(code)
             val parsed = parse(tokens)
-            val transpiled = transpile(parsed)
+            val unoptimizedTranspiled = transpile(parsed)
+            println("Compiling with plot size $plotSize:")
+            val transpiled = unoptimizedTranspiled.optimized(plotSize)
             if (verbose) {
                 println("Formatted Blockcode:")
                 println(transpiled.toString())
@@ -83,8 +93,18 @@ fun printHelp() {
     println("  Either a raw Kindling script, or a file path pointing to a plaintext containing one.")
     println()
     println("FLAGS:")
-    println("  -help:")
+    println("  -help -h:")
     println("    Shows this menu.")
-    println("  -recode:")
+    println("  -recode -r:")
     println("    Sends output to client via recode instead of printing commands.")
+    println("  -debug -d:")
+    println("    Errors will print their full stacktrace.")
+    println("  -verbose -v:")
+    println("    Additional output.")
+    println("  -small -sm:")
+    println("    Compiles for a small plot.")
+    println("  -large -la:")
+    println("    Compiles for a large plot.")
+    println("  -massive -ma:")
+    println("    Compiles for a massive plot.")
 }

@@ -1,3 +1,5 @@
+import refactoring.createExtension
+import refactoring.shortenLine
 import serializer.DFSerializable
 import transpiler.codeblocks.header.DFHeader
 import transpiler.codeblocks.normal.*
@@ -7,6 +9,14 @@ import transpiler.codeblocks.normal.*
  */
 data class DFProgram(val lines: List<DFLine>) {
     override fun toString() = lines.joinToString("\n") { it.toString() }
+
+    fun optimized(maxSize: Int): DFProgram {
+        val newLines = mutableListOf<DFLine>()
+        for (line in lines) {
+            newLines.addAll(shortenLine(line, maxSize))
+        }
+        return DFProgram(newLines)
+    }
 }
 
 /**
@@ -25,7 +35,7 @@ data class DFLine(val header: DFHeader, val code: List<DFBlock>) : DFSerializabl
                 if (indent < 0) indent = 0
             }
             out += "${"  ".repeat(indent + 1)}$s\n"
-            if (s is IfPlayer || s is IfGame || s is IfEntity || s is IfVariable || s is Else) {
+            if (s is IfPlayer || s is IfGame || s is IfEntity || s is IfVariable || s is Else || s is Repeat) {
                 indent++
             }
         }

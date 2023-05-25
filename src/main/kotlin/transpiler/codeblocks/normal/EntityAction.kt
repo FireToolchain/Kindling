@@ -8,6 +8,8 @@ import transpiler.values.DFValue
 data class EntityAction(val type: String, val selector: Selector, val params: List<DFValue>) : DFBlock {
     override val technicalName: String
         get() = "entity_action"
+    override val literalSize: Int
+        get() = 2
     override fun serialize() = "{" +
             """"id":"block",""" +
             """"block":"entity_action",""" +

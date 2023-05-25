@@ -7,6 +7,8 @@ import transpiler.values.DFValue
 data class SetVar(val type: String, val params: List<DFValue>) : DFBlock {
     override val technicalName: String
         get() = "set_var"
+    override val literalSize: Int
+        get() = 2
     override fun serialize() = "{" +
             """"id":"block",""" +
             """"block":"set_var",""" +

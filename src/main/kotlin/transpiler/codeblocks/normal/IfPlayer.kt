@@ -9,6 +9,8 @@ data class IfPlayer(val type: String, val selector: Selector, val inverse: Boole
     DFBlock {
     override val technicalName: String
         get() = "if_player"
+    override val literalSize: Int
+        get() = 2
     override fun serialize() = "{" +
             """"id":"block",""" +
             """"block":"if_player",""" +

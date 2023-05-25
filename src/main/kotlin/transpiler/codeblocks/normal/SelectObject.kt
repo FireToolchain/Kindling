@@ -8,6 +8,8 @@ data class SelectObject(val type: String, val subtype: String, val inverse: Bool
     DFBlock {
     override val technicalName: String
         get() = "select_obj"
+    override val literalSize: Int
+        get() = 2
     override fun serialize() = "{" +
             """"id":"block",""" +
             """"block":"select_obj",""" +

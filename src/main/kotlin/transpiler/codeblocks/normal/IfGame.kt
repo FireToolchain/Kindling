@@ -7,6 +7,8 @@ import transpiler.values.DFValue
 data class IfGame(val type: String, val inverse: Boolean, val params: List<DFValue>) : DFBlock {
     override val technicalName: String
         get() = "if_game"
+    override val literalSize: Int
+        get() = 2
     override fun serialize() = "{" +
             """"id":"block",""" +
             """"block":"if_game",""" +

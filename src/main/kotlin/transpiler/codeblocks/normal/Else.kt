@@ -3,6 +3,8 @@ package transpiler.codeblocks.normal
 object Else : DFBlock {
     override val technicalName: String
         get() = "else"
+    override val literalSize: Int
+        get() = 4
     override fun serialize() =
             """{"id":"bracket","direct":"close","type":"norm"},""" +
             """{"id":"block","block":"else"},""" +

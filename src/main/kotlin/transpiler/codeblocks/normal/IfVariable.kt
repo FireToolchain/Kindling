@@ -7,6 +7,8 @@ import transpiler.values.DFValue
 data class IfVariable(val type: String, val inverse: Boolean, val params: List<DFValue>) : DFBlock {
     override val technicalName: String
         get() = "if_var"
+    override val literalSize: Int
+        get() = 2
     override fun serialize() = "{" +
             """"id":"block",""" +
             """"block":"if_var",""" +

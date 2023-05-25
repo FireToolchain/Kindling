@@ -8,6 +8,8 @@ data class Repeat(val type: String, val subtype: String, val inverse: Boolean, v
     DFBlock {
     override val technicalName: String
         get() = "repeat"
+    override val literalSize: Int
+        get() = 2
     override fun serialize() = "{" +
             """"id":"block",""" +
             """"block":"repeat",""" +

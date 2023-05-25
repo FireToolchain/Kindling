@@ -9,6 +9,8 @@ data class IfEntity(val type: String, val selector: Selector, val inverse: Boole
     DFBlock {
     override val technicalName: String
         get() = "if_entity"
+    override val literalSize: Int
+        get() = 2
     override fun serialize() = "{" +
             """"id":"block",""" +
             """"block":"if_entity",""" +

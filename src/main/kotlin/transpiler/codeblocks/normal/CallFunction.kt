@@ -5,6 +5,8 @@ import serializer.serialize
 data class CallFunction(val name: String) : DFBlock {
     override val technicalName: String
         get() = "call_func"
+    override val literalSize: Int
+        get() = 2
     override fun serialize() =  "{" +
             """"id":"block",""" +
             """"block":"call_func",""" +

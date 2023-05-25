@@ -8,4 +8,8 @@ import serializer.DFSerializable
 sealed interface DFBlock : DFSerializable {
     val technicalName: String
 
+    /**
+     * The size of the block in DiamondFire. A player action should be 2.
+     */
+    val literalSize: Int
 }
