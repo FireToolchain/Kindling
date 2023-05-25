@@ -85,26 +85,29 @@ fun getInput(s: String): String {
 }
 
 fun printHelp() {
-    println("Kindling is a program that compiles Kindling script files into DiamondFire code.")
-    println("You can view the documentation for Kindling here: https://github.com/ashlikatt/Kindling/wiki")
-    println()
-    println("Usage: java -jar Kindling.jar [FLAGS] <PROGRAM>")
-    println("PROGRAM:")
-    println("  Either a raw Kindling script, or a file path pointing to a plaintext containing one.")
-    println()
-    println("FLAGS:")
-    println("  --help -h:")
-    println("    Shows this menu.")
-    println("  --recode -r:")
-    println("    Sends output to client via recode instead of printing commands.")
-    println("  --debug -d:")
-    println("    Errors will print their full stacktrace.")
-    println("  --verbose -v:")
-    println("    Additional output.")
-    println("  --small -sm:")
-    println("    Compiles for a small plot. Incompatible with --large or --massive.")
-    println("  --large -la:")
-    println("    Compiles for a large plot. Incompatible with --small or --massive.")
-    println("  --massive -ma:")
-    println("    Compiles for a massive plot. Incompatible with --small or --large.")
+
+    println("""
+    |Kindling is a program that compiles Kindling script files into DiamondFire code.
+    |You can view the documentation for Kindling here: https://github.com/ashlikatt/Kindling/wiki
+    |
+    |Usage: java -jar Kindling.jar [FLAGS] <PROGRAM>
+    |PROGRAM:
+    |  Either a raw Kindling script, or a file path pointing to a plaintext containing one.
+    |
+    |FLAGS:
+    |  --help -h:
+    |    Shows this menu.
+    |  --recode -r:
+    |    Sends output to client via recode instead of printing commands.
+    |  --debug -d:
+    |    Errors will print their full stacktrace.
+    |  --verbose -v:
+    |    Additional output.
+    |  --small -sm:
+    |    Compiles for a small plot. Incompatible with --large or --massive.
+    |  --large -la:
+    |    Compiles for a large plot. Incompatible with --small or --massive.
+    |  --massive -ma:
+    |    Compiles for a massive plot. Incompatible with --small or --large.
+    """.trimMargin())
 }
