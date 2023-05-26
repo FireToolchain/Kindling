@@ -56,7 +56,7 @@ fun sendPackageRecode(program: DFProgram, verbose: Boolean) {
                 val uncompressed = line.serialize();
                 val compressed = encode(uncompressed)
                 val templateData =
-                    """{"author":"${toInner(author)}","name":"template","version":1,"code":${
+                    """{"author":${author.serialize()},"name":"template","version":1,"code":${
                         compressed.serialize()
                     }}"""
                 val itemName = line.header.getItemName()
@@ -64,7 +64,7 @@ fun sendPackageRecode(program: DFProgram, verbose: Boolean) {
                     """{display:{Name:${itemName.serialize()}},PublicBukkitValues:{"hypercube:codetemplatedata":${
                         templateData.serialize()
                     }}}"""
-                val itemData = """{"id":"minecraft:ender_chest","Count":1,"tag":$itemTag}"""
+                val itemData = """{"id":"minecraft:${line.header.getItemType()}","Count":1,"tag":$itemTag}"""
                 val packet = """{"source":"Kindling","type":"nbt","data":${itemData.serialize()}}"""
 
                 send(Frame.Text(packet))
@@ -85,7 +85,7 @@ fun sendPackageVanilla(program: DFProgram) {
         val uncompressed = line.serialize();
         val compressed = encode(uncompressed)
         val templateData =
-            """{"author":"${toInner(author)}","name":"template","version":1,"code":${
+            """{"author":${author.serialize()},"name":"template","version":1,"code":${
                 compressed.serialize()
             }}"""
         val itemName = line.header.getItemName()
@@ -95,7 +95,7 @@ fun sendPackageVanilla(program: DFProgram) {
             }}}"""
 
         // Minecraft
-        println("""/give @p minecraft:ender_chest$itemTag""")
+        println("""/give @p minecraft:${line.header.getItemType()}$itemTag""")
         println()
     }
 }

@@ -11,8 +11,10 @@ data class EntityEvent(val type: String) : DFHeader {
     override fun toString() = "PlayerEvent[$type]"
 
     override fun getItemName() = """{"extra":[""" +
-            """{"italic":false,"color":"#BB5500","text":"🔥 "},""" +
-            """{"italic":false,"color":"#FF8822","text":"${this.technicalName().trim()}"},""" +
-            """{"italic":false,"color":"#666666","text":" (Event)"}""" +
+            """{"italic":false,"color":"#FF9955","text":"Event"},""" +
+            """{"italic":false,"bold":true,"color":"#666666","text":" » | "},""" +
+            """{"italic":false,"color":"#FFCC88","text":${this.technicalName().trim().serialize()}}""" +
             """],"text":""}"""
+
+    override fun getItemType() = "soul_campfire"
 }
