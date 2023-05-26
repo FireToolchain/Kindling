@@ -28,6 +28,7 @@ fun main(inputs: Array<String>) {
     val small = shorthandFlags.contains('B') || flags.contains("--basic")
     val large = shorthandFlags.contains('L') || flags.contains("--large")
     val massive = shorthandFlags.contains('M') || flags.contains("--massive")
+    val file = shorthandFlags.contains('f') || flags.contains("--file")
     if ((small && large) || (small && massive) || (large && massive)) {
         println("Only one of --basic, --large, and --massive may be chosen")
         return
@@ -40,7 +41,7 @@ fun main(inputs: Array<String>) {
         return
     } else if (args.size == 1) {
         try {
-            val code = getInput(args[0])
+            val code = if (file) getFile(args[0]) else args[0]
             if (verbose) {
                 println("Input Code:")
                 println(code)
@@ -78,15 +79,13 @@ fun main(inputs: Array<String>) {
  * Otherwise, return input string.
  * May throw IOException.
  */
-fun getInput(s: String): String {
+fun getFile(s: String): String {
     val file = File(s)
     return if (file.exists()) {
         if (!file.isFile) throw IOException("Specified path does not point to file.")
         if (!file.canRead()) throw IOException("Specified file is unable to be read.")
         file.readText()
-    } else {
-        s
-    }
+    } else throw IOException("Specified file does not exist.")
 }
 
 fun printHelp() {
@@ -97,7 +96,7 @@ fun printHelp() {
     |
     |Usage: java -jar Kindling.jar [FLAGS] <PROGRAM>
     |PROGRAM:
-    |  Either a raw Kindling script, or a file path pointing to a plaintext containing one.
+    |  Either a raw Kindling script, or if using -f, a file path pointing to a file containing plaintext Kindling code.
     |
     |FLAGS:
     |  --help -h:
@@ -108,6 +107,8 @@ fun printHelp() {
     |    Errors will print their full stacktrace.
     |  --verbose -v:
     |    Additional output.
+    |  --file -f:
+    |    Treat input as file path instead of literal code.
     |  --basic -B:
     |    Compiles for a basic plot. Incompatible with --large or --massive.
     |  --large -L:

@@ -97,10 +97,10 @@ fun checkScope(input: Value): VariableScope {
 /**
  * Takes a parsed value and transpiles it into a list of DFValues as parameters.
  */
-fun checkParams(input: Value, header: DFHeader, blockType: String, blockAction: String): List<DFValue> {
+fun checkParams(input: Value, context: CheckContext): List<DFValue> {
     val out = mutableListOf<DFValue>()
     for (e in checkList(input)) {
-        out.add(checkVal(e, CheckContext(header, blockType, blockAction)))
+        out.add(checkVal(e, context))
     }
     return out
 }

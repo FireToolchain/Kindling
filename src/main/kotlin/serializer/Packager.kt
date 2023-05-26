@@ -82,7 +82,7 @@ fun sendPackageRecode(program: DFProgram, verbose: Boolean) {
 fun sendPackageVanilla(program: DFProgram) {
     val author = "myname"
     for (line in program.lines) {
-        val uncompressed = line.serialize();
+        val uncompressed = line.serialize()
         val compressed = encode(uncompressed)
         val templateData =
             """{"author":${author.serialize()},"name":"template","version":1,"code":${
