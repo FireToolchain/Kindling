@@ -12,8 +12,10 @@ data class Process(val name: String) : DFHeader {
     override fun toString() = "PlayerEvent[$name]"
 
     override fun getItemName() = """{"extra":[""" +
-            """{"italic":false,"color":"#FF7722","text":"🔥 "},""" +
-            """{"italic":false,"color":"#FFAA55","text":"${this.technicalName().trim()}"},""" +
-            """{"italic":false,"color":"#666666","text":" (Process)"}""" +
+            """{"italic":false,"color":"#FF7722","text":"Kindling"},""" +
+            """{"italic":false,"color":"#666666","text":" » "},""" +
+            """{"italic":false,"color":"#FFAA55","text":${this.technicalName().trim().serialize()}}""" +
             """],"text":""}"""
+
+    override fun getItemType() = "emerald_block"
 }

@@ -11,8 +11,10 @@ data class EntityEvent(val type: String) : DFHeader {
     override fun toString() = "PlayerEvent[$type]"
 
     override fun getItemName() = """{"extra":[""" +
-            """{"italic":false,"color":"#BB5500","text":"🔥 "},""" +
-            """{"italic":false,"color":"#FF8822","text":"${this.technicalName().trim()}"},""" +
-            """{"italic":false,"color":"#666666","text":" (Event)"}""" +
+            """{"italic":false,"color":"#FF7722","text":"Kindling"},""" +
+            """{"italic":false,"color":"#666666","text":" » "},""" +
+            """{"italic":false,"color":"#FFAA55","text":${this.technicalName().trim().serialize()}}""" +
             """],"text":""}"""
+
+    override fun getItemType() = "gold_block"
 }
