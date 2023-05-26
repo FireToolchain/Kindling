@@ -1,4 +1,7 @@
-((player-event 'Join')(control 'ReturnNTimes' ((num -1))))
-((entity-event 'EntityDeath')(control 'ReturnNTimes' ()))
-((def 'MyFun')(control 'ReturnNTimes' ()))
-((process 'MyProc')(control 'ReturnNTimes' ()))
+((player-event "fibonacci"))
+
+((player-event "Join") ; Join event
+  (repeat "Multiple" "" norm ((var "i") (num 10)))
+    (call "fibonacci" ((var "i")))
+    (player-action "SendMessage" default ((ret)))
+  (end-repeat))

@@ -47,6 +47,7 @@ fun tokenize(str: String): Tokens {
         val char = str[i];
         if (char == ';') {
             while (i < str.length && str[i] != '\n') i++
+            continue
         }
         else if (char == '(') out.add(Token(TokenType.OpenParen, column, line, 1))
         else if (char == ')') out.add(Token(TokenType.CloseParen, column, line, 1))
