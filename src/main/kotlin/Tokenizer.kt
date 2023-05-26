@@ -72,6 +72,26 @@ fun tokenize(str: String): Tokens {
             }
             out.add(Token(TokenType.Num(num), colPos, line, column - colPos))
             continue
+        } else if (char == '-') {
+            val colPos = column
+            var num = 0f
+            i++; column++
+            while (str[i].isDigit()) {
+                num *= 10
+                num += str[i].digitToInt() // Safe
+                i++; column++
+            }
+            if (str[i] == '.') {
+                var place = 1f
+                i++; column++
+                while (str[i].isDigit()) {
+                    place /= 10f
+                    num += place * str[i].digitToInt() // Safe
+                    i++; column++
+                }
+            }
+            out.add(Token(TokenType.Num(-num), colPos, line, column - colPos))
+            continue
         } else if (char == '.') {
             val colPos = column
             var num = 0f
@@ -111,10 +131,10 @@ fun tokenize(str: String): Tokens {
                 i++; column++
             }
             out.add(Token(TokenType.Str(s), colPos, line, column - colPos))
-        } else if (char.isLetter() || char == '-') {
+        } else if (char.isLetter()) {
             val colPos = column
             var s = ""
-            while (i < str.length && (str[i].isLetter() || str[i] == '-')) {
+            while (i < str.length && (str[i].isLetterOrDigit() || str[i] == '-')) {
                 s += str[i]
                 i++; column++
             }

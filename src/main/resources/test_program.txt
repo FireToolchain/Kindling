@@ -1,4 +1,4 @@
-((player-event 'Join')(control 'ReturnNTimes' ()))
+((player-event 'Join')(control 'ReturnNTimes' ((num -1))))
 ((entity-event 'EntityDeath')(control 'ReturnNTimes' ()))
 ((def 'MyFun')(control 'ReturnNTimes' ()))
 ((process 'MyProc')(control 'ReturnNTimes' ()))
