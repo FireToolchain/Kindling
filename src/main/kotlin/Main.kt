@@ -13,18 +13,23 @@ fun main(inputs: Array<String>) {
     // Args and flags
     val input = inputs.groupBy { if (it.startsWith("-")) "flags" else "arguments" }
     val args = input["arguments"] ?: emptyList()
-    val flags = input["flags"] ?: emptyList()
+    val flags = input["flags"]?.filter{ it.startsWith("--") } ?: emptyList()
+
+    val shorthandFlags = input["flags"]
+        ?.filter{ it.length >= 2 && it[0] == '-' && it[1] != '-' }
+        ?.map { it.replace("-", "").toCharArray().toList() }
+        ?.flatten() ?: emptyList()
 
     // Read flags
-    val help = flags.contains("-h") || flags.contains("--help")
-    val recode = flags.contains("-r") || flags.contains("--recode")
-    val verbose = flags.contains("-v") || flags.contains("--verbose")
-    val debug = flags.contains("-d") || flags.contains("--debug")
-    val small = flags.contains("-sm") || flags.contains("--small")
-    val large = flags.contains("-la") || flags.contains("--large")
-    val massive = flags.contains("-ma") || flags.contains("--massive")
+    val help = shorthandFlags.contains('h') || flags.contains("--help")
+    val recode = shorthandFlags.contains('r') || flags.contains("--recode")
+    val verbose = shorthandFlags.contains('v') || flags.contains("--verbose")
+    val debug = shorthandFlags.contains('d') || flags.contains("--debug")
+    val small = shorthandFlags.contains('B') || flags.contains("--basic")
+    val large = shorthandFlags.contains('L') || flags.contains("--large")
+    val massive = shorthandFlags.contains('M') || flags.contains("--massive")
     if ((small && large) || (small && massive) || (large && massive)) {
-        println("Only one of --small, --large, and --massive may be chosen")
+        println("Only one of --basic, --large, and --massive may be chosen")
         return
     }
     val plotSize = if (massive) 300 else if (large) 100 else 50
@@ -103,11 +108,11 @@ fun printHelp() {
     |    Errors will print their full stacktrace.
     |  --verbose -v:
     |    Additional output.
-    |  --small -sm:
-    |    Compiles for a small plot. Incompatible with --large or --massive.
-    |  --large -la:
-    |    Compiles for a large plot. Incompatible with --small or --massive.
-    |  --massive -ma:
-    |    Compiles for a massive plot. Incompatible with --small or --large.
+    |  --basic -B:
+    |    Compiles for a basic plot. Incompatible with --large or --massive.
+    |  --large -L:
+    |    Compiles for a large plot. Incompatible with --basic or --massive.
+    |  --massive -M:
+    |    Compiles for a massive plot. Incompatible with --basic or --large.
     """.trimMargin())
 }

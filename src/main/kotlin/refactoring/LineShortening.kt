@@ -21,7 +21,7 @@ fun shortenLine(line: DFLine, maxSize: Int): List<DFLine> {
     mainLoop@while (index < line.code.size && size < maxSize - 4) {
         lastSize = size
         lastIndex = index
-        when (val block = line.code[index]) {
+        when (line.code[index]) {
             is IfPlayer, is IfVariable, is IfGame, is IfEntity, is Repeat -> {
                 var depth = 0
                 do {

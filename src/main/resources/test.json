@@ -1,34 +1,4 @@
+{
+  "compare": "{\"extra\":[{\"bold\":true,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"aqua\",\"text\":\"Function \"},{\"bold\":false,\"italic\":false,\"color\":\"dark_aqua\",\"text\":\"» \"},{\"italic\":false,\"color\":\"aqua\",\"text\":\"fibonacci\"}],\"text\":\"\"}",
 
-      {
-        "item": {
-          "id": "item",
-          "data": {
-            "item": "{Count:1b,DF_NBT:3337,id:\"minecraft:red_sand\"}"
-          }
-        },
-        "slot": 0
-      },
-      {
-        "item": {
-          "id": "bl_tag",
-          "data": {
-            "option": "Add spaces",
-            "tag": "Text Value Merging",
-            "action": "SendMessage",
-            "block": "player_action"
-          }
-        },
-        "slot": 25
-      },
-      {
-        "item": {
-          "id": "bl_tag",
-          "data": {
-            "option": "Regular",
-            "tag": "Alignment Mode",
-            "action": "SendMessage",
-            "block": "player_action"
-          }
-        },
-        "slot": 26
-      }
+}

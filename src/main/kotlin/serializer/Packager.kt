@@ -55,15 +55,11 @@ fun sendPackageRecode(program: DFProgram, verbose: Boolean) {
                 currentLine++
                 val uncompressed = line.serialize();
                 val compressed = encode(uncompressed)
-                val templateName = """§6🔥 §e$currentLine"""
                 val templateData =
-                    """{"author":"${toInner(author)}","name":"${toInner(templateName)}","version":1,"code":${
+                    """{"author":"${toInner(author)}","name":"template","version":1,"code":${
                         compressed.serialize()
                     }}"""
-                val itemName = """'{"extra":[""" +
-                        """{"bold":true,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gold","text":"🔥 "},""" +
-                        """{"bold":false,"italic":false,"color":"yellow","text":"$currentLine"}""" +
-                        """],"text":""}'"""
+                val itemName = line.header.getItemName()
                 val itemTag =
                     """{display:{Name:${itemName.serialize()}},PublicBukkitValues:{"hypercube:codetemplatedata":${
                         templateData.serialize()
@@ -75,6 +71,7 @@ fun sendPackageRecode(program: DFProgram, verbose: Boolean) {
                 delay(100)
                 println("Sending $currentLine of $totalLines...")
                 if (verbose) println(uncompressed)
+                if (verbose) println(packet)
             }
             println("Finished.")
         }
@@ -84,20 +81,14 @@ fun sendPackageRecode(program: DFProgram, verbose: Boolean) {
 
 fun sendPackageVanilla(program: DFProgram) {
     val author = "myname"
-    var currentLine = 0
     for (line in program.lines) {
-        currentLine++
         val uncompressed = line.serialize();
         val compressed = encode(uncompressed)
-        val templateName = """§6🔥 §e$currentLine"""
         val templateData =
-            """{"author":"${toInner(author)}","name":"${toInner(templateName)}","version":1,"code":${
+            """{"author":"${toInner(author)}","name":"template","version":1,"code":${
                 compressed.serialize()
             }}"""
-        val itemName = """'{"extra":[""" +
-                """{"bold":true,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gold","text":"🔥 "},""" +
-                """{"bold":false,"italic":false,"color":"yellow","text":"$currentLine"}""" +
-                """],"text":""}'"""
+        val itemName = line.header.getItemName()
         val itemTag =
             """{display:{Name:${itemName.serialize()}},PublicBukkitValues:{"hypercube:codetemplatedata":${
                 templateData.serialize()

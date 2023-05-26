@@ -1,22 +1,4 @@
-; Fibonacci takes one parameter
-((def "fibonacci")
-  (if-var "<" norm ((param 0) (num 2))) ; Base case
-    (set-var "=" ((var "out") (num 1)))
-  (else)
-    ; Sum F(input-1) and F(input-2)
-    (set-var "-" ((var "dif") (param 0) (num 1)))
-    (call "fibonacci" ((var "dif")))
-    (set-var "=" ((var "first") (ret)))
-    (set-var "-" ((var "dif") (param 0) (num 2)))
-    (call "fibonacci" ((var "dif")))
-    (set-var "=" ((var "second") (ret)))
-    (set-var "+" ((var "out") (var "first") (var "second")))
-  (end-if)
-  (return (var "out")))
-
-; Join event
-((player-event "Join")
-  (repeat "Multiple" "" norm ((var "i") (num 10)))
-  (call "fibonacci" ((var "i")))
-  (player-action "SendMessage" default ((ret)))
-  (end-repeat))
+((player-event 'Join')(control 'ReturnNTimes' ()))
+((entity-event 'EntityDeath')(control 'ReturnNTimes' ()))
+((def 'MyFun')(control 'ReturnNTimes' ()))
+((process 'MyProc')(control 'ReturnNTimes' ()))

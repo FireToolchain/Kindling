@@ -7,4 +7,6 @@ import serializer.DFSerializable
  */
 sealed interface DFHeader : DFSerializable {
     fun technicalName(): String
+
+    fun getItemName(): String
 }

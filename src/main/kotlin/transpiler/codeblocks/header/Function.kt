@@ -10,4 +10,10 @@ data class Function(val name: String) : DFHeader {
             """"data":${name.serialize()}}"""
     override fun technicalName() = name
     override fun toString() = "PlayerEvent[$name]"
+
+    override fun getItemName() = """{"extra":[""" +
+            """{"italic":false,"color":"#FF7722","text":"🔥 "},""" +
+            """{"italic":false,"color":"#FFAA55","text":"${this.technicalName().trim()}"},""" +
+            """{"italic":false,"color":"#666666","text":" (Function)"}""" +
+            """],"text":""}"""
 }
