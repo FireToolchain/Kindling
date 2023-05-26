@@ -14,6 +14,7 @@ data class Run(val index: Int, val blockCount: Int, val size: Int)
  * First element is always the original line, shortened. The rest are extension functions.
  */
 fun shortenLine(line: DFLine, maxSize: Int): List<DFLine> {
+    if (line.code.isEmpty()) return listOf(line)
     var lastSize = 0
     var size = 0
     var lastIndex = 0
@@ -33,7 +34,7 @@ fun shortenLine(line: DFLine, maxSize: Int): List<DFLine> {
                     }
                     size += line.code[index].literalSize
                     index++
-                } while (depth > 0 && size < maxSize - 4)
+                } while (depth > 0 && index < line.code.size && size < maxSize - 4)
             }
             is EndRepeat, is EndIf -> break@mainLoop
             else -> {

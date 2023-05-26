@@ -1,7 +1,9 @@
-((player-event "fibonacci"))
-
-((player-event "Join") ; Join event
-  (repeat "Multiple" "" norm ((var "i") (num 10)))
-    (call "fibonacci" ((var "i")))
-    (player-action "SendMessage" default ((ret)))
-  (end-repeat))
+(
+(player-event "Join")
+(player-action "SendMessage" default ((text "Welcome!")))
+(player-action "GamemodeAdventure" default ())
+)(
+(player-event "RightClick")
+(if-var "=" norm ((val "Event Block Location" default)(loc 25 51 32 0 0)))
+(end-if)
+)

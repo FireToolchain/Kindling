@@ -15,11 +15,11 @@ data class Location(val x: Float, val y: Float, val z: Float, val pitch: Float, 
         }
     }
     override fun serialize() = """{"id":"loc","data":{""" +
-            """"isBlock":false,""" +
+            """"isBlock":false,"loc":{""" +
             """"x":$x,""" +
             """"y":$y,""" +
             """"z":$z,""" +
             """"pitch":$pitch,""" +
-            """"yaw":$yaw}}"""
+            """"yaw":$yaw}}}"""
     override fun toString() = "Loc[$x, $y, $z, $pitch, $yaw]"
 }

@@ -1,4 +1,55 @@
 {
-  "compare": "{\"extra\":[{\"bold\":true,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"aqua\",\"text\":\"Function \"},{\"bold\":false,\"italic\":false,\"color\":\"dark_aqua\",\"text\":\"» \"},{\"italic\":false,\"color\":\"aqua\",\"text\":\"fibonacci\"}],\"text\":\"\"}",
-
+  "blocks": [
+    {
+      "id": "block",
+      "block": "event",
+      "args": {
+        "items": []
+      },
+      "action": "RightClick"
+    },
+    {
+      "id": "block",
+      "block": "if_var",
+      "args": {
+        "items": [
+          {
+            "item": {
+              "id": "g_val",
+              "data": {
+                "type": "Event Block Location",
+                "target": "Default"
+              }
+            },
+            "slot": 0
+          },
+          {
+            "item": {
+              "id": "loc",
+              "data": {
+                "isBlock": false,
+                "x": 25.0,
+                "y": 51.0,
+                "z": 32.0,
+                "pitch": 0.0,
+                "yaw": 0.0
+              }
+            },
+            "slot": 1
+          }
+        ]
+      },
+      "action": "="
+    },
+    {
+      "id": "bracket",
+      "direct": "open",
+      "type": "norm"
+    },
+    {
+      "id": "bracket",
+      "direct": "close",
+      "type": "norm"
+    }
+  ]
 }
