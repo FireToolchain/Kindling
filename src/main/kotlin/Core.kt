@@ -1,5 +1,4 @@
-import refactoring.createExtension
-import refactoring.shortenLine
+import refactoring.*
 import serializer.DFSerializable
 import transpiler.codeblocks.header.DFHeader
 import transpiler.codeblocks.normal.*
@@ -9,14 +8,8 @@ import transpiler.codeblocks.normal.*
  */
 data class DFProgram(val lines: List<DFLine>) {
     override fun toString() = lines.joinToString("\n") { it.toString() }
-
-    fun optimized(maxSize: Int): DFProgram {
-        val newLines = mutableListOf<DFLine>()
-        for (line in lines) {
-            newLines.addAll(shortenLine(line, maxSize))
-        }
-        return DFProgram(newLines)
-    }
+    //fun optimized(maxSize: Int) = DFProgram(lines.flatMap { it.liftCodeblocks().removeUnreachable().inlineVars().shortenLine(maxSize) })
+    fun optimized(maxSize: Int) = DFProgram(lines.map { it.removeUnreachable() })
 }
 
 /**

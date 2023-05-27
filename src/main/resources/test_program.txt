@@ -1,9 +1,21 @@
-(
-(player-event "Join")
-(player-action "SendMessage" default ((text "Welcome!")))
-(player-action "GamemodeAdventure" default ())
-)(
-(player-event "RightClick")
-(if-var "=" norm ((val "Event Block Location" default)(loc 25 51 32 0 0)))
-(end-if)
-)
+((def "fibonacci") ; Fibonacci takes one parameter
+  (if-var "<" norm ((param 0) (num 2))) ; Base case
+    (return (num 1))
+  (else) ; Sum F(input-1) and F(input-2)
+    (set-var "-" ((var "dif") (param 0) (num 1)))
+    (call "fibonacci" ((var "dif")))
+    (set-var "=" ((var "first") (ret)))
+    (set-var "-" ((var "dif") (param 0) (num 2)))
+    (call "fibonacci" ((var "dif")))
+    (set-var "=" ((var "second") (ret)))
+    (set-var "+" ((var "out") (var "first") (var "second")))
+    (return (var "out"))
+    (set-var "+" ((var "out") (var "first") (var "second")))
+  (end-if))
+
+
+((player-event "Join") ; Join event
+  (repeat "Multiple" "" norm ((var "i") (num 10)))
+    (call "fibonacci" ((var "i")))
+    (player-action "SendMessage" default ((ret)))
+  (end-repeat))
