@@ -10,7 +10,7 @@ import transpiler.codeblocks.header.DFHeader
 import transpiler.values.DFValue
 import transpiler.values.Variable
 
-data class Control(val type: String, val params: List<DFValue>) : DFBlock("control", 2) {
+data class Control(val type: String, val params: List<DFValue>) : DFBlock("control", 2, type == "End" || type == "Return") {
     companion object {
         fun transpileFrom(input: Value, header: DFHeader): List<DFBlock> {
             val inpList = checkList(input)

@@ -52,11 +52,6 @@ fun main(inputs: Array<String>) {
             val unoptimizedTranspiled = transpile(parsed)
             println("Compiling with plot size $plotSize:")
             val transpiled = unoptimizedTranspiled.optimized(plotSize)
-            if (verbose) {
-                println("Formatted Blockcode:")
-                println(transpiled.toString())
-                println()
-            }
             if (recode) {
                 sendPackageRecode(transpiled, verbose)
             } else {

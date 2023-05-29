@@ -32,4 +32,5 @@ class EntityEvent(val type: String, blocks: List<DFBlock>) : DFHeader(blocks) {
             """],"text":""}"""
 
     override fun getItemType() = "soul_campfire"
+    override fun cloneWith(code: List<DFBlock>) = EntityEvent(this.type, code)
 }

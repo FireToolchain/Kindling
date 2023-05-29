@@ -5,6 +5,7 @@ import Value
 import serializer.serialize
 import transpiler.*
 import transpiler.codeblocks.normal.DFBlock
+import transpiler.codeblocks.normal.Repeat
 import transpiler.codeblocks.normal.SetVar
 import transpiler.values.Variable
 
@@ -34,4 +35,5 @@ class Process(val name: String, blocks: List<DFBlock>) : DFHeader(blocks) {
             """],"text":""}"""
 
     override fun getItemType() = "campfire"
+    override fun cloneWith(code: List<DFBlock>) = Process(this.name, code)
 }

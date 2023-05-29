@@ -7,6 +7,7 @@ import transpiler.checkBlock
 import transpiler.checkBlocks
 import transpiler.checkList
 import transpiler.checkStr
+import transpiler.codeblocks.CodeHolder
 import transpiler.codeblocks.normal.DFBlock
 
 class PlayerEvent(val type: String, blocks: List<DFBlock>) : DFHeader(blocks) {
@@ -33,4 +34,5 @@ class PlayerEvent(val type: String, blocks: List<DFBlock>) : DFHeader(blocks) {
             """],"text":""}"""
 
     override fun getItemType() = "soul_campfire"
+    override fun cloneWith(code: List<DFBlock>) = PlayerEvent(this.type, code)
 }

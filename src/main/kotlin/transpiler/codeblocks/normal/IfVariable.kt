@@ -5,10 +5,14 @@ import Value
 import serializer.serialize
 import serializer.serializeArgs
 import transpiler.*
+import transpiler.codeblocks.CodeHolder
+import transpiler.codeblocks.DoubleCodeHolder
 import transpiler.codeblocks.header.DFHeader
 import transpiler.values.DFValue
 
-data class IfVariable(val type: String, val inverse: Boolean, val params: List<DFValue>, val mainBranch: List<DFBlock>, val elseBranch: List<DFBlock>?) : DFBlock("if_var", 4) {
+data class IfVariable(val type: String, val inverse: Boolean, val params: List<DFValue>, val mainBranch: List<DFBlock>, val elseBranch: List<DFBlock>?) :
+    DFBlock("if_var", 4 + mainBranch.sumOf { it.literalSize } + (elseBranch?.sumOf { it.literalSize }?.plus(4) ?: 0),
+        elseBranch != null && (mainBranch.any { it.isFinal } && elseBranch.any { it.isFinal })), DoubleCodeHolder {
     companion object {
         fun transpileFrom(input: Value, header: DFHeader): IfVariable {
             val inpList = checkList(input)
@@ -36,4 +40,10 @@ data class IfVariable(val type: String, val inverse: Boolean, val params: List<D
                 elseBranch.joinToString("") { it.serialize() + "," } +
                 """{"id":"bracket","direct":"close","type":"norm"}"""
             } else ""
+
+    override fun getElseCode() = this.elseBranch
+    override fun cloneWith(code: List<DFBlock>, elseCode: List<DFBlock>?) = IfVariable(type, inverse, params, code, elseCode)
+    override fun cloneWith(code: List<DFBlock>) = IfVariable(type, inverse, params, code, elseBranch)
+
+    override fun getCode() = this.mainBranch
 }

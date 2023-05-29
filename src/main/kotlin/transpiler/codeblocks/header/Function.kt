@@ -35,4 +35,5 @@ class Function(val name: String, blocks: List<DFBlock>) : DFHeader(blocks) {
             """],"text":""}"""
 
     override fun getItemType() = "campfire"
+    override fun cloneWith(code: List<DFBlock>) = Function(this.name, code)
 }

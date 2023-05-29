@@ -5,11 +5,14 @@ import Value
 import serializer.serialize
 import serializer.serializeArgs
 import transpiler.*
+import transpiler.codeblocks.CodeHolder
+import transpiler.codeblocks.DoubleCodeHolder
 import transpiler.codeblocks.header.DFHeader
 import transpiler.values.DFValue
 
 data class IfEntity(val type: String, val selector: Selector, val inverse: Boolean, val params: List<DFValue>, val mainBranch: List<DFBlock>, val elseBranch: List<DFBlock>?) :
-    DFBlock("if_entity", 4) {
+    DFBlock("if_entity", 4 + mainBranch.sumOf { it.literalSize } + (elseBranch?.sumOf { it.literalSize }?.plus(4) ?: 0),
+        elseBranch != null && (mainBranch.any { it.isFinal } && elseBranch.any { it.isFinal })), DoubleCodeHolder {
     companion object {
         fun transpileFrom(input: Value, header: DFHeader): IfEntity {
             val inpList = checkList(input)
@@ -38,4 +41,10 @@ data class IfEntity(val type: String, val selector: Selector, val inverse: Boole
                 elseBranch.joinToString("") { it.serialize() + "," } +
                 """{"id":"bracket","direct":"close","type":"norm"}"""
             } else ""
+    override fun getElseCode() = this.elseBranch
+    override fun getCode() = this.mainBranch
+    override fun cloneWith(code: List<DFBlock>, elseCode: List<DFBlock>?) = IfEntity(type, selector, inverse, params, code, elseCode)
+    override fun cloneWith(code: List<DFBlock>) = IfEntity(type, selector, inverse, params, code, elseBranch)
+
+
 }

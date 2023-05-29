@@ -5,11 +5,12 @@ import Value
 import serializer.serialize
 import serializer.serializeArgs
 import transpiler.*
+import transpiler.codeblocks.CodeHolder
 import transpiler.codeblocks.header.DFHeader
 import transpiler.values.DFValue
 
 data class Repeat(val type: String, val subtype: String, val inverse: Boolean, val params: List<DFValue>, val codeblocks: List<DFBlock>) :
-    DFBlock("repeat", 2) {
+    DFBlock("repeat", 4 + codeblocks.sumOf { it.literalSize }), CodeHolder {
     companion object {
         fun transpileFrom(input: Value, header: DFHeader): Repeat {
             val inpList = checkList(input)
@@ -28,4 +29,6 @@ data class Repeat(val type: String, val subtype: String, val inverse: Boolean, v
             """},{"id":"bracket","direct":"open","type":"repeat"},""" +
             codeblocks.joinToString("") { it.serialize() + "," } +
             """{"id":"bracket","direct":"close","type":"repeat"}"""
+    override fun getCode() = this.codeblocks
+    override fun cloneWith(code: List<DFBlock>) = Repeat(type, subtype, inverse, params, code)
 }

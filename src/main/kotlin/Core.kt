@@ -9,6 +9,6 @@ import transpiler.codeblocks.normal.*
 data class DFProgram(val lines: List<DFHeader>) {
     override fun toString() = lines.joinToString("\n") { it.toString() }
     //fun optimized(maxSize: Int) = DFProgram(lines.flatMap { it.liftCodeblocks().removeUnreachable().inlineVars().shortenLine(maxSize) })
-    //fun optimized(maxSize: Int) = DFProgram(lines.map { it.removeUnreachable() })
-    fun optimized(maxSize: Int) = this
+    fun optimized(maxSize: Int) = DFProgram(lines.flatMap { it.removeUnreachable().shortenLine(maxSize) })
+    //fun optimized(maxSize: Int) = this
 }

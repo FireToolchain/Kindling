@@ -1,6 +1,7 @@
 package transpiler.codeblocks.header
 
 import serializer.DFSerializable
+import transpiler.codeblocks.CodeHolder
 import transpiler.codeblocks.normal.*
 
 /**
@@ -18,4 +19,6 @@ sealed class DFHeader(val code: List<DFBlock>) : DFSerializable {
             """{"blocks":[$s,${code.joinToString(",") { it.serialize() }}]}"""
         }
     }
+
+    abstract fun cloneWith(code: List<DFBlock>): DFHeader
 }
