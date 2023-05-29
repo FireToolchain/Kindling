@@ -21,11 +21,12 @@ class Process(val name: String, blocks: List<DFBlock>) : DFHeader(blocks) {
             return Process(dummy.name, blocks)
         }
     }
-    override fun serialize() = super.serializeLine("{" +
+    override fun serialize() = "{" +
             """"id":"block",""" +
             """"block":"process",""" +
             """"args":{"items":[]},""" +
-            """"data":${name.serialize()}}""")
+            """"data":${name.serialize()}}""" +
+            this.code.joinToString("") { "," + it.serialize() }
     override fun technicalName() = name
 
     override fun getItemName() = """{"extra":[""" +

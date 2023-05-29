@@ -10,7 +10,7 @@ enum class VariableScope : DFSerializable {
         override fun serialize() = """saved"""
     },
     GLOBAL {
-        override fun serialize() = """game"""
+        override fun serialize() = """unsaved"""
     },
     LOCAL {
         override fun serialize() = """local"""

@@ -21,11 +21,12 @@ class Function(val name: String, blocks: List<DFBlock>) : DFHeader(blocks) {
             return Function(dummy.name, blocks)
         }
     }
-    override fun serialize() = super.serializeLine("{" +
+    override fun serialize() = "{" +
             """"id":"block",""" +
             """"block":"func",""" +
             """"args":{"items":[{"item":{"id":"bl_tag","data":{"option":"False","tag":"Is Hidden","action":"dynamic","block":"func"}},"slot":26}]},""" +
-            """"data":${name.serialize()}}""")
+            """"data":${name.serialize()}}""" +
+            this.code.joinToString("") { "," + it.serialize() }
     override fun technicalName() = name
 
     override fun getItemName() = """{"extra":[""" +

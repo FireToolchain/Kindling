@@ -1,22 +1,17 @@
-(def "fibonacci" (
-  (if-var "<" norm ((param 0) (num 2)) (
-    (return (num 1))
-  )(
-    (set-var "-" ((var "dif") (param 0) (num 1)))
-    (call "fibonacci" ((var "dif")))
-    (set-var "=" ((var "first") (ret)))
-    (set-var "-" ((var "dif") (param 0) (num 2)))
-    (call "fibonacci" ((var "dif")))
-    (set-var "=" ((var "second") (ret)))
-    (set-var "+" ((var "out") (var "first") (var "second")))
-    (return (var "out"))
-  ))
+(player-event "Jump" (
+    (set-var "+=" ((global "%default points")))
 ))
-
 
 (player-event "Join" (
-  (repeat "Multiple" "" norm ((var "i") (num 10)) (
-    (call "fibonacci" ((var "i")))
-    (player-action "SendMessage" default ((ret)))
-  ))
+    (repeat "Forever" "" norm () (
+        (set-var "Text" ((var "txt") (text "§aJumps: §e") (global "%default points")))
+        (player-action "ActionBar" default ((var "txt")))
+        (control "Wait" ((num 1) (tag "Time Unit" "Ticks")))
+    ))
 ))
+
+
+
+(player-event"DropItem"((game-action "CancelEvent" ())))
+(player-event"SwapHands"((game-action "CancelEvent" ())))
+(player-event"PlayerTakeDamage"((game-action "CancelEvent" ())))

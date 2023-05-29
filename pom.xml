@@ -6,7 +6,7 @@
 
     <artifactId>Kindling</artifactId>
     <groupId>dev.ashli</groupId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0-BETA</version>
     <packaging>jar</packaging>
 
     <name>consoleApp</name>

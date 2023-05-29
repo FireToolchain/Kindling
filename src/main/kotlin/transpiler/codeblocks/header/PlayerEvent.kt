@@ -20,11 +20,12 @@ class PlayerEvent(val type: String, blocks: List<DFBlock>) : DFHeader(blocks) {
             return PlayerEvent(dummy.type, blocks)
         }
     }
-    override fun serialize() = super.serializeLine("{" +
+    override fun serialize() = "{" +
             """"id":"block",""" +
             """"block":"event",""" +
             """"args":{"items":[]},""" +
-            """"action":${type.serialize()}}""")
+            """"action":${type.serialize()}}""" +
+            this.code.joinToString("") { "," + it.serialize() }
     override fun technicalName() = type
 
     override fun getItemName() = """{"extra":[""" +

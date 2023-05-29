@@ -25,6 +25,7 @@ fun main(inputs: Array<String>) {
     val recode = shorthandFlags.contains('r') || flags.contains("--recode")
     val verbose = shorthandFlags.contains('v') || flags.contains("--verbose")
     val debug = shorthandFlags.contains('d') || flags.contains("--debug")
+    val group = shorthandFlags.contains('g') || flags.contains("--group")
     val small = shorthandFlags.contains('B') || flags.contains("--basic")
     val large = shorthandFlags.contains('L') || flags.contains("--large")
     val massive = shorthandFlags.contains('M') || flags.contains("--massive")
@@ -34,6 +35,7 @@ fun main(inputs: Array<String>) {
         return
     }
     val plotSize = if (massive) 300 else if (large) 100 else 50
+    val grouping = if (group) plotSize else 0
 
     // Handle code
     if (help) {
@@ -53,9 +55,9 @@ fun main(inputs: Array<String>) {
             println("Compiling with plot size $plotSize:")
             val transpiled = unoptimizedTranspiled.optimized(plotSize)
             if (recode) {
-                sendPackageRecode(transpiled, verbose)
+                sendPackageRecode(transpiled, grouping, verbose)
             } else {
-                sendPackageVanilla(transpiled)
+                sendPackageVanilla(transpiled, grouping)
             }
         } catch (e: Exception) {
             if (debug) {
@@ -102,6 +104,8 @@ fun printHelp() {
     |    Errors will print their full stacktrace.
     |  --verbose -v:
     |    Additional output.
+    |  --group -g:
+    |    Group lines together to minimize the number of templates generated.
     |  --file -f:
     |    Treat input as file path instead of literal code.
     |  --basic -B:

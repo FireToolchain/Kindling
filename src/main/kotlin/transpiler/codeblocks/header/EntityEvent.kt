@@ -19,10 +19,11 @@ class EntityEvent(val type: String, blocks: List<DFBlock>) : DFHeader(blocks) {
             return EntityEvent(dummy.type, blocks)
         }
     }
-    override fun serialize() = super.serializeLine("""{"id":"block",""" +
+    override fun serialize() = """{"id":"block",""" +
             """"block":"entity_event",""" +
             """"args":{"items":[]},""" +
-            """"action":${type.serialize()}}""")
+            """"action":${type.serialize()}}""" +
+            this.code.joinToString("") { "," + it.serialize() }
     override fun technicalName() = type
 
     override fun getItemName() = """{"extra":[""" +
