@@ -8,6 +8,8 @@ import io.ktor.websocket.*
 import kotlinx.coroutines.runBlocking
 import DFProgram
 import kotlinx.coroutines.delay
+import output.logInfo
+import output.logOutput
 import transpiler.codeblocks.header.DFHeader
 import transpiler.values.DFValue
 import transpiler.values.Tag
@@ -91,10 +93,10 @@ fun sendPackageRecode(program: DFProgram, maxSize: Int, verbose: Boolean) {
 
                 send(Frame.Text(packet))
                 delay(100)
-                println("Sending $currentLine of $totalLines...")
-                if (verbose) println(packet)
+                logInfo("Sending $currentLine of $totalLines...")
+                if (verbose) logInfo(packet)
             }
-            println("Finished.")
+            logInfo("Finished.")
         }
     }
     client.close()
@@ -136,8 +138,8 @@ fun sendPackageVanilla(program: DFProgram, maxSize: Int) {
         out.add(command)
     }
     for (command in out) {
-        println(command)
+        logOutput(command)
     }
-    println("Finished.")
+    logInfo("Finished.")
 }
 

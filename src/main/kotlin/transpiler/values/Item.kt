@@ -16,5 +16,4 @@ data class Item(val nbt: String) : DFValue {
         }
     }
     override fun serialize() = """{"id":"item","data":{"item":${nbt.serialize()}}}"""
-    override fun toString() = "SOME_ITEM"
 }

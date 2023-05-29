@@ -1,3 +1,5 @@
+import output.logError
+import output.logInfo
 import serializer.sendPackageRecode
 import serializer.sendPackageVanilla
 import transpiler.transpile
@@ -6,7 +8,7 @@ import java.io.IOException
 
 fun main(inputs: Array<String>) {
     if (inputs.isEmpty()) {
-        println("No input. Run with the -help flag for help.")
+        logInfo("No input. Run with the -help flag for help.")
         return
     }
 
@@ -31,7 +33,7 @@ fun main(inputs: Array<String>) {
     val massive = shorthandFlags.contains('M') || flags.contains("--massive")
     val file = shorthandFlags.contains('f') || flags.contains("--file")
     if ((small && large) || (small && massive) || (large && massive)) {
-        println("Only one of --basic, --large, and --massive may be chosen")
+        logError("Only one of --basic, --large, and --massive may be chosen")
         return
     }
     val plotSize = if (massive) 300 else if (large) 100 else 50
@@ -45,14 +47,14 @@ fun main(inputs: Array<String>) {
         try {
             val code = if (file) getFile(args[0]) else args[0]
             if (verbose) {
-                println("Input Code:")
-                println(code)
-                println()
+                logInfo("Input Code:")
+                logInfo(code)
+                logInfo()
             }
             val tokens = tokenize(code)
             val parsed = parse(tokens)
             val unoptimizedTranspiled = transpile(parsed)
-            println("Compiling with plot size $plotSize:")
+            logInfo("Compiling with plot size $plotSize:")
             val transpiled = unoptimizedTranspiled.optimized(plotSize)
             if (recode) {
                 sendPackageRecode(transpiled, grouping, verbose)
@@ -63,11 +65,11 @@ fun main(inputs: Array<String>) {
             if (debug) {
                 e.printStackTrace()
             } else {
-                println(e.message)
+                logError(e.message)
             }
         }
     } else {
-        println("Unexpected input. Run with the -help flag for help.")
+        logError("Unexpected input. Run with the -help flag for help.")
     }
 }
 

@@ -2,7 +2,7 @@
     (set-var "+=" ((global "%default points")))
 ))
 
-(player-event "Join" (
+(player-event "Join"(
     (repeat "Forever" "" norm () (
         (set-var "Text" ((var "txt") (text "§aJumps: §e") (global "%default points")))
         (player-action "ActionBar" default ((var "txt")))

@@ -6,58 +6,7 @@
       "args": {
         "items": []
       },
-      "action": "join"
-    },
-    {
-      "id": "block",
-      "block": "repeat",
-      "args": {
-        "items": []
-      },
-      "action": "forever"
-    },
-    {
-      "id": "bracket",
-      "direct": "open",
-      "type": "repeat"
-    },
-    {
-      "id": "block",
-      "block": "set_var",
-      "args": {
-        "items": [
-          {
-            "item": {
-              "id": "var",
-              "data": {
-                "name": "^var join ^ txt %var(^depth join)",
-                "scope": "local"
-              }
-            },
-            "slot": 0
-          },
-          {
-            "item": {
-              "id": "txt",
-              "data": {
-                "name": "§aJumps: §e"
-              }
-            },
-            "slot": 1
-          },
-          {
-            "item": {
-              "id": "var",
-              "data": {
-                "name": "%default points",
-                "scope": "unsaved"
-              }
-            },
-            "slot": 2
-          }
-        ]
-      },
-      "action": "text"
+      "action": ""
     },
     {
       "id": "block",
@@ -66,29 +15,12 @@
         "items": [
           {
             "item": {
-              "id": "var",
+              "id": "snd",
               "data": {
-                "name": "^var join ^ txt %var(^depth join)",
-                "scope": "local"
-              }
-            },
-            "slot": 0
-          }
-        ]
-      },
-      "target": "Default",
-      "action": "actionbar"
-    },
-    {
-      "id": "block",
-      "block": "control",
-      "args": {
-        "items": [
-          {
-            "item": {
-              "id": "num",
-              "data": {
-                "name": "1.0"
+                "sound": "Meadow Music",
+                "pitch": 1.0,
+                "vol": 2.0,
+                "variant": "hal2"
               }
             },
             "slot": 0
@@ -97,22 +29,29 @@
             "item": {
               "id": "bl_tag",
               "data": {
-                "option": "ticks",
-                "tag": "time unit",
-                "action": "wait",
-                "block": "control"
+                "option": "Add spaces",
+                "tag": "Text Value Merging",
+                "action": "SendMessage",
+                "block": "player_action"
+              }
+            },
+            "slot": 25
+          },
+          {
+            "item": {
+              "id": "bl_tag",
+              "data": {
+                "option": "Regular",
+                "tag": "Alignment Mode",
+                "action": "SendMessage",
+                "block": "player_action"
               }
             },
             "slot": 26
           }
         ]
       },
-      "action": "wait"
-    },
-    {
-      "id": "bracket",
-      "direct": "close",
-      "type": "repeat"
+      "action": "SendMessage"
     }
   ]
 }

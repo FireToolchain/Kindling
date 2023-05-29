@@ -39,7 +39,7 @@ data class StartProcess(val name: String, val params: List<DFValue>) : DFBlock("
                     )
                 )
             }
-            blocks.add(StartProcess(action, listOf(Tag("Copy", "Local Variables", "start_process", "dynamic"))))
+            blocks.add(StartProcess(action, listOf(Tag("Copy", "Local Variables", "start_process", "dynamic", null))))
             return blocks
         }
     }

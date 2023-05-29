@@ -21,5 +21,4 @@ data class Location(val x: Float, val y: Float, val z: Float, val pitch: Float, 
             """"z":$z,""" +
             """"pitch":$pitch,""" +
             """"yaw":$yaw}}}"""
-    override fun toString() = "Loc[$x, $y, $z, $pitch, $yaw]"
 }

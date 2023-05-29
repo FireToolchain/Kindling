@@ -69,18 +69,4 @@ data class Particle(val type: String) : DFValue {
                         """"vertical":$spreadY""" +
                     """},"data":{${settings.joinToString(",")}}}}"""
     }
-    override fun toString(): String {
-        val settings = mutableListOf("amount = $amount", "spreadX = $spreadX", "spreadY = $spreadY")
-        if (motionX != null) settings.add("motionX = $motionX")
-        if (motionY != null) settings.add("motionY = $motionY")
-        if (motionZ != null) settings.add("motionZ = $motionZ")
-        if (size != null) settings.add("size = $size")
-        if (roll != null) settings.add("rol = $roll")
-        if (variationSize != null) settings.add("variationSize = $variationSize")
-        if (variationColor != null) settings.add("variationColor = $variationColor")
-        if (variationMotion != null) settings.add("variationMotion = $variationMotion")
-        if (material != null) settings.add("material = $material")
-        if (color != null) settings.add("color = $color")
-        return "Par[$type: ${ settings.joinToString(", ") }]"
-    }
 }

@@ -17,12 +17,18 @@ data class Control(val type: String, val params: List<DFValue>) : DFBlock("contr
             if (inpList.isEmpty()) throw MalformedList("CodeBlock", "(Identifier ...)", input)
             return when (checkIdent(inpList[0])) {
                 "return" -> {
-                    if (inpList.size != 2) throw MalformedList("CodeBlock", "(return List<Value>)", input)
-                    listOf(
-                        SetVar("=", listOf(Variable("^ret", VariableScope.LOCAL), checkVal(inpList[1], CheckContext(header, "set_var", "=")))),
-                        SetVar("-=", listOf(Variable("^depth ${header.technicalName()}", VariableScope.LOCAL))),
-                        Control("Return", emptyList())
-                    )
+                    if (inpList.size == 2) {
+                        listOf(
+                            SetVar("=", listOf(Variable("^ret", VariableScope.LOCAL), checkVal(inpList[1], CheckContext(header, "set_var", "=")))),
+                            SetVar("-=", listOf(Variable("^depth ${header.technicalName()}", VariableScope.LOCAL))),
+                            Control("Return", emptyList())
+                        )
+                    } else if (inpList.size == 1) {
+                        listOf(
+                            SetVar("-=", listOf(Variable("^depth ${header.technicalName()}", VariableScope.LOCAL))),
+                            Control("Return", emptyList())
+                        )
+                    } else throw MalformedList("CodeBlock", "(return List<Value>?)", input)
                 }
                 "yield" -> {
                     if (inpList.size != 2) throw MalformedList("CodeBlock", "(yield List<Value>)", input)

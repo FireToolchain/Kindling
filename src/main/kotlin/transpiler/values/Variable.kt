@@ -28,5 +28,4 @@ data class Variable(val name: String, val scope: VariableScope) : DFValue {
     override fun serialize() = """{"id":"var","data":{""" +
             """"name":${name.serialize()},""" +
             """"scope":"${scope.serialize()}"}}"""
-    override fun toString() = "$scope[$name]"
 }

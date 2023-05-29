@@ -17,5 +17,4 @@ data class PotionEffect(val type: String, val duration: Int, val level: Int) : D
             """"pot":${type.serialize()},""" +
             """"dur":$duration,""" +
             """"amp":$level}}"""
-    override fun toString() = "Pot[$type, $duration, $level]"
 }
