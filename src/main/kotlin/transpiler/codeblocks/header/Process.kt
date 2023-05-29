@@ -3,24 +3,29 @@ package transpiler.codeblocks.header
 import MalformedList
 import Value
 import serializer.serialize
-import transpiler.checkList
-import transpiler.checkStr
+import transpiler.*
+import transpiler.codeblocks.normal.DFBlock
+import transpiler.codeblocks.normal.SetVar
+import transpiler.values.Variable
 
-data class Process(val name: String) : DFHeader {
+class Process(val name: String, blocks: List<DFBlock>) : DFHeader(blocks) {
     companion object {
         fun transpileFrom(input: Value): Process {
             val inpList = checkList(input)
-            if (inpList.size != 2) throw MalformedList("Header", "(process String<Name>", input)
-            return Process(checkStr(inpList[1]))
+            if (inpList.size != 3) throw MalformedList("Header", "(process String<Name> List<CodeBlock>)", input)
+            val dummy = Process(checkStr(inpList[1]), listOf())
+            val blocks = listOf(SetVar("+=", listOf(Variable("^depth ${dummy.name}", VariableScope.LOCAL)))) +
+                    checkBlocks(inpList[2], dummy) +
+                    SetVar("-=", listOf(Variable("^depth ${dummy.name}", VariableScope.LOCAL)))
+            return Process(dummy.name, blocks)
         }
     }
-    override fun serialize() = "{" +
+    override fun serialize() = super.serializeLine("{" +
             """"id":"block",""" +
             """"block":"process",""" +
             """"args":{"items":[]},""" +
-            """"data":${name.serialize()}}"""
+            """"data":${name.serialize()}}""")
     override fun technicalName() = name
-    override fun toString() = "PlayerEvent[$name]"
 
     override fun getItemName() = """{"extra":[""" +
             """{"italic":false,"color":"#FF9955","text":"Process"},""" +

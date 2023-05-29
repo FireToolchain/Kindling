@@ -10,7 +10,7 @@ import transpiler.codeblocks.header.DFHeader
 import transpiler.values.DFValue
 import transpiler.values.Variable
 
-data class Control(val type: String, val params: List<DFValue>) : DFBlock {
+data class Control(val type: String, val params: List<DFValue>) : DFBlock("control", 2) {
     companion object {
         fun transpileFrom(input: Value, header: DFHeader): List<DFBlock> {
             val inpList = checkList(input)
@@ -37,15 +37,10 @@ data class Control(val type: String, val params: List<DFValue>) : DFBlock {
             }
         }
     }
-    override val technicalName: String
-        get() = "control"
-    override val literalSize: Int
-        get() = 2
     override fun serialize() = "{" +
             """"id":"block",""" +
             """"block":"control",""" +
             """"args":${serializeArgs(params)},""" +
             """"action":${type.serialize()}""" +
             "}"
-    override fun toString() = "Control.$type(${ params.joinToString( ", ") { it.toString() } })"
 }

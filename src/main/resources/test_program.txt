@@ -1,7 +1,7 @@
-((def "fibonacci") ; Fibonacci takes one parameter
-  (if-var "<" norm ((param 0) (num 2))) ; Base case
+(def "fibonacci" (
+  (if-var "<" norm ((param 0) (num 2)) (
     (return (num 1))
-  (else) ; Sum F(input-1) and F(input-2)
+  )(
     (set-var "-" ((var "dif") (param 0) (num 1)))
     (call "fibonacci" ((var "dif")))
     (set-var "=" ((var "first") (ret)))
@@ -10,12 +10,13 @@
     (set-var "=" ((var "second") (ret)))
     (set-var "+" ((var "out") (var "first") (var "second")))
     (return (var "out"))
-    (set-var "+" ((var "out") (var "first") (var "second")))
-  (end-if))
+  ))
+))
 
 
-((player-event "Join") ; Join event
-  (repeat "Multiple" "" norm ((var "i") (num 10)))
+(player-event "Join" (
+  (repeat "Multiple" "" norm ((var "i") (num 10)) (
     (call "fibonacci" ((var "i")))
     (player-action "SendMessage" default ((ret)))
-  (end-repeat))
+  ))
+))

@@ -9,7 +9,7 @@ import transpiler.values.DFValue
 import transpiler.values.Number
 import transpiler.values.Variable
 
-data class CallFunction(val name: String) : DFBlock {
+data class CallFunction(val name: String) : DFBlock("call_func", 2) {
     companion object {
         fun transpileFrom(input: Value, header: DFHeader): List<DFBlock> {
             val inpList = checkList(input)
@@ -40,15 +40,10 @@ data class CallFunction(val name: String) : DFBlock {
             return blocks
         }
     }
-    override val technicalName: String
-        get() = "call_func"
-    override val literalSize: Int
-        get() = 2
     override fun serialize() =  "{" +
             """"id":"block",""" +
             """"block":"call_func",""" +
             """"args":{"items":[]},""" +
             """"data":${name.serialize()}""" +
             "}"
-    override fun toString() = "CallFunc $name"
 }

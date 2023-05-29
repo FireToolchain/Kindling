@@ -12,7 +12,7 @@ import transpiler.values.Number
 import transpiler.values.Tag
 import transpiler.values.Variable
 
-data class StartProcess(val name: String, val params: List<DFValue>) : DFBlock {
+data class StartProcess(val name: String, val params: List<DFValue>) : DFBlock("start_process", 2) {
     companion object {
         fun transpileFrom(input: Value, header: DFHeader): List<DFBlock> {
             val inpList = checkList(input)
@@ -43,15 +43,10 @@ data class StartProcess(val name: String, val params: List<DFValue>) : DFBlock {
             return blocks
         }
     }
-    override val technicalName: String
-        get() = "start_process"
-    override val literalSize: Int
-        get() = 2
     override fun serialize() = "{" +
             """"id":"block",""" +
             """"block":"start_process",""" +
             """"args":${serializeArgs(params)},""" +
             """"data":${name.serialize()}""" +
             "}"
-    override fun toString() = "StartProc $name(${ params.joinToString( ", ") { it.toString() } })"
 }

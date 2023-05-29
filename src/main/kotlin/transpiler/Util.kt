@@ -5,6 +5,7 @@ import UnexpectedValue
 import Value
 import ValueType
 import transpiler.codeblocks.header.DFHeader
+import transpiler.codeblocks.normal.*
 import transpiler.values.*
 import transpiler.values.Number
 
@@ -126,5 +127,37 @@ fun checkVal(input: Value, context: CheckContext): DFValue {
         "item" -> Item.transpileFrom(input, context)
         "ret" -> Variable("^ret", VariableScope.LOCAL)
         else -> throw UnexpectedValue("a valid value type", input)
+    }
+}
+
+/**
+ * Takes a parsed value and ensures it's a list of DFBlocks
+ */
+fun checkBlocks(v: Value, header: DFHeader): List<DFBlock> {
+    return checkList(v).flatMap { checkBlock(it, header) }
+}
+
+/**
+ * Takes a parsed value and attempted to transpile it into a DFBlock.
+ */
+fun checkBlock(input: Value, header: DFHeader): List<DFBlock> {
+    val vList = checkList(input)
+    if (vList.isEmpty()) throw MalformedList("CodeBlock", "(Identifier<Type> ...)", input)
+
+    return when (checkIdent(vList[0])) {
+        "return", "yield", "control" -> Control.transpileFrom(input, header)
+        "call" -> CallFunction.transpileFrom(input, header)
+        "start" -> StartProcess.transpileFrom(input, header)
+        "set-var" -> listOf(SetVar.transpileFrom(input, header))
+        "game-action" -> listOf(GameAction.transpileFrom(input, header))
+        "if-player" -> listOf(IfPlayer.transpileFrom(input, header))
+        "if-entity" -> listOf(IfEntity.transpileFrom(input, header))
+        "player-action" -> listOf(PlayerAction.transpileFrom(input, header))
+        "entity-action" -> listOf(EntityAction.transpileFrom(input, header))
+        "if-game" -> listOf(IfGame.transpileFrom(input, header))
+        "if-var" -> listOf(IfVariable.transpileFrom(input, header))
+        "select-object" -> listOf(SelectObject.transpileFrom(input, header))
+        "repeat" -> listOf(Repeat.transpileFrom(input, header))
+        else -> throw UnexpectedValue("a valid block type", vList[0])
     }
 }

@@ -9,7 +9,7 @@ import transpiler.codeblocks.header.DFHeader
 import transpiler.values.DFValue
 
 data class SelectObject(val type: String, val subtype: String, val inverse: Boolean, val params: List<DFValue>) :
-    DFBlock {
+    DFBlock("select_obj", 2) {
     companion object {
         fun transpileFrom(input: Value, header: DFHeader): SelectObject {
             val inpList = checkList(input)
@@ -18,10 +18,6 @@ data class SelectObject(val type: String, val subtype: String, val inverse: Bool
             return SelectObject(action, checkStr(inpList[2]), checkBool(inpList[3]), checkParams(inpList[4], CheckContext(header, "select_obj", action)))
         }
     }
-    override val technicalName: String
-        get() = "select_obj"
-    override val literalSize: Int
-        get() = 2
     override fun serialize() = "{" +
             """"id":"block",""" +
             """"block":"select_obj",""" +
@@ -30,5 +26,4 @@ data class SelectObject(val type: String, val subtype: String, val inverse: Bool
             if (inverse) { """"inverted":"NOT",""" } else { "" } +
             """"action":${type.serialize()}""" +
             """},{"id":"bracket","direct":"open","type":"norm"}"""
-    override fun toString() = "SelectObject.$type.$subtype(${ params.joinToString( ", ") { it.toString() } })"
 }

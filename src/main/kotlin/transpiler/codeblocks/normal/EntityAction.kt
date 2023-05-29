@@ -8,7 +8,7 @@ import transpiler.*
 import transpiler.codeblocks.header.DFHeader
 import transpiler.values.DFValue
 
-data class EntityAction(val type: String, val selector: Selector, val params: List<DFValue>) : DFBlock {
+data class EntityAction(val type: String, val selector: Selector, val params: List<DFValue>) : DFBlock("entity_action", 2) {
     companion object {
         fun transpileFrom(input: Value, header: DFHeader): EntityAction {
             val inpList = checkList(input)
@@ -17,10 +17,6 @@ data class EntityAction(val type: String, val selector: Selector, val params: Li
             return EntityAction(action, checkSelector(inpList[2]), checkParams(inpList[3], CheckContext(header, "entity_action", action)))
         }
     }
-    override val technicalName: String
-        get() = "entity_action"
-    override val literalSize: Int
-        get() = 2
     override fun serialize() = "{" +
             """"id":"block",""" +
             """"block":"entity_action",""" +
@@ -28,5 +24,4 @@ data class EntityAction(val type: String, val selector: Selector, val params: Li
             """"target":"${selector.serialize()}",""" +
             """"action":${type.serialize()}""" +
             "}"
-    override fun toString() = "EntityAction.$type<$selector>(${ params.joinToString( ", ") { it.toString() } })"
 }

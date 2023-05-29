@@ -3,26 +3,27 @@ package transpiler.codeblocks.header
 import MalformedList
 import Value
 import serializer.serialize
-import transpiler.CheckContext
+import transpiler.checkBlock
+import transpiler.checkBlocks
 import transpiler.checkList
-import transpiler.checkSelector
 import transpiler.checkStr
-import transpiler.values.GameValue
+import transpiler.codeblocks.normal.DFBlock
 
-data class EntityEvent(val type: String) : DFHeader {
+class EntityEvent(val type: String, blocks: List<DFBlock>) : DFHeader(blocks) {
     companion object {
         fun transpileFrom(input: Value): EntityEvent {
             val inpList = checkList(input)
-            if (inpList.size != 2) throw MalformedList("Header", "(entity-event String<Type>", input)
-            return EntityEvent(checkStr(inpList[1]))
+            if (inpList.size != 3) throw MalformedList("Header", "(entity-event String<Type> List<CodeBlock>)", input)
+            val dummy = EntityEvent(checkStr(inpList[1]), listOf())
+            val blocks = checkBlocks(inpList[2], dummy)
+            return EntityEvent(dummy.type, blocks)
         }
     }
-    override fun serialize() = """{"id":"block",""" +
+    override fun serialize() = super.serializeLine("""{"id":"block",""" +
             """"block":"entity_event",""" +
             """"args":{"items":[]},""" +
-            """"action":${type.serialize()}}"""
+            """"action":${type.serialize()}}""")
     override fun technicalName() = type
-    override fun toString() = "PlayerEvent[$type]"
 
     override fun getItemName() = """{"extra":[""" +
             """{"italic":false,"color":"#FF9955","text":"Event"},""" +

@@ -1,7 +1,5 @@
 package refactoring
 
-import DFLine
-import org.jetbrains.annotations.Contract
 import transpiler.codeblocks.normal.*
 
 data class Run(val index: Int, val blockCount: Int, val size: Int)
@@ -13,6 +11,7 @@ data class Run(val index: Int, val blockCount: Int, val size: Int)
  * Returns a List<DFLine>, size > 0.
  * First element is always the original this, shortened. The rest are extension functions.
  */
+/*
 fun DFLine.shortenLine(maxSize: Int): List<DFLine> {
     if (this.code.isEmpty()) return listOf(this)
     var lastSize = 0
@@ -61,4 +60,4 @@ fun DFLine.shortenLine(maxSize: Int): List<DFLine> {
             out
         }
     }
-}
+}*/

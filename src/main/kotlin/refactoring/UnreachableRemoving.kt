@@ -1,8 +1,8 @@
 package refactoring
 
-import DFLine
 import transpiler.codeblocks.normal.*
 
+/*
 fun DFLine.removeUnreachable(): DFLine {
     if (this.code.isEmpty()) return this
 
@@ -39,4 +39,4 @@ fun DFLine.removeUnreachable(): DFLine {
         runner++ // Move forward
     }
     return DFLine(this.header, out.filterNotNull())
-}
+}*/

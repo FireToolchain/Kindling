@@ -8,20 +8,16 @@ import transpiler.*
 import transpiler.codeblocks.header.DFHeader
 import transpiler.values.DFValue
 
-data class Repeat(val type: String, val subtype: String, val inverse: Boolean, val params: List<DFValue>) :
-    DFBlock {
+data class Repeat(val type: String, val subtype: String, val inverse: Boolean, val params: List<DFValue>, val codeblocks: List<DFBlock>) :
+    DFBlock("repeat", 2) {
     companion object {
         fun transpileFrom(input: Value, header: DFHeader): Repeat {
             val inpList = checkList(input)
-            if (inpList.size != 5) throw MalformedList("CodeBlock", "(repeat String<Action> String<Subaction> Identifier<Invert> List<Parameters>)", input)
+            if (inpList.size != 6) throw MalformedList("CodeBlock", "(repeat String<Action> String<Subaction> Identifier<Invert> List<Parameters> List<CodeBlocks>)", input)
             val action = checkStr(inpList[1])
-            return Repeat(action, checkStr(inpList[2]), checkBool(inpList[3]), checkParams(inpList[4], CheckContext(header, "repeat", action)))
+            return Repeat(action, checkStr(inpList[2]), checkBool(inpList[3]), checkParams(inpList[4], CheckContext(header, "repeat", action)), checkBlocks(inpList[5], header))
         }
     }
-    override val technicalName: String
-        get() = "repeat"
-    override val literalSize: Int
-        get() = 2
     override fun serialize() = "{" +
             """"id":"block",""" +
             """"block":"repeat",""" +
@@ -29,6 +25,7 @@ data class Repeat(val type: String, val subtype: String, val inverse: Boolean, v
             if (subtype.isEmpty()) { "" } else { """"subAction":${type.serialize()},""" } +
             if (inverse) { """"inverted":"NOT",""" } else { "" } +
             """"action":${type.serialize()}""" +
-            """},{"id":"bracket","direct":"open","type":"repeat"}"""
-    override fun toString() = "Repeat.$type.$subtype(${ params.joinToString( ", ") { it.toString() } }) ~{"
+            """},{"id":"bracket","direct":"open","type":"repeat"},""" +
+            codeblocks.joinToString("") { it.serialize() + "," } +
+            """{"id":"bracket","direct":"close","type":"repeat"}"""
 }

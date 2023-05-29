@@ -11,7 +11,7 @@ import transpiler.checkStr
 import transpiler.codeblocks.header.DFHeader
 import transpiler.values.DFValue
 
-data class SetVar(val type: String, val params: List<DFValue>) : DFBlock {
+data class SetVar(val type: String, val params: List<DFValue>) : DFBlock("set_var", 2) {
     companion object {
         fun transpileFrom(input: Value, header: DFHeader): SetVar {
             val inpList = checkList(input)
@@ -20,15 +20,10 @@ data class SetVar(val type: String, val params: List<DFValue>) : DFBlock {
             return SetVar(action, checkParams(inpList[2], CheckContext(header, "set_var", action)))
         }
     }
-    override val technicalName: String
-        get() = "set_var"
-    override val literalSize: Int
-        get() = 2
     override fun serialize() = "{" +
             """"id":"block",""" +
             """"block":"set_var",""" +
             """"args":${serializeArgs(params)},""" +
             """"action":${type.serialize()}""" +
             "}"
-    override fun toString() = "SetVar.$type(${ params.joinToString( ", ") { it.toString() } })"
 }

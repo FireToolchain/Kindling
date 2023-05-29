@@ -8,7 +8,7 @@ import transpiler.*
 import transpiler.codeblocks.header.DFHeader
 import transpiler.values.DFValue
 
-data class GameAction(val type: String, val params: List<DFValue>) : DFBlock {
+data class GameAction(val type: String, val params: List<DFValue>) : DFBlock("game_action", 2) {
     companion object {
         fun transpileFrom(input: Value, header: DFHeader): GameAction {
             val inpList = checkList(input)
@@ -17,15 +17,10 @@ data class GameAction(val type: String, val params: List<DFValue>) : DFBlock {
             return GameAction(action, checkParams(inpList[2], CheckContext(header, "game_action", action)))
         }
     }
-    override val technicalName: String
-        get() = "game_action"
-    override val literalSize: Int
-        get() = 2
     override fun serialize() =  "{" +
             """"id":"block",""" +
             """"block":"game_action",""" +
             """"args":${serializeArgs(params)},""" +
             """"action":${type.serialize()}""" +
             "}"
-    override fun toString() = "GameAction.$type(${ params.joinToString( ", ") { it.toString() } })"
 }

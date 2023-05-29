@@ -59,12 +59,12 @@ fun sendPackageRecode(program: DFProgram, verbose: Boolean) {
                     """{"author":${author.serialize()},"name":"template","version":1,"code":${
                         compressed.serialize()
                     }}"""
-                val itemName = line.header.getItemName()
+                val itemName = line.getItemName()
                 val itemTag =
                     """{display:{Name:${itemName.serialize()}},PublicBukkitValues:{"hypercube:codetemplatedata":${
                         templateData.serialize()
                     }}}"""
-                val itemData = """{"id":"minecraft:${line.header.getItemType()}","Count":1,"tag":$itemTag}"""
+                val itemData = """{"id":"minecraft:${line.getItemType()}","Count":1,"tag":$itemTag}"""
                 val packet = """{"source":"Kindling","type":"nbt","data":${itemData.serialize()}}"""
 
                 send(Frame.Text(packet))
@@ -88,14 +88,14 @@ fun sendPackageVanilla(program: DFProgram) {
             """{"author":${author.serialize()},"name":"template","version":1,"code":${
                 compressed.serialize()
             }}"""
-        val itemName = line.header.getItemName()
+        val itemName = line.getItemName()
         val itemTag =
             """{display:{Name:${itemName.serialize()}},PublicBukkitValues:{"hypercube:codetemplatedata":${
                 templateData.serialize()
             }}}"""
 
         // Minecraft
-        println("""/give @p minecraft:${line.header.getItemType()}$itemTag""")
+        println("""/give @p minecraft:${line.getItemType()}$itemTag""")
         println()
     }
 }
