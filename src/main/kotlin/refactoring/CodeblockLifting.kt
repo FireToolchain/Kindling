@@ -1,5 +1,7 @@
 package refactoring
 
+import transpiler.codeblocks.DoubleCodeHolder
+import transpiler.codeblocks.header.DFHeader
 import transpiler.codeblocks.normal.*
 
 /**
@@ -28,44 +30,58 @@ import transpiler.codeblocks.normal.*
  *
  * (pseudocode, of course)
  */
-/*
-fun DFLine.liftCodeblocks(): DFLine {
+
+fun DFHeader.liftCodeblocks(): DFHeader {
     if (this.code.isEmpty()) return this
+    val code = this.code.toMutableList()
 
-    val codeblocks: MutableList<DFBlock?> = this.code.toMutableList()
-    val reduced = mutableListOf<DFBlock>()
-    var blockIndex = 0
-    while (blockIndex < codeblocks.size) {
-        when (val curBlock = codeblocks[blockIndex]) {
-            null -> {}
-            is IfPlayer, is IfVariable, is IfEntity, is IfGame -> {
-                var elseIndex = blockIndex
-                var depth = 0
-                do {
-                    when (codeblocks[elseIndex]) {
-                        is IfPlayer, is IfVariable, is IfGame, is IfEntity, is Repeat -> depth++
-                        is EndRepeat, is EndIf -> depth--
-                        is Else -> if (depth == 1) depth = 0
-                        else -> {}
+    val newCode: MutableList<DFBlock> = code.flatMap {
+        when (it) {
+            is DoubleCodeHolder -> {
+                if (it.getElseCode() != null) {
+                    val beforeCode = mutableListOf<DFBlock>()
+                    val afterCode = mutableListOf<DFBlock>()
+                    val mainCode = it.getCode().toMutableList()
+                    val elseCode = it.getElseCode()?.toMutableList()!!
+                    while (mainCode.size > 0 && elseCode.size > 0 && mainCode[0] == elseCode[0]) {
+                        beforeCode.add(mainCode[0])
+                        mainCode.removeAt(0)
+                        elseCode.removeAt(0)
                     }
-                    elseIndex++
-                } while (depth > 0 && elseIndex < codeblocks.size)
-                if (elseIndex < codeblocks.size) { // If there is an attached else
-                    var atBeginning = true
-
-                } else reduced.add(curBlock)
+                    while (mainCode.size > 0 && elseCode.size > 0 && mainCode[mainCode.size-1] == elseCode[elseCode.size-1]) {
+                        afterCode.add(0, mainCode[mainCode.size-1])
+                        mainCode.removeAt(mainCode.size-1)
+                        elseCode.removeAt(elseCode.size-1)
+                    }
+                    when {
+                        // Both empty
+                        mainCode.isEmpty() && elseCode.isEmpty() -> {
+                            beforeCode + afterCode
+                        }
+                        // If { } else { ... }
+                        mainCode.isNotEmpty() && elseCode.isEmpty() -> {
+                            beforeCode + (it.flipped() as DoubleCodeHolder).cloneWith(elseCode, null) + afterCode
+                        }
+                        // If { ... } else {}
+                        mainCode.isEmpty() -> {
+                            beforeCode + it.cloneWith(mainCode, null) + afterCode
+                        }
+                        // If { ... } else { ... }
+                        else -> {
+                            beforeCode + it.cloneWith(mainCode, elseCode) + afterCode
+                        }
+                    }
+                } else listOf(it)
             }
-            else -> reduced.add(curBlock)
+            else -> listOf(it)
         }
-        blockIndex++
-    }
-
-    // Removes any Returns leftover at the end of a line
-    while (reduced.isNotEmpty()) {
-        val final = reduced[reduced.size-1]
-        if (final is Control && final.type == "Return") {
-            reduced.removeAt(reduced.size-1)
+    }.toMutableList()
+    while (newCode.size > 0) {
+        val current = newCode[newCode.size-1]
+        if (current is Control && (current.type == "End" || current.type == "Return")) {
+            newCode.removeAt(newCode.size-1)
         } else break
     }
-    return DFLine(this.header, reduced)
-}*/
+    return this.cloneWith(newCode)
+
+}

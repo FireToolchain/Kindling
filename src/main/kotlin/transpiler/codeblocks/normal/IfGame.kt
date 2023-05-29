@@ -44,4 +44,5 @@ data class IfGame(val type: String, val inverse: Boolean, val params: List<DFVal
     override fun getCode() = this.mainBranch
     override fun cloneWith(code: List<DFBlock>, elseCode: List<DFBlock>?) = IfGame(type, inverse, params, code, elseCode)
     override fun cloneWith(code: List<DFBlock>) = IfGame(type, inverse, params, code, elseBranch)
+    override fun flipped() = IfGame(type, !inverse, params, mainBranch, elseBranch)
 }

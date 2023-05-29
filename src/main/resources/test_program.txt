@@ -1,6 +1,6 @@
 (def "fibonacci" (
   (if-var "<" norm ((param 0) (num 2)) (
-    (set-var "=" ((var "out") (num 1)))
+    (return (num 1))
   )(
     (set-var "-" ((var "dif") (param 0) (num 1)))
     (call "fibonacci" ((var "dif")))
@@ -9,8 +9,8 @@
     (call "fibonacci" ((var "dif")))
     (set-var "=" ((var "second") (ret)))
     (set-var "+" ((var "out") (var "first") (var "second")))
+    (return (var "out"))
   ))
-  (return (var "out"))
 ))
 
 

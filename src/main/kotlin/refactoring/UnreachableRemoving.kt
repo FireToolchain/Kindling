@@ -6,9 +6,7 @@ import transpiler.codeblocks.header.DFHeader
 import transpiler.codeblocks.normal.*
 
 
-fun DFHeader.removeUnreachable(): DFHeader {
-    return this.cloneWith(this.code.removeUnreachable())
-}
+fun DFHeader.removeUnreachable() = this.cloneWith(this.code.removeUnreachable())
 
 fun List<DFBlock>.removeUnreachable(): List<DFBlock> {
     val out = mutableListOf<DFBlock>()

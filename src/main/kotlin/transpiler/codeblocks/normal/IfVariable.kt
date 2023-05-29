@@ -44,6 +44,7 @@ data class IfVariable(val type: String, val inverse: Boolean, val params: List<D
     override fun getElseCode() = this.elseBranch
     override fun cloneWith(code: List<DFBlock>, elseCode: List<DFBlock>?) = IfVariable(type, inverse, params, code, elseCode)
     override fun cloneWith(code: List<DFBlock>) = IfVariable(type, inverse, params, code, elseBranch)
+    override fun flipped() = IfVariable(type, !inverse, params, mainBranch, elseBranch)
 
     override fun getCode() = this.mainBranch
 }

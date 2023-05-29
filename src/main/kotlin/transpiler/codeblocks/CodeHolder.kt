@@ -16,4 +16,5 @@ interface CodeHolder {
 interface DoubleCodeHolder : CodeHolder {
     fun getElseCode(): List<DFBlock>?
     fun cloneWith(code: List<DFBlock>, elseCode: List<DFBlock>?): DFBlock
+    fun flipped(): DFBlock
 }

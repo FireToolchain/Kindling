@@ -45,6 +45,5 @@ data class IfEntity(val type: String, val selector: Selector, val inverse: Boole
     override fun getCode() = this.mainBranch
     override fun cloneWith(code: List<DFBlock>, elseCode: List<DFBlock>?) = IfEntity(type, selector, inverse, params, code, elseCode)
     override fun cloneWith(code: List<DFBlock>) = IfEntity(type, selector, inverse, params, code, elseBranch)
-
-
+    override fun flipped() = IfEntity(type, selector, !inverse, params, mainBranch, elseBranch)
 }
