@@ -33,7 +33,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>MainKt</mainClass>
+                            <mainClass>dev.ashli.kindling.MainKt</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
