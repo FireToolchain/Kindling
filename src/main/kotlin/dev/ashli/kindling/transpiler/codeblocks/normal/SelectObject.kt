@@ -21,7 +21,7 @@ data class SelectObject(val type: String, val subtype: String, val inverse: Bool
     override fun serialize() = "{" +
             """"id":"block",""" +
             """"block":"select_obj",""" +
-            """"args"":${serializeArgs(params)},""" +
+            """"args":${serializeArgs(params)},""" +
             if (subtype.isEmpty()) { "" } else { """"subAction":${type.serialize()},""" } +
             if (inverse) { """"inverted":"NOT",""" } else { "" } +
             """"action":${type.serialize()}""" +
