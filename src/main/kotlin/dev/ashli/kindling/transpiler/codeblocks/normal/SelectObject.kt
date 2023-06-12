@@ -25,5 +25,5 @@ data class SelectObject(val type: String, val subtype: String, val inverse: Bool
             if (subtype.isEmpty()) { "" } else { """"subAction":${type.serialize()},""" } +
             if (inverse) { """"inverted":"NOT",""" } else { "" } +
             """"action":${type.serialize()}""" +
-            """},{"id":"bracket","direct":"open","type":"norm"}"""
+            """}"""
 }

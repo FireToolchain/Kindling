@@ -11,11 +11,11 @@ import dev.ashli.kindling.transpiler.values.Variable
 class Function(val name: String, blocks: List<DFBlock>) : DFHeader(blocks) {
     companion object {
         fun transpileFrom(input: Value): Function {
-            val inpList = dev.ashli.kindling.transpiler.checkList(input)
+            val inpList = checkList(input)
             if (inpList.size != 3) throw MalformedList("Header", "(def String<Name> List<CodeBlock>)", input)
-            val dummy = Function(dev.ashli.kindling.transpiler.checkStr(inpList[1]), listOf())
+            val dummy = Function(checkStr(inpList[1]), listOf())
             val blocks = listOf(SetVar("+=", listOf(Variable("^depth ${dummy.name}", VariableScope.LOCAL)))) +
-                    dev.ashli.kindling.transpiler.checkBlocks(inpList[2], dummy) +
+                    checkBlocks(inpList[2], dummy) +
                     SetVar("-=", listOf(Variable("^depth ${dummy.name}", VariableScope.LOCAL)))
             return Function(dummy.name, blocks)
         }
