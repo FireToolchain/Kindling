@@ -50,52 +50,26 @@ fun sendPackageRecode(program: DFProgram, maxSize: Int, verbose: Boolean) {
         install(WebSockets)
     }
     runBlocking {
-        client.webSocket(HttpMethod.Get,"localhost",31371,"/codeutilities/item") {
-            val author = "myname"
-            val lines = program.lines.toMutableList() // Normal codelines that have not been smooshed yet
-            val out = mutableListOf<String>() // List of smooshed codelines
-            while (lines.isNotEmpty()) {
-                val beginBlock = lines.removeAt(0) // Header block we're looking at
-                val curLine = mutableListOf<DFSerializable>(beginBlock) // Current blocks to smoosh
-                var currentSize = 2 + beginBlock.code.sumOf { it.literalSize }
+        client.webSocket(HttpMethod.Get, "localhost", 31371, "/codeutilities/item") {
+            val out = lineIterator(program, maxSize)
+                .asSequence()
+                .map { (blockType, itemTag) ->
+                    val itemData = """{"id":"minecraft:${blockType}","Count":1,"tag":$itemTag}"""
+                    val packet = """{"source":"Kindling","type":"nbt","data":${itemData.serialize()}}"""
 
-                var index = 0
-                while (index < lines.size) {
-                    val size = 2 + lines[index].code.sumOf { it.literalSize }
-                    if (currentSize + size < maxSize) {
-                        currentSize += size
-                        curLine.add(lines.removeAt(index))
-                        index--
-                    } else break
-                    index++
+                    packet
                 }
+                .toList()
 
-                val blocks = """{"blocks":[${curLine.joinToString(",") { it.serialize() }}]}"""
-                val compressed = encode(blocks)
-                val templateData =
-                    """{"author":${author.serialize()},"name":"template","version":1,"code":${
-                        compressed.serialize()
-                    }}"""
-                val itemName = if (curLine.size == 1) beginBlock.getItemName() else DFHeader.bundledItemsName
-                val blockType = if (curLine.size == 1) beginBlock.getItemType() else DFHeader.bundledItemsType
-                val itemTag =
-                    """{display:{Name:${itemName.serialize()}},PublicBukkitValues:{"hypercube:codetemplatedata":${
-                        templateData.serialize()
-                    }}}"""
-                val itemData = """{"id":"minecraft:${blockType}","Count":1,"tag":$itemTag}"""
-                val packet = """{"source":"Kindling","type":"nbt","data":${itemData.serialize()}}"""
-                out.add(packet)
-            }
-            val totalLines = out.size
-            var currentLine = 0
-            for (packet in out) {
-                currentLine++
+            val totalLines = out.count()
 
+            out.forEachIndexed { currentLine, packet ->
                 send(Frame.Text(packet))
                 delay(100)
-                logInfo("Sending $currentLine of $totalLines...")
+                logInfo("Sending ${currentLine + 1} of $totalLines...")
                 if (verbose) logInfo(packet)
             }
+
             logInfo("Finished.")
         }
     }
@@ -103,9 +77,71 @@ fun sendPackageRecode(program: DFProgram, maxSize: Int, verbose: Boolean) {
 }
 
 fun sendPackageVanilla(program: DFProgram, maxSize: Int) {
+    val output = lineIterator(program, maxSize)
+        .asSequence()
+        .map { (blockType, itemTag) -> "/give @p minecraft:${blockType}$itemTag" }
+
+    for (command in output) {
+        logOutput(command)
+    }
+
+    logInfo("Finished.")
+}
+
+fun sendPackageCodeClient(program: DFProgram, maxSize: Int, verbose: Boolean) {
+    val output = lineIterator(program, maxSize)
+        .asSequence()
+        .map { it.templateData }
+        .toList()
+
+    val totalLines = output.count()
+
+    val client = HttpClient(Java) {
+        install(WebSockets)
+    }
+
+    runBlocking {
+        client.webSocket(HttpMethod.Get, "localhost", 31375, "/") {
+            logInfo("Please authenticate using `/auth` ingame.")
+
+            incoming.receive() // waiting for auth
+
+            logInfo("Authenticated.")
+
+            send("clear")
+            if (verbose) logInfo("Cleared plot.")
+            incoming.receive()
+            incoming.receive()
+            send("spawn")
+            if (verbose) logInfo("Teleporting to dev spawn.")
+            incoming.receive()
+            incoming.receive()
+            send("place")
+            if (verbose) logInfo("Placing started.")
+            incoming.receive()
+
+            output.forEachIndexed { currentLine, templateData ->
+                send("place $templateData")
+                if (verbose) {
+                    logInfo("Sending ${currentLine + 1} of $totalLines (Data: $templateData)")
+                } else {
+                    logInfo("Sending ${currentLine + 1} of $totalLines")
+                }
+                incoming.receive()
+            }
+
+            send("place")
+            if (verbose) logInfo("Finished placing.")
+            incoming.receive()
+        }
+    }
+
+    logInfo("Finished.")
+}
+
+fun lineIterator(program: DFProgram, maxSize: Int) = iterator {
     val author = "myname"
     val lines = program.lines.toMutableList() // Normal codelines that have not been smooshed yet
-    val out = mutableListOf<String>() // List of smooshed codelines
     while (lines.isNotEmpty()) {
         val beginBlock = lines.removeAt(0) // Header block we're looking at
         val curLine = mutableListOf<DFSerializable>(beginBlock) // Current blocks to smoosh
@@ -134,12 +170,8 @@ fun sendPackageVanilla(program: DFProgram, maxSize: Int) {
             """{display:{Name:${itemName.serialize()}},PublicBukkitValues:{"hypercube:codetemplatedata":${
                 templateData.serialize()
             }}}"""
-        val command = """/give @p minecraft:${blockType}$itemTag"""
-        out.add(command)
+        yield(Line(blockType, itemTag, compressed))
     }
-    for (command in out) {
-        logOutput(command)
-    }
-    logInfo("Finished.")
 }
 
+data class Line(val blockType: String, val itemTag: String, val templateData: String)
