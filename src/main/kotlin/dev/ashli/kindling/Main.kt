@@ -2,6 +2,7 @@ package dev.ashli.kindling
 
 import dev.ashli.kindling.output.logError
 import dev.ashli.kindling.output.logInfo
+import dev.ashli.kindling.serializer.sendPackageCodeClient
 import dev.ashli.kindling.serializer.sendPackageRecode
 import dev.ashli.kindling.serializer.sendPackageVanilla
 import dev.ashli.kindling.transpiler.transpile
@@ -27,6 +28,11 @@ fun main(inputs: Array<String>) {
     // Read flags
     val help = shorthandFlags.contains('h') || flags.contains("--help")
     val recode = shorthandFlags.contains('r') || flags.contains("--recode")
+    val codeClient = shorthandFlags.contains('c') || flags.contains("--codeclient")
+    if (recode && codeClient) {
+        logError("Only one of --recode and --codeclient may be chosen")
+        return
+    }
     val verbose = shorthandFlags.contains('v') || flags.contains("--verbose")
     val debug = shorthandFlags.contains('d') || flags.contains("--debug")
     val group = shorthandFlags.contains('g') || flags.contains("--group")
@@ -60,6 +66,8 @@ fun main(inputs: Array<String>) {
             val transpiled = unoptimizedTranspiled.optimized(plotSize)
             if (recode) {
                 sendPackageRecode(transpiled, grouping, verbose)
+            } else if (codeClient) {
+                sendPackageCodeClient(transpiled, grouping, verbose)
             } else {
                 sendPackageVanilla(transpiled, grouping)
             }
