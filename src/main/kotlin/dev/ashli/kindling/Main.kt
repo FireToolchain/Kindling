@@ -39,7 +39,7 @@ fun main(inputs: Array<String>) {
     val small = shorthandFlags.contains('B') || flags.contains("--basic")
     val large = shorthandFlags.contains('L') || flags.contains("--large")
     val massive = shorthandFlags.contains('M') || flags.contains("--massive")
-    val file = shorthandFlags.contains('f') || flags.contains("--fiAle")
+    val file = shorthandFlags.contains('f') || flags.contains("--file")
     if ((small && large) || (small && massive) || (large && massive)) {
         logError("Only one of --basic, --large, and --massive may be chosen")
         return
