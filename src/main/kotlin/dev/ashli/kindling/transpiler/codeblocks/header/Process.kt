@@ -23,11 +23,23 @@ class Process(val name: String, blocks: List<DFBlock>) : DFHeader(blocks) {
             return Process(dummy.name, blocks)
         }
     }
-    override fun serialize() = "{" +
-            """"id":"block",""" +
-            """"block":"process",""" +
-            """"args":{"items":[]},""" +
-            """"data":${name.serialize()}}""" +
+    override fun serialize() = """{""" +
+        """"id":"block",""" +
+        """"block":"process",""" +
+        """"args":{"items":[""" +
+        """{""" +
+            """"item": {""" +
+            """"id": "bl_tag",""" +
+            """"data": {""" +
+                """"option": "False",""" +
+                """"tag": "Is Hidden",""" +
+                """"action": "dynamic",""" +
+                """"block": "process"""" +
+            """}""" +
+        """}, "slot": 26""" +
+        """}""" +
+        """]},""" +
+        """"data":${name.serialize()}}""" +
             this.code.joinToString("") { "," + it.serialize() }
     override fun technicalName() = name
 

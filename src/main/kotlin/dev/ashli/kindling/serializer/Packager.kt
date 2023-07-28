@@ -102,37 +102,69 @@ fun sendPackageCodeClient(program: DFProgram, maxSize: Int, verbose: Boolean) {
 
     runBlocking {
         client.webSocket(HttpMethod.Get, "localhost", 31375, "/") {
+            /*
+            This is the API example for CodeClient as of writing this.
+            If the API example does not match what it is here, it may need to be updated.
+
+    --- CONNECT TO ws://localhost:31375 ---
+    OUT impatient
+    INC noauth
+    ---         PLAYER RUNS /auth       ---
+    INC auth
+    OUT clear
+    OUT size
+    INC BASIC
+    OUT place
+    OUT place H4sIAAAAAAAAAy3MQQqAMAxE0btk7Ql6FXGhddBgTbFGQaR3d0RXYT6P3DKkHJddQnuLjhK+Lc1/g+CEOXdfJioix/ryrrJF12xEczbsni46J4SzbQcpg9qJ4nh/q8WCUYcEqV19ANub6Ot8AAAA
+    OUT place H4sIAAAAAAAAAy3MQQqAMAxE0btk7Ql6FXGhddBgTbFGQaR3d0RXYT6P3DKkHJddQnuLjhK+Lc1/g+CEOXdfJioix/ryrrJF12xEczbsni46J4SzbQcpg9qJ4nh/q8WCUYcEqV19ANub6Ot8AAAA
+    OUT place go
+    INC place done
+    ---              CLOSE              ---
+            */
+
+            // OUT impatient
+            // INC noauth
             logInfo("Please authenticate using `/auth` ingame.")
 
+            // INC auth - CodeClient requires authentication from external
+            // template generators (including Kindling).
             incoming.receive() // waiting for auth
 
             logInfo("Authenticated.")
 
+            // OUT clear - Clear the codespace
             send("clear")
             if (verbose) logInfo("Cleared plot.")
-            incoming.receive()
-            incoming.receive()
+
+            // There is no need to ask for the plot size from CodeClient, it is already provided
+            // via the command line flags.
+
+            // OUT spawn - Go to plot spawn
             send("spawn")
             if (verbose) logInfo("Teleporting to dev spawn.")
-            incoming.receive()
-            incoming.receive()
-            send("place")
-            if (verbose) logInfo("Placing started.")
-            incoming.receive()
+            if (verbose) logInfo("Sending templates.")
 
+            // Temporary patch for a CodeClient bug.
+            // Should remove when fixed.
+            send("place H4sIAAAAAAAA/12OwQrCMAyGX0Vz3kE8eOhZZYIgeBUpbVNnWdfKWkEZfZ69x57MVCfKTkn+/8ufdCCtV3UAdurAILDPDMVYGVzuTtEo2oogYqJuRpq6t5K34iMShCKKLDnRaBKHXg69LQ/79eY4h5QKCNZHYItUTNal5VFUfwn+Fo135GyFDZqMbDPYhVlpELXLH6kRwSfdM2r68+/ecpXO6ZsNnNfIr96iboH0FzCmKxICAQAA")
             output.forEachIndexed { currentLine, templateData ->
+                // Start placing blocks in the codespace.
+                // OUT send <data> - Tells CodeClient what templates to place
                 send("place $templateData")
                 if (verbose) {
                     logInfo("Sending ${currentLine + 1} of $totalLines (Data: $templateData)")
                 } else {
                     logInfo("Sending ${currentLine + 1} of $totalLines")
                 }
-                incoming.receive()
             }
 
-            send("place")
-            if (verbose) logInfo("Finished placing.")
+            if (verbose) logInfo("Starting placing.")
+            // OUT place go - Places the templates sent
+            send("place go")
+
             incoming.receive()
+            if (verbose) logInfo("Finished placing.")
+            Thread.sleep(2000)
         }
     }
 
