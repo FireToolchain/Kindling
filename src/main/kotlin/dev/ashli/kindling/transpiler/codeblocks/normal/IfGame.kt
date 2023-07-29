@@ -17,10 +17,10 @@ data class IfGame(val type: String, val inverse: Boolean, val params: List<DFVal
             val inpList = checkList(input)
             return if (inpList.size == 5) {
                 val action = checkStr(inpList[1])
-                IfGame(action, checkBool(inpList[2]), checkParams(inpList[3], CheckContext(header, "if_entity", action)), checkBlocks(inpList[4], header), null)
+                IfGame(action, checkBool(inpList[2]), checkParams(inpList[3], CheckContext(header, "if_game", action)), checkBlocks(inpList[4], header), null)
             } else if (inpList.size == 6) {
                 val action = checkStr(inpList[1])
-                IfGame(action, checkBool(inpList[2]), checkParams(inpList[3], CheckContext(header, "if_entity", action)), checkBlocks(inpList[4], header), checkBlocks(inpList[5], header))
+                IfGame(action, checkBool(inpList[2]), checkParams(inpList[3], CheckContext(header, "if_game", action)), checkBlocks(inpList[4], header), checkBlocks(inpList[5], header))
             } else throw MalformedList("CodeBlock", "(if-game String<Action> Identifier<Invert> List<Parameters> List<IfBlocks> List<ElseBlocks>?)", input)
         }
     }

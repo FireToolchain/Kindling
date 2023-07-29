@@ -17,10 +17,10 @@ data class IfVariable(val type: String, val inverse: Boolean, val params: List<D
             val inpList = checkList(input)
             return if (inpList.size == 5) {
                 val action = checkStr(inpList[1])
-                IfVariable(action, checkBool(inpList[2]), checkParams(inpList[3], CheckContext(header, "if_entity", action)), checkBlocks(inpList[4], header), null)
+                IfVariable(action, checkBool(inpList[2]), checkParams(inpList[3], CheckContext(header, "if_var", action)), checkBlocks(inpList[4], header), null)
             } else if (inpList.size == 6) {
                 val action = checkStr(inpList[1])
-                IfVariable(action, checkBool(inpList[2]), checkParams(inpList[3], CheckContext(header, "if_entity", action)), checkBlocks(inpList[4], header), checkBlocks(inpList[5], header))
+                IfVariable(action, checkBool(inpList[2]), checkParams(inpList[3], CheckContext(header, "if_var", action)), checkBlocks(inpList[4], header), checkBlocks(inpList[5], header))
             } else throw MalformedList("CodeBlock", "(if-var String<Action> Identifier<Invert> List<Parameters> List<IfBlocks> List<ElseBlocks>?)", input)
         }
     }

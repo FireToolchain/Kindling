@@ -17,10 +17,10 @@ data class IfPlayer(val type: String, val selector: Selector, val inverse: Boole
             val inpList = checkList(input)
             return if (inpList.size == 6) {
                 val action = checkStr(inpList[1])
-                IfPlayer(action, checkSelector(inpList[2]), checkBool(inpList[3]), checkParams(inpList[4], CheckContext(header, "if_entity", action)), checkBlocks(inpList[5], header), null)
+                IfPlayer(action, checkSelector(inpList[2]), checkBool(inpList[3]), checkParams(inpList[4], CheckContext(header, "if_player", action)), checkBlocks(inpList[5], header), null)
             } else if (inpList.size == 7) {
                 val action = checkStr(inpList[1])
-                IfPlayer(action, checkSelector(inpList[2]), checkBool(inpList[3]), checkParams(inpList[4], CheckContext(header, "if_entity", action)), checkBlocks(inpList[5], header), checkBlocks(inpList[6], header))
+                IfPlayer(action, checkSelector(inpList[2]), checkBool(inpList[3]), checkParams(inpList[4], CheckContext(header, "if_player", action)), checkBlocks(inpList[5], header), checkBlocks(inpList[6], header))
             } else throw MalformedList("CodeBlock", "(if-entity String<Action> Identifier<Selector> Identifier<Invert> List<Parameters> List<IfBlocks> List<ElseBlocks>?)", input)
         }
     }
