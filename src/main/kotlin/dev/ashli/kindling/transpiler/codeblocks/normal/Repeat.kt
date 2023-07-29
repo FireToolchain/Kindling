@@ -23,7 +23,7 @@ data class Repeat(val type: String, val subtype: String, val inverse: Boolean, v
             """"id":"block",""" +
             """"block":"repeat",""" +
             """"args":${serializeArgs(params)},""" +
-            if (subtype.isEmpty()) { "" } else { """"subAction":${type.serialize()},""" } +
+            if (subtype.isEmpty()) { "" } else { """"subAction":${subtype.serialize()},""" } +
             if (inverse) { """"inverted":"NOT",""" } else { "" } +
             """"action":${type.serialize()}""" +
             """},{"id":"bracket","direct":"open","type":"repeat"},""" +
