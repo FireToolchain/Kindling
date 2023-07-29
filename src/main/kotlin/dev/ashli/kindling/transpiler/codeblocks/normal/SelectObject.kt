@@ -22,7 +22,7 @@ data class SelectObject(val type: String, val subtype: String, val inverse: Bool
             """"id":"block",""" +
             """"block":"select_obj",""" +
             """"args":${serializeArgs(params)},""" +
-            if (subtype.isEmpty()) { "" } else { """"subAction":${type.serialize()},""" } +
+            if (subtype.isEmpty()) { "" } else { """"subAction":${subtype.serialize()},""" } +
             if (inverse) { """"inverted":"NOT",""" } else { "" } +
             """"action":${type.serialize()}""" +
             """}"""
