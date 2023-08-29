@@ -1,5 +1,10 @@
 package dev.ashli.kindling.transpiler.values.param
 
+/**
+ * An enum encompassing all types that DiamondFire natively supports.
+ * This is useful as Function Parameters require you to specify their type.
+ * @param internalName The internal name of the type
+ */
 enum class DFType(val internalName: String) {
     STRING("txt"),
     STYLED_TEXT("comp"),
