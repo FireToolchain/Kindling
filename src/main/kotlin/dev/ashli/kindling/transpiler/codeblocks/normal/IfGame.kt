@@ -5,6 +5,14 @@ import dev.ashli.kindling.serializer.serializeArgs
 import dev.ashli.kindling.transpiler.codeblocks.DoubleCodeHolder
 import dev.ashli.kindling.transpiler.values.DFValue
 
+/**
+ * Represents DiamondFire's if game block.
+ * @param type The action of the code block
+ * @param inverse This is `true` if the block should have NOT on it's sign
+ * @param params Parameters to the code block
+ * @param mainBranch The branch to execute if the condition is true
+ * @param elseBranch The branch to execute otherwise
+ */
 data class IfGame(val type: String, val inverse: Boolean, val params: List<DFValue>, val mainBranch: List<DFBlock>, val elseBranch: List<DFBlock>?) :
     DFBlock("if_game", 4 + mainBranch.sumOf { it.literalSize } + (elseBranch?.sumOf { it.literalSize }?.plus(4) ?: 0),
         elseBranch != null && (mainBranch.any { it.isFinal } && elseBranch.any { it.isFinal })), DoubleCodeHolder {
