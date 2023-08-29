@@ -3,7 +3,7 @@ import dev.ashli.kindling.serializer.sendPackageRecode
 import dev.ashli.kindling.transpiler.Selector
 import dev.ashli.kindling.transpiler.codeblocks.header.PlayerEvent
 import dev.ashli.kindling.transpiler.codeblocks.normal.PlayerAction
-import dev.ashli.kindling.transpiler.values.StyledText
+import dev.ashli.kindling.transpiler.values.Text
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
@@ -16,7 +16,7 @@ class Playground {
         sendPackageRecode(DFProgram(
             listOf(
                 PlayerEvent("Join", listOf(
-                    PlayerAction("SendMessage", Selector.ALL_PLAYERS, listOf(StyledText.fromMiniMessage("<blue>%default joined!")))
+                    PlayerAction("SendMessage", Selector.ALL_PLAYERS, listOf(Text.fromMiniMessage("<blue>%default joined!")))
                 ))
             )
         ), 36, true)

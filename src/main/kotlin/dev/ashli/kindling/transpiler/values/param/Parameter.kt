@@ -2,6 +2,7 @@ package dev.ashli.kindling.transpiler.values
 
 import dev.ashli.kindling.serializer.serialize
 import dev.ashli.kindling.transpiler.values.param.DFType
+import kotlin.String
 
 /**
  * Represents a parameter of a function.

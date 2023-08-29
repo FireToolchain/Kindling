@@ -1,6 +1,7 @@
 package dev.ashli.kindling.transpiler.values
 
 import dev.ashli.kindling.serializer.serialize
+import kotlin.String
 
 /**
  * Represents a regular, vanilla item

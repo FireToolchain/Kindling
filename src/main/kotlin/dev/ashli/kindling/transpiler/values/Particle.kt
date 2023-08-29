@@ -1,7 +1,7 @@
 package dev.ashli.kindling.transpiler.values
 
 import dev.ashli.kindling.serializer.serialize
-import dev.ashli.kindling.transpiler.*
+import kotlin.String
 
 /**
  * Represents a particle on DiamondFire.
