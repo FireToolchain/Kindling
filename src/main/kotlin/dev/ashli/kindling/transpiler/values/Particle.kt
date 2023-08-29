@@ -3,6 +3,10 @@ package dev.ashli.kindling.transpiler.values
 import dev.ashli.kindling.serializer.serialize
 import dev.ashli.kindling.transpiler.*
 
+/**
+ * Represents a particle on DiamondFire.
+ * @param type The type of particle.
+ */
 data class Particle(val type: String) : DFValue {
     var amount = 1
     var spreadX = 0f
