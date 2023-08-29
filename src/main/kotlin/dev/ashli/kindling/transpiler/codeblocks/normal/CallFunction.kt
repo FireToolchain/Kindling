@@ -1,48 +1,19 @@
 package dev.ashli.kindling.transpiler.codeblocks.normal
 
-import dev.ashli.kindling.MalformedList
-import dev.ashli.kindling.Value
 import dev.ashli.kindling.serializer.serialize
-import dev.ashli.kindling.transpiler.*
-import dev.ashli.kindling.transpiler.codeblocks.header.DFHeader
-import dev.ashli.kindling.transpiler.values.Number
-import dev.ashli.kindling.transpiler.values.Variable
+import dev.ashli.kindling.serializer.serializeArgs
+import dev.ashli.kindling.transpiler.values.DFValue
 
-data class CallFunction(val name: String) : DFBlock("call_func", 2) {
-    companion object {
-        fun transpileFrom(input: Value, header: DFHeader): List<DFBlock> {
-            val inpList = checkList(input)
-            if (inpList.size != 3) throw MalformedList("CodeBlock", "(call String<Action> List<Arguments>", input)
-            val action = checkStr(inpList[1])
-            val params = checkParams(inpList[2], CheckContext(header, "call_func", action))
-            val blocks = mutableListOf<DFBlock>()
-            for ((paramNum, p) in params.withIndex()) {
-                blocks.add(
-                    SetVar(
-                        "+", listOf(
-                            Variable("^depthCalc", VariableScope.LOCAL),
-                            Variable("^depth $action", VariableScope.LOCAL),
-                            Number(1f)
-                        )
-                    )
-                )
-                blocks.add(
-                    SetVar(
-                        "=", listOf(
-                            Variable("^param $action $paramNum %var(^depthCalc)", VariableScope.LOCAL),
-                            p
-                        )
-                    )
-                )
-            }
-            blocks.add(CallFunction(action))
-            return blocks
-        }
-    }
+/**
+ * Represents DiamondFire's Call Function block.
+ * @param name Name of the function to call
+ * @param arguments Arguments to call function with
+ */
+data class CallFunction(val name: String, val arguments: List<DFValue>) : DFBlock("call_func", 2) {
     override fun serialize() =  "{" +
             """"id":"block",""" +
             """"block":"call_func",""" +
-            """"args":{"items":[]},""" +
+            """"args":${serializeArgs(arguments)},""" +
             """"data":${name.serialize()}""" +
             "}"
 }

@@ -1,19 +1,21 @@
 package dev.ashli.kindling.transpiler.values
 
-import dev.ashli.kindling.MalformedList
-import dev.ashli.kindling.Value
-import dev.ashli.kindling.serializer.toInner
-import dev.ashli.kindling.transpiler.CheckContext
-import dev.ashli.kindling.transpiler.checkList
-import dev.ashli.kindling.transpiler.checkStr
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.minimessage.MiniMessage
+import kotlin.String
 
-data class Text(val text: String) : DFValue {
+/**
+ * Represents a Text on DiamondFire.
+ * @param comp The component to use.
+ */
+data class Text(val comp: Component) : DFValue {
     companion object {
-        fun transpileFrom(input: Value, context: CheckContext): Text {
-            val inpList = checkList(input)
-            if (inpList.size != 2) throw MalformedList("Value", "(text String<Text>)", input)
-            return Text(checkStr(inpList[1]))
-        }
+        /**
+         * Generates a Text from a String using MiniMessage.
+         * @param message The string to reference
+         */
+        fun fromMiniMessage(message: String): Text = Text(MiniMessage.miniMessage().deserialize(message))
     }
-    override fun serialize() = """{"id":"txt","data":{"name":"${toInner(text)}"}}"""
+    override fun serialize() = """{"id":"comp","data":{"name":"${MiniMessage.miniMessage().serialize(comp)}"}}"""
+
 }

@@ -1,26 +1,20 @@
 package dev.ashli.kindling.transpiler.values
 
-import dev.ashli.kindling.MalformedList
-import dev.ashli.kindling.Value
 import dev.ashli.kindling.serializer.serialize
-import dev.ashli.kindling.transpiler.CheckContext
-import dev.ashli.kindling.transpiler.checkList
-import dev.ashli.kindling.transpiler.checkNum
-import dev.ashli.kindling.transpiler.checkStr
+import kotlin.String
 
-data class Sound(val type: String, val pitch: Float, val volume: Float, val variant: String?) : DFValue {
-    companion object {
-        fun transpileFrom(input: Value, context: CheckContext): Sound {
-            val inpList = checkList(input)
-            return if (inpList.size == 4) {
-                Sound(checkStr(inpList[1]), checkNum(inpList[2]), checkNum(inpList[3]), null)
-            } else if (inpList.size == 5) {
-                Sound(checkStr(inpList[1]), checkNum(inpList[3]), checkNum(inpList[4]), checkStr(inpList[2]))
-            } else throw MalformedList("Value", "(sound String<Name> String<Variant>? Num<Pitch> Num<Yaw>)", input)
-        }
-    }
+
+/**
+ * Represents a sound on DiamondFire.
+ * @param isCustom Should be true if this is a custom sound
+ * @param type Type of sound / key of sound to play
+ * @param pitch Pitch of the sound
+ * @param volume Voluime of the sound
+ * @param variant If applicable, the variant of the sound to play
+ */
+data class Sound(val isCustom: Boolean, val type: String, val pitch: Float, val volume: Float, val variant: String?) : DFValue {
     override fun serialize() = """{"id":"snd","data":{""" +
-            """"sound":${type.serialize()},""" +
+            if(isCustom)  """"key":${type.serialize()},""" else """"sound":${type.serialize()},""" +
             """"pitch":$pitch,""" +
             """"vol":$volume""" +
             (if (variant != null) ""","variant":${variant.serialize()}""" else "") +

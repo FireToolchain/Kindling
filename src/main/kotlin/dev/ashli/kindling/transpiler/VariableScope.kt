@@ -14,6 +14,9 @@ enum class VariableScope : DFSerializable {
     },
     LOCAL {
         override fun serialize() = """local"""
+    },
+    LINE {
+        override fun serialize() = """line"""
     }
 }
 

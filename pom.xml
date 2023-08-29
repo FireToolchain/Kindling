@@ -122,6 +122,22 @@
             <artifactId>kotlin-stdlib-jdk8</artifactId>
             <version>1.8.20</version>
         </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-api</artifactId>
+            <version>4.14.0</version>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-minimessage</artifactId>
+            <version>4.14.0</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version> <!-- Use the latest version -->
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>

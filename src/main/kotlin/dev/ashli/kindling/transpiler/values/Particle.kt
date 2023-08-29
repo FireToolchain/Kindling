@@ -1,40 +1,13 @@
 package dev.ashli.kindling.transpiler.values
 
-import dev.ashli.kindling.MalformedList
-import dev.ashli.kindling.UnexpectedValue
-import dev.ashli.kindling.Value
 import dev.ashli.kindling.serializer.serialize
-import dev.ashli.kindling.transpiler.*
+import kotlin.String
 
+/**
+ * Represents a particle on DiamondFire.
+ * @param type The type of particle.
+ */
 data class Particle(val type: String) : DFValue {
-    companion object {
-        fun transpileFrom(input: Value, context: CheckContext): Particle {
-            val inpList = checkList(input)
-            if (inpList.size != 3) throw MalformedList("Value", "(par String<Name> List<Settings>)", input)
-            val par = Particle(checkStr(inpList[1]))
-            for (s in checkList(inpList[2])) {
-                val setting = checkList(s)
-                if (setting.size != 2) throw MalformedList("Particle Setting", "(Identifier<Name> <Value>)", s)
-                when (checkIdent(setting[0])) {
-                    "amount" -> par.amount = checkInt(setting[1])
-                    "spread-x" -> par.spreadX = checkNum(setting[1])
-                    "spread-y" -> par.spreadY = checkNum(setting[1])
-                    "motion-x" -> par.motionX = checkNum(setting[1])
-                    "motion-y" -> par.motionY = checkNum(setting[1])
-                    "motion-z" -> par.motionZ = checkNum(setting[1])
-                    "roll" -> par.roll = checkNum(setting[1])
-                    "size" -> par.size = checkNum(setting[1])
-                    "color" -> par.color = checkInt(setting[1])
-                    "material" -> par.material = checkStr(setting[1])
-                    "variation-color" -> par.variationColor = checkInt(setting[1])
-                    "variation-motion" -> par.variationMotion = checkInt(setting[1])
-                    "variation-size" -> par.variationSize = checkInt(setting[1])
-                    else -> throw UnexpectedValue("a valid particle setting", s)
-                }
-            }
-            return par
-        }
-    }
     var amount = 1
     var spreadX = 0f
     var spreadY = 0f
