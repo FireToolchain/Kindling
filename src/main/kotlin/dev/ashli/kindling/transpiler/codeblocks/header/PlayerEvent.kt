@@ -1,23 +1,9 @@
 package dev.ashli.kindling.transpiler.codeblocks.header
 
-import dev.ashli.kindling.MalformedList
-import dev.ashli.kindling.Value
 import dev.ashli.kindling.serializer.serialize
-import dev.ashli.kindling.transpiler.checkBlocks
-import dev.ashli.kindling.transpiler.checkList
-import dev.ashli.kindling.transpiler.checkStr
 import dev.ashli.kindling.transpiler.codeblocks.normal.DFBlock
 
 class PlayerEvent(val type: String, blocks: List<DFBlock>) : DFHeader(blocks) {
-    companion object {
-        fun transpileFrom(input: Value): PlayerEvent {
-            val inpList = checkList(input)
-            if (inpList.size != 3) throw MalformedList("Header", "(player-event String<Type> List<CodeBlock>)", input)
-            val dummy = PlayerEvent(checkStr(inpList[1]), listOf())
-            val blocks = checkBlocks(inpList[2], dummy)
-            return PlayerEvent(dummy.type, blocks)
-        }
-    }
     override fun serialize() = "{" +
             """"id":"block",""" +
             """"block":"event",""" +
